@@ -1,0 +1,296 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/login.dart';
+import 'package:uvol/model/user_model.dart';
+import 'package:uvol/widget/button.dart';
+import 'package:uvol/widget/preferance_handler.dart';
+
+class Register extends StatefulWidget {
+  const Register({super.key});
+  static const id = "/register";
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool isVisibility = false;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  SafeArea buildLayer() {
+    return SafeArea(
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                Text(
+                  "Hello volunteers!",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2E2E5D),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "Please register",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2E2E5D),
+                  ),
+                ),
+
+                height(16),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: buildTitle("Nama"),
+                ),
+                height(12),
+                buildTextField(
+                  hintText: "Masukkan nama kamu",
+                  controller: nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Nama tidak boleh kosong";
+                    }
+                    return null;
+                  },
+                ),
+
+                buildTitle("Username"),
+                height(12),
+                buildTextField(
+                  hintText: "Buat username kamu",
+                  controller: usernameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Username tidak boleh kosong";
+                    }
+                    return null;
+                  },
+                ),
+
+                buildTitle("Email "),
+                height(12),
+                buildTextField(
+                  hintText: "Masukkan email kamu",
+                  controller: emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Email tidak boleh kosong";
+                    } else if (!value.contains('@')) {
+                      return "Email tidak valid";
+                    } else if (!RegExp(
+                      r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+                    ).hasMatch(value)) {
+                      return "Format Email tidak valid";
+                    }
+                    return null;
+                  },
+                ),
+
+                buildTitle("Password"),
+                height(12),
+                buildTextField(
+                  hintText: "Buat password kamu",
+                  isPassword: true,
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Password tidak boleh kosong";
+                    } else if (value.length < 6) {
+                      return "Password minimal 6 karakter";
+                    }
+                    return null;
+                  },
+                ),
+                height(20),
+                Button(
+                  text: "Register",
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      print(emailController.text);
+                      final UserModel data = UserModel(
+                        name: nameController.text,
+                        email: emailController.text,
+                        username: usernameController.text,
+                        password: passwordController.text,
+                      );
+                      DbHelper.registerUser(data);
+                      Fluttertoast.showToast(msg: "Register Berhasil");
+                      PreferanceHandler.saveLogin(true);
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );
+                    }
+                  },
+                ),
+
+                height(16),
+
+                SizedBox(height: 15),
+
+                Container(
+                  width: 322,
+                  height: 30,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 0.05,
+                          color: const Color.fromARGB(255, 223, 223, 223),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "or",
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 134, 134, 134),
+                          fontSize: 15,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Expanded(
+                        child: Container(
+                          height: 0.5,
+                          color: const Color.fromARGB(255, 223, 223, 223),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 10),
+
+                ElevatedButton(
+                  onPressed: () {
+                    print("Tekan sekali");
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/images/google.png", height: 20),
+                      SizedBox(width: 10),
+                      Text("Login with Google"),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account?",
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 128, 127, 127),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        print("Tombol teks ditekan");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Login()),
+                        );
+                      },
+                      child: Text("Sign in"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildBackground() {
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      // decoration: const BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage("assets/images/background.png"),
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
+    );
+  }
+
+  TextFormField buildTextField({
+    String? hintText,
+    bool isPassword = false,
+    TextEditingController? controller,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      validator: validator,
+      controller: controller,
+      obscureText: isPassword ? isVisibility : false,
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32),
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(0.2),
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32),
+          borderSide: BorderSide(color: Colors.black, width: 1.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32),
+          borderSide: BorderSide(
+            color: Colors.black.withOpacity(0.2),
+            width: 1.0,
+          ),
+        ),
+        suffixIcon: isPassword
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    isVisibility = !isVisibility;
+                  });
+                },
+                icon: Icon(
+                  isVisibility ? Icons.visibility_off : Icons.visibility,
+                ),
+              )
+            : null,
+      ),
+    );
+  }
+
+  SizedBox height(double height) => SizedBox(height: height);
+  SizedBox width(double width) => SizedBox(width: width);
+
+  Widget buildTitle(String text) {
+    return Row(children: [
+      
+      ],
+    );
+  }
+}
