@@ -21,7 +21,10 @@ class _RegisterState extends State<Register> {
   bool isVisibility = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 221, 231, 248),
+      body: Stack(children: [buildLayer()]),
+    );
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -43,7 +46,7 @@ class _RegisterState extends State<Register> {
                     color: Color(0xFF2E2E5D),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 Text(
                   "Please register",
                   style: TextStyle(
@@ -54,73 +57,111 @@ class _RegisterState extends State<Register> {
                 ),
 
                 height(16),
-                Container(
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Nama",
+                              style: TextStyle(color: Color(0xFF4962BF)),
+                            ),
+                          ],
+                        ),
+                        buildTitle("Nama"),
+                        buildTextField(
+                          hintText: "Masukkan nama kamu",
+                          controller: nameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Nama tidak boleh kosong";
+                            }
+                            return null;
+                          },
+                        ),
+                        height(20),
+                        Row(
+                          children: [
+                            Text(
+                              "Username",
+                              style: TextStyle(color: Color(0xFF4962BF)),
+                            ),
+                          ],
+                        ),
+                        buildTitle("Username"),
+                        buildTextField(
+                          hintText: "Buat username kamu",
+                          controller: usernameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Username tidak boleh kosong";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        height(20),
+                        Row(
+                          children: [
+                            Text(
+                              "Email",
+                              style: TextStyle(color: Color(0xFF4962BF)),
+                            ),
+                          ],
+                        ),
+                        buildTitle("Email "),
+                        buildTextField(
+                          hintText: "Masukkan email kamu",
+                          controller: emailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Email tidak boleh kosong";
+                            } else if (!value.contains('@')) {
+                              return "Email tidak valid";
+                            } else if (!RegExp(
+                              r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+                            ).hasMatch(value)) {
+                              return "Format Email tidak valid";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        height(20),
+                        Row(
+                          children: [
+                            Text(
+                              "Password",
+                              style: TextStyle(color: Color(0xFF4962BF)),
+                            ),
+                          ],
+                        ),
+                        buildTitle("Password"),
+                        buildTextField(
+                          hintText: "Buat password kamu",
+                          isPassword: true,
+                          controller: passwordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password tidak boleh kosong";
+                            } else if (value.length < 6) {
+                              return "Password minimal 6 karakter";
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  child: buildTitle("Nama"),
-                ),
-                height(12),
-                buildTextField(
-                  hintText: "Masukkan nama kamu",
-                  controller: nameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Nama tidak boleh kosong";
-                    }
-                    return null;
-                  },
                 ),
 
-                buildTitle("Username"),
-                height(12),
-                buildTextField(
-                  hintText: "Buat username kamu",
-                  controller: usernameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Username tidak boleh kosong";
-                    }
-                    return null;
-                  },
-                ),
-
-                buildTitle("Email "),
-                height(12),
-                buildTextField(
-                  hintText: "Masukkan email kamu",
-                  controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Email tidak boleh kosong";
-                    } else if (!value.contains('@')) {
-                      return "Email tidak valid";
-                    } else if (!RegExp(
-                      r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
-                    ).hasMatch(value)) {
-                      return "Format Email tidak valid";
-                    }
-                    return null;
-                  },
-                ),
-
-                buildTitle("Password"),
-                height(12),
-                buildTextField(
-                  hintText: "Buat password kamu",
-                  isPassword: true,
-                  controller: passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Password tidak boleh kosong";
-                    } else if (value.length < 6) {
-                      return "Password minimal 6 karakter";
-                    }
-                    return null;
-                  },
-                ),
                 height(20),
                 Button(
                   text: "Register",
@@ -145,9 +186,7 @@ class _RegisterState extends State<Register> {
                   },
                 ),
 
-                height(16),
-
-                SizedBox(height: 15),
+                height(15),
 
                 Container(
                   width: 322,
@@ -157,23 +196,23 @@ class _RegisterState extends State<Register> {
                     children: [
                       Expanded(
                         child: Container(
-                          height: 0.05,
-                          color: const Color.fromARGB(255, 223, 223, 223),
+                          height: 0.5,
+                          color: const Color.fromARGB(255, 148, 145, 145),
                         ),
                       ),
-                      SizedBox(width: 5),
+                      SizedBox(width: 4),
                       Text(
                         "or",
                         style: TextStyle(
-                          color: const Color.fromARGB(255, 134, 134, 134),
-                          fontSize: 15,
+                          color: const Color.fromARGB(255, 148, 145, 145),
+                          fontSize: 16,
                         ),
                       ),
-                      SizedBox(width: 5),
+                      SizedBox(width: 4),
                       Expanded(
                         child: Container(
                           height: 0.5,
-                          color: const Color.fromARGB(255, 223, 223, 223),
+                          color: const Color.fromARGB(255, 148, 145, 145),
                         ),
                       ),
                     ],
@@ -183,18 +222,27 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 10),
 
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF4962BF),
+                    fixedSize: Size(250, 40),
+                  ),
                   onPressed: () {
                     print("Tekan sekali");
                   },
+
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset("assets/images/google.png", height: 20),
                       SizedBox(width: 10),
-                      Text("Login with Google"),
+                      Text(
+                        "Login with Google",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                 ),
+
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -225,19 +273,6 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Container buildBackground() {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      // decoration: const BoxDecoration(
-      //   image: DecorationImage(
-      //     image: AssetImage("assets/images/background.png"),
-      //     fit: BoxFit.cover,
-      //   ),
-      // ),
-    );
-  }
-
   TextFormField buildTextField({
     String? hintText,
     bool isPassword = false,
@@ -251,18 +286,18 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
         hintText: hintText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
-            color: Colors.black.withOpacity(0.2),
-            width: 1.0,
+            color: const Color.fromARGB(255, 214, 212, 212).withOpacity(0.2),
+            width: 0.5,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.black, width: 1.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(
             color: Colors.black.withOpacity(0.2),
             width: 1.0,

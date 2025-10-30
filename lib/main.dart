@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/bottom_nav.dart';
+import 'package:uvol/home.dart';
 import 'package:uvol/intro_splash.dart';
+import 'package:uvol/login.dart';
+import 'package:uvol/profile.dart';
 import 'package:uvol/view/register.dart';
 
 void main() {
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Register(),
+      home: const Home(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/login.dart';
 import 'package:uvol/view/register.dart';
+import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/preferance_handler.dart';
 
 class IntroSplash extends StatefulWidget {
@@ -25,19 +26,25 @@ class _IntroSplashState extends State<IntroSplash> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Register()),
-          (route) => false,
+          (route) => true,
         );
       } else {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Login()),
-          (route) => false,
+          (route) => true,
         );
       }
     });
   }
 
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [Center(child: Image.asset(AppImages.uvolfull))],
+      ),
+    );
   }
 }
