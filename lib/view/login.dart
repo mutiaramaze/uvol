@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uvol/bottom_nav.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/home.dart';
 import 'package:uvol/widget/app_images.dart';
@@ -22,6 +23,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 221, 231, 248),
+
       body: Stack(children: [buildLayer()]),
     );
   }
@@ -35,69 +37,54 @@ class _LoginState extends State<Login> {
           padding: const EdgeInsets.all(20.0),
 
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               height(30),
-              ListTile(
-                leading: Center(child: Image.asset(AppImages.uvol, height: 30)),
-              ),
-
+              // Container(decoration: BoxDecoration(
+              //   boxShadow:
+              //   image: DecorationImage(image: AssetImage(AppImages.uvol),)
+              // ),),
+              Image.asset(AppImages.uvol, height: 20),
               height(15),
               Text("Login to access your account"),
-
               height(24),
 
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    buildTextField(
-                      hintText: "Masukkan username anda",
-                      controller: usernameController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Username wajib diisi";
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              height(12),
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    buildTextField(
-                      hintText: "Masukkan password Anda",
-                      controller: passwordController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Password wajib diisi";
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              Row(
-                children: [
-                  Text(
-                    "Password",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ],
+                  child: Column(
+                    children: [
+                      buildTextField(
+                        hintText: "Masukkan username anda",
+                        controller: usernameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Username wajib diisi";
+                          }
+                          return null;
+                        },
+                      ),
+
+                      height(20),
+
+                      buildTextField(
+                        hintText: "Masukkan password Anda",
+                        controller: passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Password wajib diisi";
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
               height(30),
@@ -117,7 +104,7 @@ class _LoginState extends State<Login> {
                     if (data != null) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(builder: (context) => BottomNav()),
                       );
                     } else {
                       Fluttertoast.showToast(msg: "Email atau password salah");
@@ -142,6 +129,10 @@ class _LoginState extends State<Login> {
                     );
                   }
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50),
+                child: Image.asset(AppImages.uvolpng),
               ),
             ],
           ),

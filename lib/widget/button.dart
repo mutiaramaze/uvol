@@ -4,6 +4,7 @@ class Button extends StatelessWidget {
   const Button({super.key, this.onPressed, required this.text});
   final void Function()? onPressed;
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(

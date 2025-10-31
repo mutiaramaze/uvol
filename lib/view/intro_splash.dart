@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/login.dart';
+
+import 'package:uvol/view/login.dart';
 import 'package:uvol/view/register.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/preferance_handler.dart';
