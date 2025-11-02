@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:uvol/events.dart';
 import 'package:uvol/widget/app_images.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Homepage extends StatefulWidget {
+  Homepage({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE9EFF8),
+      backgroundColor: Color(0xFFE9EFF8),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: const Color(0xFF4962BF),
+                color: Color(0xFF4962BF),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Row(
@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           "Welcome back,",
                           style: TextStyle(
@@ -44,24 +44,41 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  const Icon(Icons.notifications, color: Colors.white),
+                  Icon(Icons.notifications, color: Colors.white),
                 ],
               ),
             ),
             height(10),
 
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(10),
               child: SearchBar(leading: Icon(Icons.search)),
+            ),
+            height(20),
+            Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.yellow[200],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("UVOL", style: TextStyle(color: Colors.black)),
+                  Text("Be part of"),
+                  Text("Something bigger!"),
+                ],
+              ),
             ),
 
             height(20),
 
             GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 15,
                 mainAxisSpacing: 20,
@@ -71,13 +88,13 @@ class _HomeState extends State<Home> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 231, 231, 231),
+                    color: Color.fromARGB(255, 231, 231, 231),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
                         blurRadius: 5,
-                        offset: const Offset(2, 4),
+                        offset: Offset(2, 4),
                       ),
                     ],
                   ),
@@ -85,7 +102,7 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ClipRRect(
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           topRight: Radius.circular(10),
                         ),

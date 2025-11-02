@@ -34,22 +34,18 @@ class _ForumState extends State<Forum> {
             ),
             Padding(
               padding: const EdgeInsets.all(15),
-              child: SearchBar(leading: Icon(Icons.search)),
+              child: SearchBar(leading: Icon(Icons.search), hintText: "Search"),
             ),
 
-            GridView.builder(
+            ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 20,
-                childAspectRatio: 0.9,
-              ),
+
               itemCount: 20,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
+                  margin: EdgeInsets.only(bottom: 15),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 216, 216, 216),
                     borderRadius: BorderRadius.circular(10),
@@ -62,7 +58,7 @@ class _ForumState extends State<Forum> {
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -71,6 +67,51 @@ class _ForumState extends State<Forum> {
                         ),
                       ),
                       height(5),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            CircleAvatar(radius: 30, child: Text("MG")),
+                            width(15),
+
+                            Column(
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Maria Gracia",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text("40 minutes ago"),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      height(20),
+                      Column(
+                        children: [
+                          Text(
+                            "Tips untuk first timer volunteers",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Halo semuanya! Saya mau berbagi pengalaman pertama kali jadi volunteer. Yang penting adalah datang dengan......",
+                          ),
+
+                          Divider(color: Colors.grey, thickness: 0.5),
+
+                          Row(
+                            children: [
+                              Icon(Icons.leak_remove_rounded),
+                              Text("456"),
+                              width(5),
+                              Icon(Icons.comment),
+                              Text("20"),
+                            ],
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 );
