@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/events.dart';
 import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/widget/home_widget.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({super.key});
@@ -65,12 +66,23 @@ class _HomepageState extends State<Homepage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("UVOL", style: TextStyle(color: Colors.black)),
-                  Text("Be part of"),
-                  Text("Something bigger!"),
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text("UVOL", style: TextStyle(color: Colors.black)),
+                          Text("Be part of"),
+                          Text("Something bigger!"),
+                        ],
+                      ),
+                      width(8),
+                      Image.asset(AppImages.v3, height: 30),
+                    ],
+                  ),
                 ],
               ),
             ),
+            height(10),
 
             height(20),
 
@@ -79,91 +91,18 @@ class _HomepageState extends State<Homepage> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 crossAxisSpacing: 15,
                 mainAxisSpacing: 20,
                 childAspectRatio: 0.9,
               ),
               itemCount: 20,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 231, 231, 231),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        blurRadius: 5,
-                        offset: Offset(2, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        child: Image.asset(
-                          AppImages.v1,
-                          width: double.infinity,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-
-                      height(5),
-                      Text(
-                        "Perbaikan Manado 2022",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.date_range,
-                            size: 15,
-                            color: Color(0xFF00509D),
-                          ),
-                          width(5),
-                          Text(
-                            "27/07/2022 - 05/08/2022",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF00509D),
-                            ),
-                          ),
-                        ],
-                      ),
-                      height(5),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.pin_drop,
-                                size: 15,
-                                color: Color(0xFF00509D),
-                              ),
-                              width(5),
-                              Text(
-                                "Manado Indonesia",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF00509D),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                return HomeWidget(
+                  volImage: AppImages.v1,
+                  titleText: 'Perbaikan Manado',
+                  date: '20-08-2025',
+                  location: 'Manado, Indonesia',
                 );
               },
             ),

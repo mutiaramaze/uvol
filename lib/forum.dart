@@ -103,7 +103,7 @@ class _ForumState extends State<Forum> {
 
                           Row(
                             children: [
-                              Icon(Icons.leak_remove_rounded),
+                              Icon(Icons.favorite),
                               Text("456"),
                               width(5),
                               Icon(Icons.comment),

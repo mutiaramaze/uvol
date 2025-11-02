@@ -6,4 +6,5 @@ class AppImages {
   static const v1 = "$assetImages/v1.png";
   static const uvolpng = "$assetImages/uvol.png";
   static const v2 = "$assetImages/v2.jpg";
+  static const v3 = "$assetImages/v3.jpg";
 }

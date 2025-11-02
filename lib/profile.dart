@@ -99,11 +99,32 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
+
+            Column(
+              children: [
+                Text(
+                  "Tentang Saya",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  " Seorang relawan yang bersemangat di bidang lingkungan dan pendidikan anak. Mahir dalam desain grafis dan penulisan konten. Siap membantu di area Jakarta dan sekitarnya.",
+                ),
+                height(10),
+                Text("Keahlian"),
+              ],
+            ),
+
             height(10),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text("Participated", style: TextStyle(color: Colors.black)),
+                Text(
+                  "Participated",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
             Container(
@@ -134,13 +155,6 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-            ),
-
-            ElevatedButton(
-              onPressed: () {
-                print("Tekan sekali");
-              },
-              child: Text("Logout"),
             ),
           ],
         ),
