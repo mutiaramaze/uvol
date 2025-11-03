@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:uvol/widget/upcoming_widget.dart';
+import 'package:uvol/widget/container_widget.dart';
 
 class Events extends StatefulWidget {
   const Events({super.key});
@@ -43,11 +43,7 @@ class _EventsState extends State<Events> {
                   child: CustomSlidingSegmentedControl<int>(
                     initialValue: _selectedValue,
                     isStretch: true,
-                    children: const {
-                      1: Text("Upcoming"),
-                      2: Text("Ongoing"),
-                      // 3: Text("Ongoing"),
-                    },
+                    children: const {1: Text("Upcoming"), 2: Text("In Review")},
                     decoration: BoxDecoration(
                       color: Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(10),
@@ -69,14 +65,20 @@ class _EventsState extends State<Events> {
                 const SizedBox(height: 10),
 
                 _selectedValue == 1
-                    ? UpcomingWidget(
+                    ? EventsWidget(
                         maintitle: "Permainan",
                         leftmonth: "March",
                         leftdate: "12",
                         time: "12 PM - 3 PM",
                         loc: "Jakarta Pusat",
                       )
-                    : const Text("Form Register di sini"),
+                    : EventsWidget(
+                        maintitle: 'maintitle',
+                        leftmonth: 'leftmonth',
+                        leftdate: 'leftdate',
+                        time: 'time',
+                        loc: 'loc',
+                      ),
               ],
             ),
           ],

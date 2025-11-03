@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/bottom_nav.dart';
 
-import 'package:uvol/events.dart';
-import 'package:uvol/forum.dart';
-import 'package:uvol/home.dart';
+import 'package:uvol/view/events.dart';
+import 'package:uvol/view/forum.dart';
+import 'package:uvol/view/home.dart';
 import 'package:uvol/view/intro_splash.dart';
 
-import 'package:uvol/profile.dart';
+import 'package:uvol/view/profile.dart';
 import 'package:uvol/view/login.dart';
 import 'package:uvol/view/register.dart';
+import 'package:uvol/widget/bottom_nav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Homepage(),
+      home: BottomNav(),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:uvol/events.dart';
-import 'package:uvol/forum.dart';
-import 'package:uvol/home.dart';
-import 'package:uvol/profile.dart';
+import 'package:uvol/view/events.dart';
+import 'package:uvol/view/forum.dart';
+import 'package:uvol/view/home.dart';
+import 'package:uvol/view/profile.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -15,7 +15,7 @@ class BottomNav extends StatefulWidget {
 class _Tugas8State extends State<BottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = [
-    // Homepage(),
+    Homepage(),
     Events(),
     Forum(),
     Profile(),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:uvol/bottom_nav.dart';
 import 'package:uvol/database/db_helper.dart';
-import 'package:uvol/home.dart';
+import 'package:uvol/preferences/preference_handler.dart';
+import 'package:uvol/view/home.dart';
 import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/button.dart';
-import 'package:uvol/widget/preferance_handler.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -15,9 +15,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  final TextEditingController nameController = TextEditingController();
   bool isVisibility = false;
   @override
   Widget build(BuildContext context) {
@@ -40,11 +40,8 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               height(30),
-              // Container(decoration: BoxDecoration(
-              //   boxShadow:
-              //   image: DecorationImage(image: AssetImage(AppImages.uvol),)
-              // ),),
-              Image.asset(AppImages.uvol, height: 20),
+
+              Image.asset(AppImages.uvol, height: 100),
               height(15),
               Text("Login to access your account"),
               height(24),
@@ -55,16 +52,22 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
                     children: [
                       buildTextField(
-                        hintText: "Masukkan username anda",
-                        controller: usernameController,
+                        hintText: "Masukkan email anda",
+                        controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Username wajib diisi";
+                            return "Email tidak boleh kosong";
+                          } else if (!value.contains('@')) {
+                            return "Email tidak valid";
+                          } else if (!RegExp(
+                            r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+                          ).hasMatch(value)) {
+                            return "Format Email tidak valid";
                           }
                           return null;
                         },
@@ -94,9 +97,10 @@ class _LoginState extends State<Login> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     print(passwordController.text);
-                    PreferanceHandler.saveLogin(true);
+                    PreferenceHandler.saveLogin(true);
                     final data = await DbHelper.loginUser(
-                      username: usernameController.text,
+                      email: emailController.text,
+                      name: nameController.text,
                       password: passwordController.text,
                     );
                     print("Hasil dari loginUser: $data");
@@ -130,9 +134,10 @@ class _LoginState extends State<Login> {
                   }
                 },
               ),
+              Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 50),
-                child: Image.asset(AppImages.uvolpng),
+                child: Image.asset(AppImages.uvolpng, height: 50),
               ),
             ],
           ),

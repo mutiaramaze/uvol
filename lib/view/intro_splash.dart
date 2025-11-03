@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/preferences/preference_handler.dart';
 
 import 'package:uvol/view/login.dart';
 import 'package:uvol/view/register.dart';
 import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/widget/preferance_handler.dart';
 
 class IntroSplash extends StatefulWidget {
   const IntroSplash({super.key});
@@ -21,7 +21,7 @@ class _IntroSplashState extends State<IntroSplash> {
 
   isLoginFunction() async {
     Future.delayed(Duration(seconds: 3)).then((value) async {
-      var isLogin = await PreferanceHandler.getlogin();
+      var isLogin = await PreferenceHandler.getLogin();
       print(isLogin);
       if (isLogin != null && isLogin == true) {
         Navigator.pushAndRemoveUntil(

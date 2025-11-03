@@ -1,0 +1,301 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:uvol/view/events.dart';
+import 'package:uvol/widget/app_images.dart';
+
+//forum
+class ForumWidget extends StatelessWidget {
+  const ForumWidget({
+    super.key,
+    required this.initial,
+    required this.name,
+    required this.time,
+    required this.title,
+    required this.upload,
+    required this.like,
+    required this.comment,
+  });
+  final String initial;
+  final String name;
+  final String time;
+  final String title;
+  final String upload;
+  final String like;
+  final String comment;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        height(5),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              CircleAvatar(radius: 30, child: Text(initial)),
+              width(10),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(time, style: TextStyle(fontSize: 12)),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.fromLTRB(25, 8, 25, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(upload),
+
+              Divider(color: Colors.grey, thickness: 0.5),
+
+              Row(
+                children: [
+                  Icon(
+                    Icons.favorite,
+                    size: 18,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  width(5),
+                  Text(like),
+                  width(20),
+                  Icon(
+                    Icons.comment,
+                    size: 18,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  width(5),
+                  Text(comment),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+//events (upcoming dan in review)
+class EventsWidget extends StatelessWidget {
+  const EventsWidget({
+    super.key,
+    required this.maintitle,
+    required this.leftmonth,
+    required this.leftdate,
+    required this.time,
+    required this.loc,
+  });
+  final String maintitle;
+  final String leftmonth;
+  final String leftdate;
+  final String time;
+  final String loc;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 132, 154, 165),
+          borderRadius: BorderRadius.circular(10),
+        ),
+
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(maintitle, style: TextStyle(color: Colors.white)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.time_to_leave, size: 16),
+                    SizedBox(width: 5),
+                    Text(time, style: TextStyle(color: Colors.white)),
+                  ],
+                ),
+                Text(leftmonth, style: TextStyle(color: Colors.white)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.pin, size: 16, color: Colors.white),
+                    SizedBox(width: 5),
+                    Text(loc, style: TextStyle(color: Colors.white)),
+                  ],
+                ),
+                Text(leftdate, style: TextStyle(color: Colors.grey[700])),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//profil (participated)
+class ParticipatedWIdget extends StatelessWidget {
+  const ParticipatedWIdget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+        ),
+        child: ListTile(
+          leading: Image.asset(AppImages.v3),
+          title: Text(
+            "Beach Cleanup",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Column(
+            children: [
+              Row(children: [Icon(Icons.date_range), Text("Sat, 12th April")]),
+              Row(
+                children: [
+                  Icon(Icons.time_to_leave),
+                  Text("9.30 AM - 11.00 AM"),
+                ],
+              ),
+              Row(children: [Icon(Icons.pin), Text("Pantai Anyer, Banten")]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//home
+class HomeWidget extends StatelessWidget {
+  const HomeWidget({
+    super.key,
+    required this.volImage,
+    required this.titleText,
+    required this.date,
+    required this.location,
+  });
+  final String volImage;
+  final String titleText;
+  final String date;
+  final String location;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 231, 231, 231),
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                blurRadius: 5,
+                offset: Offset(2, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+                child: Image.asset(
+                  volImage,
+                  width: double.infinity,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              height(5),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      titleText,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    height(5),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+
+                      children: [
+                        Icon(
+                          Icons.date_range,
+                          size: 15,
+                          color: Color(0xFF00509D),
+                        ),
+                        width(5),
+                        Text(
+                          date,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF00509D),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.pin_drop,
+                          size: 15,
+                          color: Color(0xFF00509D),
+                        ),
+                        width(5),
+                        Text(
+                          location,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF00509D),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

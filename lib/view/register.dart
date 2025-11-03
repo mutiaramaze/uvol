@@ -3,9 +3,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
 
 import 'package:uvol/model/user_model.dart';
+import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/login.dart';
 import 'package:uvol/widget/button.dart';
-import 'package:uvol/widget/preferance_handler.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -15,10 +15,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
   bool isVisibility = false;
   @override
   Widget build(BuildContext context) {
@@ -37,8 +37,8 @@ class _RegisterState extends State<Register> {
           padding: const EdgeInsets.all(15.0),
           child: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 10),
                 Text(
                   "Hello volunteers!",
                   style: TextStyle(
@@ -83,26 +83,6 @@ class _RegisterState extends State<Register> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Nama tidak boleh kosong";
-                            }
-                            return null;
-                          },
-                        ),
-                        height(20),
-                        Row(
-                          children: [
-                            Text(
-                              "Username",
-                              style: TextStyle(color: Color(0xFF4962BF)),
-                            ),
-                          ],
-                        ),
-                        buildTitle("Username"),
-                        buildTextField(
-                          hintText: "Buat username kamu",
-                          controller: usernameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Username tidak boleh kosong";
                             }
                             return null;
                           },
@@ -172,12 +152,11 @@ class _RegisterState extends State<Register> {
                       final UserModel data = UserModel(
                         name: nameController.text,
                         email: emailController.text,
-                        username: usernameController.text,
                         password: passwordController.text,
                       );
                       DbHelper.registerUser(data);
                       Fluttertoast.showToast(msg: "Register Berhasil");
-                      PreferanceHandler.saveLogin(true);
+                      PreferenceHandler.saveLogin(true);
                       Navigator.pop(context);
                       Navigator.push(
                         context,

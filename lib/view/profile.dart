@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/events.dart';
+import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/view/events.dart';
+import 'package:uvol/model/user_model.dart';
+import 'package:uvol/view/settings.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/button.dart';
+import 'package:uvol/widget/container_widget.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -11,7 +15,23 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  int selectedIndex = 0;
+  UserModel? dataUser;
+  List<UserModel> userModel;
+
   @override
+  void initState() {
+    super.initState();
+    loadUser();
+  }
+
+  Future<void> loadUser() async {
+    final data = await DbHelper.getUser();
+    setState(() {
+      user = userId;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE9EFF8),
@@ -23,6 +43,7 @@ class _ProfileState extends State<Profile> {
               decoration: BoxDecoration(
                 color: Color(0xFF4962BF),
                 borderRadius: BorderRadius.circular(15),
+                boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
               ),
               child: Padding(
                 padding: const EdgeInsets.all(25),
@@ -36,9 +57,14 @@ class _ProfileState extends State<Profile> {
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         IconButton(
-                          icon: Icon(Icons.settings),
+                          icon: Icon(Icons.settings, color: Colors.white),
                           onPressed: () {
-                            print("Ikon di klik");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Settings(),
+                              ),
+                            );
                           },
                         ),
                       ],
@@ -53,7 +79,7 @@ class _ProfileState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Rizni Mutiara Farannita",
+                              user?.name ?? "",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -61,7 +87,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             Text(
-                              "@mufarannita@gmail.com",
+                              user?.email ?? "",
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
@@ -73,10 +99,11 @@ class _ProfileState extends State<Profile> {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(30),
+                            padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: Color(0xFFD9D9D9),
                               borderRadius: BorderRadius.circular(8),
+                              boxShadow: [],
                             ),
                             child: Column(children: [Text("yep")]),
                           ),
@@ -85,7 +112,7 @@ class _ProfileState extends State<Profile> {
                         width(15),
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(30),
+                            padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: Color(0xFFD9D9D9),
                               borderRadius: BorderRadius.circular(8),
@@ -100,62 +127,38 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-            Column(
-              children: [
-                Text(
-                  "Tentang Saya",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  " Seorang relawan yang bersemangat di bidang lingkungan dan pendidikan anak. Mahir dalam desain grafis dan penulisan konten. Siap membantu di area Jakarta dan sekitarnya.",
-                ),
-                height(10),
-                Text("Keahlian"),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Tentang Saya",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Text(
+                    "Seorang relawan yang bersemangat di bidang lingkungan dan pendidikan anak. Mahir dalam desain grafis dan penulisan konten. Siap membantu di area Jakarta dan sekitarnya.",
+                  ),
+                ],
+              ),
             ),
-
+            Divider(),
             height(10),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 1, left: 12),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
                   "Participated",
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ListTile(
-                leading: Image.asset(AppImages.v2),
-                title: Text("Beach Cleanup"),
-                subtitle: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.date_range),
-                        Text("Sat, 12th April"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.time_to_leave),
-                        Text("9.30 AM - 11.00 AM"),
-                      ],
-                    ),
-                    Row(children: [Icon(Icons.pin)]),
-                    Text("Pantai Anyer, Banten"),
-                  ],
-                ),
               ),
             ),
+            ParticipatedWIdget(),
           ],
         ),
       ),

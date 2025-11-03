@@ -11,7 +11,7 @@ class DbHelper {
       join(dbPath, 'uvol.db'),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, name TEXT, password TEXT)",
+          "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, email TEXT, name TEXT, password TEXT)",
         );
       },
 
@@ -38,15 +38,16 @@ class DbHelper {
   }
 
   static Future<UserModel?> loginUser({
-    required String username,
+    required String email,
     required String password,
+    required String name,
   }) async {
     final dbs = await db();
     //query adalah fungsi untuk menampilkan data (READ)
     final List<Map<String, dynamic>> results = await dbs.query(
       tableUser,
-      where: 'username = ? AND password = ?',
-      whereArgs: [username, password],
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
     );
     if (results.isNotEmpty) {
       return UserModel.fromMap(results.first);
@@ -67,11 +68,18 @@ class DbHelper {
   }
 
   //GET SISWA
-  static Future<List<UserModel>> getAllUser() async {
-    final dbs = await db();
-    final List<Map<String, dynamic>> results = await dbs.query(tableUser);
-    // print(results.map((e) => userModel.fromMap(e)).toList());
-    return results.map((e) => UserModel.fromMap(e)).toList();
+  static Future<List<UserModel>> getUser(int userId) async {
+    final dbInstance = await db();
+    final List<Map<String, dynamic>> results = await dbInstance.query(
+      tableUser,
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+    print(results);
+    if (results.isNotEmpty) {
+      return UserModel.fromMap(results.first);
+    }
+    return null;
   }
 
   //UPDATE SISWA
