@@ -7,31 +7,16 @@ import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/button.dart';
 import 'package:uvol/widget/container_widget.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfilePage extends StatefulWidget {
+  final UserModel user;
+
+  ProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
-  int selectedIndex = 0;
-  UserModel? dataUser;
-  List<UserModel> userModel;
-
-  @override
-  void initState() {
-    super.initState();
-    loadUser();
-  }
-
-  Future<void> loadUser() async {
-    final data = await DbHelper.getUser();
-    setState(() {
-      user = userId;
-    });
-  }
-
+class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE9EFF8),
@@ -79,7 +64,7 @@ class _ProfileState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              user?.name ?? "",
+                              widget.user.name ?? "",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -87,7 +72,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             Text(
-                              user?.email ?? "",
+                              widget.user.email ?? "",
                               style: TextStyle(color: Colors.white),
                             ),
                           ],

@@ -98,9 +98,8 @@ class _LoginState extends State<Login> {
                   if (_formKey.currentState!.validate()) {
                     print(passwordController.text);
                     PreferenceHandler.saveLogin(true);
-                    final data = await DbHelper.loginUser(
+                    final data = await DBHelper.loginUser(
                       email: emailController.text,
-                      name: nameController.text,
                       password: passwordController.text,
                     );
                     print("Hasil dari loginUser: $data");

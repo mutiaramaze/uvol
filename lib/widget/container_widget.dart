@@ -213,7 +213,7 @@ class HomeWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
+                color: Colors.white,
                 blurRadius: 5,
                 offset: Offset(2, 4),
               ),

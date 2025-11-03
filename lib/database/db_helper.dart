@@ -2,30 +2,22 @@ import 'package:sqflite/sqflite.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:path/path.dart';
 
-class DbHelper {
+class DBHelper {
   static const tableUser = 'users';
-
   static Future<Database> db() async {
     final dbPath = await getDatabasesPath();
     return openDatabase(
-      join(dbPath, 'uvol.db'),
+      join(dbPath, 'user_database.db'),
       onCreate: (db, version) async {
-        await db.execute(
-          "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, email TEXT, name TEXT, password TEXT)",
+        return db.execute(
+          "CREATE TABLE $tableUser (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phonenumber TEXT, email TEXT, password TEXT)",
         );
       },
-
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (newVersion == 2) {
-          await db.execute(
-            "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, class TEXT, age int)",
-          );
-        }
-      },
-      version: 2,
+      version: 1,
     );
   }
 
+  //(Sign Up)
   static Future<void> registerUser(UserModel user) async {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
@@ -37,10 +29,10 @@ class DbHelper {
     print(user.toMap());
   }
 
+  //Read User (Sign In)
   static Future<UserModel?> loginUser({
     required String email,
     required String password,
-    required String name,
   }) async {
     final dbs = await db();
     //query adalah fungsi untuk menampilkan data (READ)
@@ -55,35 +47,43 @@ class DbHelper {
     return null;
   }
 
-  //MENAMBAHKAN SISWA
-  static Future<void> createuser(UserModel user) async {
+  // //Create User
+  // static Future<void> createUser(UserModel user) async {
+  //   final dbs = await db();
+  //   //Insert adalah fungsi untuk menambahkan data (CREATE)
+  //   await dbs.insert(
+  //     tableUser,
+  //     user.toMap(),
+  //     conflictAlgorithm: ConflictAlgorithm.replace,
+  //   );
+  //   print(user.toMap());
+  // }
+
+  //GET USER
+  static Future<List<UserModel>> getAllUser() async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
-    await dbs.insert(
-      tableUser,
-      user.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    print(user.toMap());
+    final List<Map<String, dynamic>> results = await dbs.query(tableUser);
+    print(results.map((e) => UserModel.fromMap(e)).toList());
+    return results.map((e) => UserModel.fromMap(e)).toList();
   }
 
-  //GET SISWA
-  static Future<List<UserModel>> getUser(int userId) async {
-    final dbInstance = await db();
-    final List<Map<String, dynamic>> results = await dbInstance.query(
+  //Get UserID (for Only Login User)
+  static Future<UserModel?> getUserById(int id) async {
+    final dbs = await db();
+    final List<Map<String, dynamic>> results = await dbs.query(
       tableUser,
       where: 'id = ?',
-      whereArgs: [userId],
+      whereArgs: [id],
     );
-    print(results);
+
     if (results.isNotEmpty) {
       return UserModel.fromMap(results.first);
     }
     return null;
   }
 
-  //UPDATE SISWA
-  static Future<void> updateModel(UserModel user) async {
+  //UPDATE USER
+  static Future<void> updateUser(UserModel user) async {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.update(
@@ -96,8 +96,8 @@ class DbHelper {
     print(user.toMap());
   }
 
-  //DELETE SISWA
-  static Future<void> deleteModel(int id) async {
+  //DELETE USER
+  static Future<void> deleteUser(int id) async {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tableUser, where: "id = ?", whereArgs: [id]);

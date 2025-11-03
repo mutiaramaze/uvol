@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class UserModel {
-  final int? id;
-  final String? name;
-  final String? email;
-  final String? password;
+  int? id;
+  String? name;
+  String? email;
+  String? password;
   UserModel({
     this.id,
     required this.email,
