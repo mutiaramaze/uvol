@@ -59,7 +59,7 @@ class _ForumState extends State<Forum> {
                 return Container(
                   margin: EdgeInsets.only(bottom: 15),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 216, 216, 216),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -73,7 +73,6 @@ class _ForumState extends State<Forum> {
                     initial: 'MG',
                     name: 'Maria Gracia',
                     time: '40 minutes ago',
-                    title: 'Tips untuk first timer volunteering',
                     upload:
                         'Halo semuanya! Saya mau berbagi pengalaman pertama kali jadi volunteer. Yang penting adalah datang dengan......',
                     like: '345',

@@ -43,7 +43,10 @@ class _EventsState extends State<Events> {
                   child: CustomSlidingSegmentedControl<int>(
                     initialValue: _selectedValue,
                     isStretch: true,
-                    children: const {1: Text("Upcoming"), 2: Text("In Review")},
+                    children: const {
+                      1: Text("In Review"),
+                      2: Text("Your activity"),
+                    },
                     decoration: BoxDecoration(
                       color: Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(10),

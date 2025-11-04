@@ -9,7 +9,6 @@ import 'package:uvol/widget/container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   final UserModel user;
-
   ProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -63,13 +62,27 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              widget.user.name ?? "",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  "n",
+                                  // widget.user.name ?? "",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                width(8),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ),
+                              ],
                             ),
                             Text(
                               widget.user.email ?? "",
@@ -143,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            ParticipatedWIdget(),
+            ParticipatedWidget(),
           ],
         ),
       ),

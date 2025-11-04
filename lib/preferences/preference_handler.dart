@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceHandler {
   static const String isLogin = "isLogin";
+  static const String isId = "isId";
 
   //Save data login pada saat login
   static saveLogin(bool value) async {
@@ -12,13 +13,13 @@ class PreferenceHandler {
   //Save data user ID saat login
   static Future<void> saveUserId(int id) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt("userId", id);
+    await prefs.setInt("isId", id);
   }
 
   //Ambil data user ID saat login
   static Future<int?> getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("userId");
+    return prefs.getInt("isId");
   }
 
   //Ambil data login pada saat mau login / ke dashboard

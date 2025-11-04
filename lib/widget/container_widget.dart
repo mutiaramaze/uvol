@@ -10,7 +10,6 @@ class ForumWidget extends StatelessWidget {
     required this.initial,
     required this.name,
     required this.time,
-    required this.title,
     required this.upload,
     required this.like,
     required this.comment,
@@ -18,7 +17,6 @@ class ForumWidget extends StatelessWidget {
   final String initial;
   final String name;
   final String time;
-  final String title;
   final String upload;
   final String like;
   final String comment;
@@ -36,7 +34,6 @@ class ForumWidget extends StatelessWidget {
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: [
                   Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
                   Text(time, style: TextStyle(fontSize: 12)),
@@ -51,7 +48,6 @@ class ForumWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
               Text(upload),
 
               Divider(color: Colors.grey, thickness: 0.5),
@@ -150,17 +146,17 @@ class EventsWidget extends StatelessWidget {
 }
 
 //profil (participated)
-class ParticipatedWIdget extends StatelessWidget {
-  const ParticipatedWIdget({super.key});
+class ParticipatedWidget extends StatelessWidget {
+  const ParticipatedWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12),
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Colors.grey,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
         ),
@@ -209,7 +205,7 @@ class HomeWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 231, 231, 231),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
@@ -253,18 +249,17 @@ class HomeWidget extends StatelessWidget {
                     height(5),
                     Row(
                       mainAxisSize: MainAxisSize.min,
-
                       children: [
                         Icon(
                           Icons.date_range,
-                          size: 15,
+                          size: 16,
                           color: Color(0xFF00509D),
                         ),
                         width(5),
                         Text(
                           date,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Color(0xFF00509D),
                           ),
                         ),
@@ -276,14 +271,14 @@ class HomeWidget extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.pin_drop,
-                          size: 15,
+                          size: 16,
                           color: Color(0xFF00509D),
                         ),
                         width(5),
                         Text(
                           location,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Color(0xFF00509D),
                           ),
                         ),

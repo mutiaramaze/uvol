@@ -4,25 +4,15 @@ class UserModel {
   int? id;
   String? name;
   String? email;
-  String? password;
-  UserModel({
-    this.id,
-    required this.email,
-    required this.password,
-    required this.name,
-  });
+
+  UserModel({this.id, required this.email, required this.name});
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'email': email, 'password': password};
+    return {'id': id, 'name': name, 'email': email};
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      id: map['id'],
-      name: map['name'],
-      email: map['email'],
-      password: map['password'],
-    );
+    return UserModel(id: map['id'], name: map['name'], email: map['email']);
   }
 
   String toJson() => json.encode(toMap());

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/view/events.dart';
+import 'package:uvol/view/forum.dart';
+import 'package:flutter/material.dart';
 
 class MakePost extends StatefulWidget {
   const MakePost({super.key});
@@ -8,27 +11,49 @@ class MakePost extends StatefulWidget {
 }
 
 class _MakePostState extends State<MakePost> {
+  final TextEditingController _controller = TextEditingController();
+
+  void _submitPost() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      Navigator.pop(context, text); // kirim balik ke Forum
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.close),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
-            child: ElevatedButton(onPressed: () {}, child: Text('Post')),
-          ),
-        ],
-      ),
       body: Column(
         children: [
-          CircleAvatar(),
-          Expanded(
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Cancel", style: TextStyle(fontSize: 18)),
+                ),
+                const Text("Write a post", style: TextStyle(fontSize: 18)),
+                TextButton(
+                  onPressed: _submitPost,
+                  child: const Text("Post", style: TextStyle(fontSize: 18)),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
             child: TextField(
-              decoration: InputDecoration(hintText: "Let's Discuss"),
+              controller: _controller,
+              maxLines: null,
+              decoration: InputDecoration(
+                hintText: "What's on your mind?",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
           ),
         ],

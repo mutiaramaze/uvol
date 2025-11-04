@@ -15,10 +15,10 @@ class BottomNav extends StatefulWidget {
 class _Tugas8State extends State<BottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = [
-    // Homepage(),
+    Homepage(),
     Events(),
     Forum(),
-    // Profile(),
+    // ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/dummy/home_events.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/view/tap_events.dart';
 import 'package:uvol/widget/app_images.dart';
@@ -66,7 +67,7 @@ class _HomepageState extends State<Homepage> {
               child: Container(
                 padding: EdgeInsets.all(25),
                 decoration: BoxDecoration(
-                  color: Colors.yellow[200],
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
                 ),
@@ -90,7 +91,7 @@ class _HomepageState extends State<Homepage> {
                           ],
                         ),
                         Spacer(),
-                        Image.asset(AppImages.v3, height: 60),
+                        Image.asset(AppImages.v3, height: 80),
                       ],
                     ),
                   ],
@@ -103,9 +104,10 @@ class _HomepageState extends State<Homepage> {
               padding: EdgeInsets.symmetric(horizontal: 20),
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-
-              itemCount: 20,
+              itemCount: volunteerEvents.length,
               itemBuilder: (BuildContext context, int index) {
+                final event = volunteerEvents[index];
+
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -114,10 +116,10 @@ class _HomepageState extends State<Homepage> {
                     );
                   },
                   child: HomeWidget(
-                    volImage: AppImages.v1,
-                    titleText: 'Perbaikan Manado',
-                    date: '20-08-2025',
-                    location: 'Manado, Indonesia',
+                    volImage: event['image'] ?? '',
+                    titleText: event['titleText'] ?? '',
+                    date: event['date'] ?? '',
+                    location: event['location'] ?? '',
                   ),
                 );
               },

@@ -102,7 +102,6 @@ class _LoginState extends State<Login> {
                       email: emailController.text,
                       password: passwordController.text,
                     );
-                    print("Hasil dari loginUser: $data");
 
                     if (data != null) {
                       Navigator.push(
