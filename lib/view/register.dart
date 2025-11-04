@@ -153,7 +153,7 @@ class _RegisterState extends State<Register> {
                         name: nameController.text,
                         email: emailController.text,
                       );
-                      DBHelper.registerUser(data);
+                      DbHelper.registerUser(data);
                       Fluttertoast.showToast(msg: "Register Berhasil");
                       PreferenceHandler.saveLogin(true);
                       Navigator.pop(context);

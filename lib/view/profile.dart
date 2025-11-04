@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/settings.dart';
@@ -8,14 +9,26 @@ import 'package:uvol/widget/button.dart';
 import 'package:uvol/widget/container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  final UserModel user;
-  ProfilePage({Key? key, required this.user}) : super(key: key);
+  ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  UserModel? user;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final data = await PreferenceHandler.getUser();
+    setState(() => user = data);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE9EFF8),
@@ -65,8 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             Row(
                               children: [
                                 Text(
-                                  "n",
-                                  // widget.user.name ?? "",
+                                  'm',
+                                  // user!,name,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -85,7 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             ),
                             Text(
-                              widget.user.email ?? "",
+                              'n',
+                              // widget.user.email ?? "",
                               style: TextStyle(color: Colors.white),
                             ),
                           ],

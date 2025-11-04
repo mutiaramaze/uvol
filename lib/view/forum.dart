@@ -13,17 +13,25 @@ class Forum extends StatefulWidget {
 }
 
 class _ForumState extends State<Forum> {
+  List<String> posts = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE9EFF8),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => MakePost()),
           );
+
+          if (result != null && result is String) {
+            setState(() {
+              posts.insert(0, result);
+            });
+          }
         },
       ),
       body: SingleChildScrollView(
@@ -54,7 +62,7 @@ class _ForumState extends State<Forum> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
 
-              itemCount: 20,
+              itemCount: posts.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   margin: EdgeInsets.only(bottom: 15),
@@ -69,14 +77,31 @@ class _ForumState extends State<Forum> {
                       ),
                     ],
                   ),
-                  child: ForumWidget(
-                    initial: 'MG',
-                    name: 'Maria Gracia',
-                    time: '40 minutes ago',
-                    upload:
-                        'Halo semuanya! Saya mau berbagi pengalaman pertama kali jadi volunteer. Yang penting adalah datang dengan......',
-                    like: '345',
-                    comment: '87',
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: ForumWidget(
+                          initial: 'MG',
+                          name: 'Maria Gracia',
+                          time: '40 minutes ago',
+                          upload: posts[index],
+                          like: '345',
+                          comment: '87',
+                        ),
+                      ),
+
+                      Positioned(
+                        top: 5,
+                        right: 5,
+                        child: IconButton(
+                          onPressed: () {
+                            _showPostOptions(context, index);
+                          },
+                          icon: Icon(Icons.more_vert, color: Colors.grey),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -84,6 +109,89 @@ class _ForumState extends State<Forum> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showPostOptions(BuildContext context, int index) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit, color: Colors.blue),
+              title: const Text("Edit"),
+              onTap: () {
+                Navigator.pop(context);
+                _editPost(context, index);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete, color: Colors.red),
+              title: const Text("Delete"),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  posts.removeAt(index);
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editPost(BuildContext context, int index) {
+    final TextEditingController controller = TextEditingController(
+      text: posts[index],
+    );
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+            top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Edit Post",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: controller,
+                maxLines: 4,
+                decoration: const InputDecoration(border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    posts[index] = controller.text;
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text("Simpan Perubahan"),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -13,13 +13,6 @@ class MakePost extends StatefulWidget {
 class _MakePostState extends State<MakePost> {
   final TextEditingController _controller = TextEditingController();
 
-  void _submitPost() {
-    final text = _controller.text.trim();
-    if (text.isNotEmpty) {
-      Navigator.pop(context, text); // kirim balik ke Forum
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +25,18 @@ class _MakePostState extends State<MakePost> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: const Text("Cancel", style: TextStyle(fontSize: 18)),
                 ),
                 const Text("Write a post", style: TextStyle(fontSize: 18)),
                 TextButton(
-                  onPressed: _submitPost,
+                  onPressed: () {
+                    if (_controller.text.isNotEmpty) {
+                      Navigator.pop(context, _controller.text);
+                    }
+                  },
                   child: const Text("Post", style: TextStyle(fontSize: 18)),
                 ),
               ],
