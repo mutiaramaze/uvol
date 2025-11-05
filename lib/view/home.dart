@@ -130,6 +130,46 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
 
+Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: categories.map((category) {
+                final bool isSelected = selectedCategory == category;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ChoiceChip(
+                    label: Text(
+                      category,
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                    selected: isSelected,
+                    selectedColor: const Color(0xFF4962BF),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: isSelected
+                            ? const Color(0xFF4962BF)
+                            : Colors.grey.shade400,
+                      ),
+                    ),
+                    onSelected: (bool selected) {
+                      setState(() {
+                        selectedCategory =
+                            selected ? category : null;
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+
             ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 10),
               padding: EdgeInsets.symmetric(horizontal: 20),
