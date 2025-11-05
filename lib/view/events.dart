@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uvol/dummy/home_events.dart';
 import 'package:uvol/widget/container_widget.dart';
 
 class Events extends StatefulWidget {
@@ -10,53 +14,51 @@ class Events extends StatefulWidget {
 }
 
 class _EventsState extends State<Events> {
-  int _selectedValue = 1;
+  List<Map<String, dynamic>> volunteerEvents = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadRegisteredEvents();
+  }
+
+  Future<void> loadRegisteredEvents() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? eventList = prefs.getStringList('registered_events');
+
+    if (eventList != null) {
+      setState(() {
+        volunteerEvents = eventList
+            .map((e) => Map<String, dynamic>.from(jsonDecode(e)))
+            .toList();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE9EFF8),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(30),
-              decoration: BoxDecoration(
-                color: Color(0xFF4962BF),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "My Events",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(padding: const EdgeInsets.all(20)),
-
-                const SizedBox(height: 10),
-
-                EventsWidget(
-                  maintitle: "Permainan",
-                  leftmonth: "March",
-                  leftdate: "12",
-                  time: "12 PM - 3 PM",
-                  loc: "Jakarta Pusat",
-                ),
-              ],
-            ),
-          ],
-        ),
+      backgroundColor: const Color(0xFFE9EFF8),
+      appBar: AppBar(
+        title: Text("My Events", style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color(0xFF4962BF),
       ),
+      body: volunteerEvents.isEmpty
+          ? const Center(child: Text("Belum ada event yang kamu daftar"))
+          : ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
+              padding: const EdgeInsets.all(20),
+              itemCount: volunteerEvents.length,
+              itemBuilder: (BuildContext context, int index) {
+                final event = volunteerEvents[index];
+                return HomeWidget(
+                  volImage: event['image'] ?? '',
+                  titleText: event['titleText'] ?? '',
+                  date: event['date'] ?? '',
+                  location: event['location'] ?? '',
+                );
+              },
+            ),
     );
   }
 }
-
-SizedBox height(double height) => SizedBox(height: height);
-SizedBox width(double width) => SizedBox(width: width);

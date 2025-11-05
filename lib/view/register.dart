@@ -152,6 +152,7 @@ class _RegisterState extends State<Register> {
                       final UserModel data = UserModel(
                         name: nameController.text,
                         email: emailController.text,
+                        password: passwordController.text,
                       );
                       DbHelper.registerUser(data);
                       Fluttertoast.showToast(msg: "Register Berhasil");

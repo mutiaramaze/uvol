@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/dummy/home_events.dart';
+import 'package:uvol/model/user_model.dart';
+import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/events.dart';
-import 'package:uvol/view/tap_events.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
 
@@ -13,6 +15,18 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  UserModel? user;
+
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final data = await DbHelper.getUser();
+    setState(() => user = data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,13 +35,14 @@ class _HomepageState extends State<Homepage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(30),
               decoration: BoxDecoration(
                 color: Color(0xFF4962BF),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
@@ -36,14 +51,14 @@ class _HomepageState extends State<Homepage> {
                         Text(
                           "Welcome back,",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontSize: 18,
                           ),
                         ),
                         Text(
-                          "R Mutiara 👋",
-                          style: TextStyle(color: Colors.black, fontSize: 14),
+                          "${user?.name ?? ""} 👋",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],
                     ),
@@ -61,7 +76,23 @@ class _HomepageState extends State<Homepage> {
               padding: const EdgeInsets.all(15),
               child: SearchBar(leading: Icon(Icons.search), hintText: "Search"),
             ),
-            height(20),
+
+            // Center(
+            //   child: Container(
+            //     padding: EdgeInsets.all(15),
+            //     decoration: BoxDecoration(
+            //       color: Colors.white.withOpacity(1),
+            //       borderRadius: BorderRadius.circular(8),
+            //       boxShadow: [],
+            //     ),
+            //     child: Column(
+            //       children: [
+            //         Text("Ayo tap-tap untuk menjadi relawan!"),
+            //         Icon(Icons.touch_app),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Container(

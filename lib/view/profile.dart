@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
+import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/settings.dart';
@@ -9,7 +12,7 @@ import 'package:uvol/widget/button.dart';
 import 'package:uvol/widget/container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -18,17 +21,60 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? user;
 
-  @override
   void initState() {
     super.initState();
     _loadUser();
   }
 
   Future<void> _loadUser() async {
-    final data = await PreferenceHandler.getUser();
+    final data = await DbHelper.getUser();
     setState(() => user = data);
   }
 
+  Future<void> _onEdit(UserModel? user) async {
+    if (user == null) return;
+    final editNameC = TextEditingController(text: user.name);
+    final res = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Edit"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 12,
+            children: [buildTextField(hintText: "Name", controller: editNameC)],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Batal"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: Text("Simpan"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (res == true) {
+      final updated = UserModel(
+        id: user.id,
+        name: editNameC.text,
+        email: user.email,
+      );
+      await DbHelper.updateUser(updated);
+      _loadUser();
+      Fluttertoast.showToast(msg: "Data berhasil di update");
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE9EFF8),
@@ -71,15 +117,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         const CircleAvatar(radius: 40),
                         width(15),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Row(
                           children: [
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'm',
-                                  // user!,name,
+                                  user?.name ?? "",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -87,20 +132,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 width(8),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
+                                Text(
+                                  user?.email ?? "",
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ],
                             ),
-                            Text(
-                              'n',
-                              // widget.user.email ?? "",
-                              style: TextStyle(color: Colors.white),
+                            IconButton(
+                              onPressed: () {
+                                _onEdit(user);
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 18,
+                              ),
                             ),
                           ],
                         ),
@@ -117,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: [],
                             ),
-                            child: Column(children: [Text("yep")]),
+                            child: Column(children: [Text("3 postingan")]),
                           ),
                         ),
 
@@ -176,4 +222,37 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+}
+
+TextFormField buildTextField({
+  String? hintText,
+  bool isPassword = false,
+  TextEditingController? controller,
+  String? Function(String?)? validator,
+}) {
+  return TextFormField(
+    validator: validator,
+    controller: controller,
+    decoration: InputDecoration(
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(32),
+        borderSide: BorderSide(
+          color: Colors.black.withOpacity(0.2),
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(32),
+        borderSide: BorderSide(color: Colors.black, width: 1.0),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(32),
+        borderSide: BorderSide(
+          color: Colors.black.withOpacity(0.2),
+          width: 1.0,
+        ),
+      ),
+    ),
+  );
 }

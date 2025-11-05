@@ -1,10 +1,17 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uvol/model/events.model.dart';
+import 'package:uvol/model/forum_model.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:path/path.dart';
+import 'package:uvol/preferences/preference_handler.dart';
 
 class DbHelper {
   static const tableUser = 'users';
   static const tableForum = 'forum';
+  static const tableEvents = 'events';
 
   static Future<Database> db() async {
     final dbPath = await getDatabasesPath();
@@ -15,14 +22,14 @@ class DbHelper {
           "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)",
         );
         await db.execute(
-          "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, initial TEXT, name TEXT, time TEXT, upload TEXT)",
+          "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, posts TEXT)",
         );
       },
 
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < newVersion) {
           await db.execute(
-            "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, initial TEXT, name TEXT, time TEXT, upload TEXT)",
+            "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, upload TEXT)",
           );
         }
       },
@@ -54,6 +61,7 @@ class DbHelper {
       whereArgs: [email, password],
     );
     if (results.isNotEmpty) {
+      PreferenceHandler.saveUserId(UserModel.fromMap(results.first).id!);
       return UserModel.fromMap(results.first);
     }
     return null;
@@ -65,6 +73,15 @@ class DbHelper {
     final List<Map<String, dynamic>> results = await dbs.query(tableUser);
     print(results.map((e) => UserModel.fromMap(e)).toList());
     return results.map((e) => UserModel.fromMap(e)).toList();
+  }
+
+  static Future<UserModel> getUser() async {
+    final dbs = await db();
+    final id = await PreferenceHandler.getUserId();
+    final result = await dbs.query(tableUser, where: "id = ?", whereArgs: [id]);
+    print(UserModel.fromMap(result.first));
+    print(UserModel.fromMap(result.first).name);
+    return UserModel.fromMap(result.first);
   }
 
   //UPDATE
@@ -88,6 +105,7 @@ class DbHelper {
     await dbs.delete(tableUser, where: "id = ?", whereArgs: [id]);
   }
 
+  //====Forum====
   static Future<void> insertPostingan(ForumModel postingan) async {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
@@ -106,17 +124,17 @@ class DbHelper {
     return results.map((e) => ForumModel.fromMap(e)).toList();
   }
 
-  static Future<List<ForumModel>> getPengeluaranByKategori(
-    String kategori,
-  ) async {
-    final dbs = await db();
-    final List<Map<String, dynamic>> results = await dbs.query(
-      tablePengeluaran,
-      where: 'kategoriPengeluaran = ?',
-      whereArgs: [kategori],
-    );
-    return results.map((e) => ForumModel.fromMap(e)).toList();
-  }
+  // static Future<List<ForumModel>> getPengeluaranByKategori(
+  //   String kategori,
+  // ) async {
+  //   final dbs = await db();
+  //   final List<Map<String, dynamic>> results = await dbs.query(
+  //     tableForum,
+  //     where: 'kategoriPengeluaran = ?',
+  //     whereArgs: [kategori],
+  //   );
+  //   return results.map((e) => ForumModel.fromMap(e)).toList();
+  // }
 
   static Future<void> updatePostingan(ForumModel postingan) async {
     final dbs = await db();
@@ -131,5 +149,39 @@ class DbHelper {
   static Future<void> deletePostingan(int id) async {
     final dbs = await db();
     await dbs.delete(tableForum, where: 'id = ?', whereArgs: [id]);
+  }
+
+  //====EVENTS====
+  static Future<void> insertEvents(EventsModel events) async {
+    final dbs = await db();
+    //Insert adalah fungsi untuk menambahkan data (CREATE)
+    await dbs.insert(
+      tableEvents,
+      events.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(events.toMap());
+  }
+
+  static Future<List<EventsModel>> getAllEvents() async {
+    final dbs = await db();
+    final List<Map<String, dynamic>> results = await dbs.query(tableEvents);
+    print(results.map((e) => EventsModel.fromMap(e)).toList());
+    return results.map((e) => EventsModel.fromMap(e)).toList();
+  }
+
+  static Future<void> updateEvents(EventsModel events) async {
+    final dbs = await db();
+    await dbs.update(
+      tableEvents,
+      events.toMap(),
+      where: 'id = ?',
+      whereArgs: [events.id],
+    );
+  }
+
+  static Future<void> deleteEvents(int id) async {
+    final dbs = await db();
+    await dbs.delete(tableEvents, where: 'id = ?', whereArgs: [id]);
   }
 }

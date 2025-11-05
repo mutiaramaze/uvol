@@ -5,7 +5,7 @@ import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/home.dart';
 import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/widget/bottom_nav.dart';
+import 'package:uvol/constant/bottom_nav.dart';
 import 'package:uvol/widget/button.dart';
 
 class Login extends StatefulWidget {

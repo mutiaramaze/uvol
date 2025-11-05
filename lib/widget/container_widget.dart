@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/widget/app_images.dart';
 
@@ -7,14 +8,14 @@ import 'package:uvol/widget/app_images.dart';
 class ForumWidget extends StatelessWidget {
   const ForumWidget({
     super.key,
-    required this.initial,
+
     required this.name,
     required this.time,
     required this.upload,
     required this.like,
     required this.comment,
   });
-  final String initial;
+
   final String name;
   final String time;
   final String upload;
@@ -29,9 +30,8 @@ class ForumWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Row(
             children: [
-              CircleAvatar(radius: 30, child: Text(initial)),
+              CircleAvatar(radius: 20),
               width(10),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

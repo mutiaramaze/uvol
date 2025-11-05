@@ -9,14 +9,22 @@ final List<Map<String, String>> volunteerEvents = [
   },
   {
     'image': AppImages.v2,
-    'title': 'Kegiatan bersama anak-anak Bali',
+    'titleText': 'Kegiatan bersama anak-anak Bali',
     'date': '25-08-2025',
     'location': 'Denpasar, Bali',
   },
   {
     'image': AppImages.v1,
-    'title': 'Penanaman mangrove bersama',
+    'titleText': 'Penanaman mangrove bersama',
     'date': '30-08-2025',
     'location': 'Jakarta Utara',
   },
 ];
+
+final eventData = {
+  "image": AppImages.v3,
+  "titleText": "Belajar bersama adik Banda Neira",
+  "date": "15 - 30 Januari 2026",
+  "location":
+      "Dusun Mangkubatu, Desa Rajawali, Kec. Banda Neira, Kab. Maluku Tengah, Maluku",
+};

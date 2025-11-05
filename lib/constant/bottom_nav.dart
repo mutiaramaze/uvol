@@ -18,7 +18,7 @@ class _Tugas8State extends State<BottomNav> {
     Homepage(),
     Events(),
     Forum(),
-    // ProfilePage(),
+    ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {

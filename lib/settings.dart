@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/events.dart';
 
 class Settings extends StatefulWidget {

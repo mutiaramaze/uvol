@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/widget/app_images.dart';
 
@@ -147,11 +148,12 @@ class _TapEventsState extends State<TapEvents> {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          "Kamu berhasil terdaftar! Silahkan tunggu konfirmasi.",
+                          "Kamu berhasil terdaftar! Selamat telah menjadi relawan",
                           style: TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Colors.blue[300],
@@ -186,3 +188,6 @@ class _TapEventsState extends State<TapEvents> {
     );
   }
 }
+
+SizedBox height(double height) => SizedBox(height: height);
+SizedBox width(double width) => SizedBox(width: width);
