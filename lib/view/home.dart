@@ -16,6 +16,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   UserModel? user;
+  String? selectedCategory;
 
   void initState() {
     super.initState();
