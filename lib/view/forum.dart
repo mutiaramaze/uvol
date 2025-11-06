@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/constant/time_ago.dart';
 import 'package:uvol/database/db_helper.dart';
-import 'package:uvol/dummy/forum.dart';
 import 'package:uvol/model/forum_model.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/events.dart';
@@ -135,7 +134,8 @@ class _ForumState extends State<Forum> {
     return Scaffold(
       backgroundColor: const Color(0xFFE9EFF8),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        backgroundColor: Color(0xFF4962BF),
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () async {
           final result = await Navigator.push(
             context,

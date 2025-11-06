@@ -1,17 +1,39 @@
-final List<Map<String, String>> activities = [
+import 'package:uvol/widget/app_images.dart';
+
+final List<Map<String, String>> volunteerEvents = [
   {
-    'title': 'Perbaikan Jalan Manado',
-    'description': 'Membantu perbaikan jalan di Manado.',
-    'image': 'assets/images/v1.png',
+    'image': AppImages.v3,
+    'titleText': 'Jelajah Banda Neira',
+    'date': '20-08-2025',
+    'location': 'Banda Neira, Maluku',
   },
   {
-    'title': 'Belajar Bersama Anak Bali',
-    'description': 'Kegiatan edukatif bersama anak-anak di Bali.',
-    'image': 'assets/images/v2.png',
+    'image': AppImages.v1,
+    'titleText': 'Kegiatan bersama anak-anak Bali',
+    'date': '25-08-2025',
+    'location': 'Denpasar, Bali',
   },
   {
-    'title': 'Penanaman Mangrove',
-    'description': 'Aksi lingkungan menanam pohon mangrove.',
-    'image': 'assets/images/v3.png',
+    'image': AppImages.mangrove,
+    'titleText': 'Penanaman mangrove bersama',
+    'date': '30-08-2025',
+    'location': 'Jakarta Utara',
   },
+];
+
+final eventData = {
+  "image": AppImages.v3,
+  "titleText": "Belajar bersama adik Banda Neira",
+  "date": "15 - 30 Januari 2026",
+  "location":
+      "Dusun Mangkubatu, Desa Rajawali, Kec. Banda Neira, Kab. Maluku Tengah, Maluku",
+};
+
+//chip
+final List<String> categories = [
+  "Lingkungan",
+  "Pendidikan",
+  "Sosial",
+  "Kesehatan",
+  "Budaya",
 ];

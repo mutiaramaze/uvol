@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Edit"),
+          title: Text("Edit nama"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             spacing: 12,
@@ -153,30 +153,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     height(20),
-                    Row(
+                    Column(
                       children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFD9D9D9),
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [],
-                            ),
-                            child: Column(children: [Text("3 postingan")]),
+                        Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        ),
-
-                        width(15),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFD9D9D9),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Column(children: [Text("20 Partisipasi")]),
-                          ),
+                          child: Column(children: [Text("20 Partisipasi")]),
                         ),
                       ],
                     ),
@@ -197,11 +182,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     "Seorang relawan yang bersemangat di bidang lingkungan dan pendidikan anak. Mahir dalam desain grafis dan penulisan konten. Siap membantu di area Jakarta dan sekitarnya.",
                   ),
+                  height(30),
+                  Text(
+                    "Skill saya",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Text("Fotografi, Editing, dan lain-lain"),
                 ],
               ),
             ),
             Divider(),
-            height(10),
+            height(8),
             Padding(
               padding: const EdgeInsets.only(bottom: 1, left: 12),
               child: Align(

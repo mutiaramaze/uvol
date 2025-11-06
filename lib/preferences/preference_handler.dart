@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uvol/dummy/home_events.dart';
+import 'package:uvol/dummy/detail_events.dart';
 
 class PreferenceHandler {
   static const String isLogin = "isLogin";
   static const String isId = "isId";
+  static const String storedEvents = "registered_events";
 
   //Save data login pada saat login
   static saveLogin(bool value) async {
@@ -35,14 +36,5 @@ class PreferenceHandler {
   static removeLogin() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(isLogin);
-
-    // ==EVENT==Ambil daftar event lama
-    List<String> eventList = prefs.getStringList('registered_events') ?? [];
-
-    // Tambahkan event baru
-    eventList.add(jsonEncode(eventData));
-
-    // Simpan lagi
-    await prefs.setStringList('registered_events', eventList);
   }
 }

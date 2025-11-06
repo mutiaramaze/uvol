@@ -3,9 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
+import 'package:uvol/view/about_me.dart';
 import 'package:uvol/view/home.dart';
 import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/constant/bottom_nav.dart';
+import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/button.dart';
 
 class Login extends StatefulWidget {
@@ -56,6 +57,14 @@ class _LoginState extends State<Login> {
                   ),
                   child: Column(
                     children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Email",
+                            style: TextStyle(color: Color(0xFF4962BF)),
+                          ),
+                        ],
+                      ),
                       buildTextField(
                         hintText: "Masukkan email anda",
                         controller: emailController,
@@ -74,7 +83,14 @@ class _LoginState extends State<Login> {
                       ),
 
                       height(20),
-
+                      Row(
+                        children: [
+                          Text(
+                            "Password",
+                            style: TextStyle(color: Color(0xFF4962BF)),
+                          ),
+                        ],
+                      ),
                       buildTextField(
                         hintText: "Masukkan password Anda",
                         controller: passwordController,
@@ -106,7 +122,7 @@ class _LoginState extends State<Login> {
                     if (data != null) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BottomNav()),
+                        MaterialPageRoute(builder: (context) => AboutMe()),
                       );
                     } else {
                       Fluttertoast.showToast(msg: "Email atau password salah");

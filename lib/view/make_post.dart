@@ -28,7 +28,10 @@ class _MakePostState extends State<MakePost> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text("Cancel", style: TextStyle(fontSize: 18)),
+                  child: const Text(
+                    "Cancel",
+                    style: TextStyle(fontSize: 18, color: Color(0xFF4962BF)),
+                  ),
                 ),
                 const Text("Write a post", style: TextStyle(fontSize: 18)),
                 TextButton(
@@ -37,7 +40,10 @@ class _MakePostState extends State<MakePost> {
                       Navigator.pop(context, _controller.text);
                     }
                   },
-                  child: const Text("Post", style: TextStyle(fontSize: 18)),
+                  child: const Text(
+                    "Post",
+                    style: TextStyle(fontSize: 18, color: Color(0xFF4962BF)),
+                  ),
                 ),
               ],
             ),

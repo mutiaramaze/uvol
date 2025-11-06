@@ -25,6 +25,7 @@ class _Tugas8State extends State<BottomNav> {
     return Scaffold(
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: _selectedIndex,
         selectedItemColor: Color(0xFF4962BF),
         unselectedItemColor: Color(0xFFB6B8C0),

@@ -14,38 +14,39 @@ class IntroSplash extends StatefulWidget {
 
 class _IntroSplashState extends State<IntroSplash> {
   @override
-  void iniState() {
+  void initState() {
     super.initState();
     isLoginFunction();
   }
 
   isLoginFunction() async {
-    Future.delayed(Duration(seconds: 3)).then((value) async {
+    Future.delayed(const Duration(seconds: 3)).then((value) async {
       var isLogin = await PreferenceHandler.getLogin();
       print(isLogin);
+
       if (isLogin != null && isLogin == true) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Register()),
-          (route) => true,
+          MaterialPageRoute(
+            builder: (context) => const Register(),
+          ), // ← mungkin ini Login?
+          (route) => false,
         );
       } else {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Login()),
-          (route) => true,
+          MaterialPageRoute(builder: (context) => const Login()),
+          (route) => false,
         );
       }
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Center(child: Image.asset(AppImages.uvolfull))],
-      ),
+      backgroundColor: const Color(0xFF94b7ee),
+      body: Center(child: Image.asset(AppImages.uvolfull)),
     );
   }
 }

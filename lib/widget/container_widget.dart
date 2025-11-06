@@ -168,14 +168,21 @@ class ParticipatedWidget extends StatelessWidget {
           ),
           subtitle: Column(
             children: [
-              Row(children: [Icon(Icons.date_range), Text("Sat, 12th April")]),
               Row(
                 children: [
-                  Icon(Icons.time_to_leave),
-                  Text("9.30 AM - 11.00 AM"),
+                  Icon(Icons.date_range, size: 16, color: Colors.black),
+                  width(5),
+                  Text("Sat, 12th April"),
                 ],
               ),
-              Row(children: [Icon(Icons.pin), Text("Pantai Anyer, Banten")]),
+
+              Row(
+                children: [
+                  Icon(Icons.pin_drop, size: 16, color: Colors.black),
+                  width(5),
+                  Text("Pantai Anyer, Banten"),
+                ],
+              ),
             ],
           ),
         ),

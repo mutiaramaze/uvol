@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/view/about_me.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/view/forum.dart';
 import 'package:uvol/view/home.dart';
@@ -7,7 +8,7 @@ import 'package:uvol/view/make_post.dart';
 import 'package:uvol/view/profile.dart';
 import 'package:uvol/view/login.dart';
 import 'package:uvol/view/register.dart';
-import 'package:uvol/constant/bottom_nav.dart';
+import 'package:uvol/widget/bottom_nav.dart';
 
 void main() {
   runApp(const MyApp());

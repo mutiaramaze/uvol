@@ -42,30 +42,6 @@ class _TapEventsState extends State<TapEvents> {
                           },
                         ),
                       ),
-
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white.withOpacity(0.8),
-                            child: IconButton(
-                              icon: Icon(Icons.share, color: Colors.black),
-                              onPressed: () {},
-                            ),
-                          ),
-                          SizedBox(width: 8),
-
-                          CircleAvatar(
-                            backgroundColor: Colors.white.withOpacity(0.8),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.bookmark_border,
-                                color: Colors.black,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),
@@ -149,14 +125,13 @@ class _TapEventsState extends State<TapEvents> {
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
                           "Kamu berhasil terdaftar! Selamat telah menjadi relawan",
                           style: TextStyle(color: Colors.white),
                         ),
-                        backgroundColor: Colors.blue[300],
+                        backgroundColor: Color(0xFF4962BF),
                         duration: Duration(seconds: 1),
                       ),
                     );

@@ -7,4 +7,6 @@ class AppImages {
   static const uvolpng = "$assetImages/uvol.png";
   static const v2 = "$assetImages/v2.jpg";
   static const v3 = "$assetImages/v3.jpg";
+  static const holdinghands = "$assetImages/holding_hands.png";
+  static const mangrove = "$assetImages/mangrove.jpg";
 }

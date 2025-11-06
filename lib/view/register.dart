@@ -97,7 +97,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-                        buildTitle("Email "),
+                        buildTitle("Email"),
                         buildTextField(
                           hintText: "Masukkan email kamu",
                           controller: emailController,
@@ -168,62 +168,6 @@ class _RegisterState extends State<Register> {
 
                 height(15),
 
-                Container(
-                  width: 322,
-                  height: 30,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 0.5,
-                          color: const Color.fromARGB(255, 148, 145, 145),
-                        ),
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        "or",
-                        style: TextStyle(
-                          color: const Color.fromARGB(255, 148, 145, 145),
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(width: 4),
-                      Expanded(
-                        child: Container(
-                          height: 0.5,
-                          color: const Color.fromARGB(255, 148, 145, 145),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF4962BF),
-                    fixedSize: Size(250, 40),
-                  ),
-                  onPressed: () {
-                    print("Tekan sekali");
-                  },
-
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset("assets/images/google.png", height: 20),
-                      SizedBox(width: 10),
-                      Text(
-                        "Login with Google",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

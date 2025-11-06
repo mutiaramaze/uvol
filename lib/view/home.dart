@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/constant/categories_home.dart';
 import 'package:uvol/database/db_helper.dart';
-import 'package:uvol/dummy/home_events.dart';
+import 'package:uvol/dummy/detail_events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/events.dart';
@@ -78,22 +79,6 @@ class _HomepageState extends State<Homepage> {
               child: SearchBar(leading: Icon(Icons.search), hintText: "Search"),
             ),
 
-            // Center(
-            //   child: Container(
-            //     padding: EdgeInsets.all(15),
-            //     decoration: BoxDecoration(
-            //       color: Colors.white.withOpacity(1),
-            //       borderRadius: BorderRadius.circular(8),
-            //       boxShadow: [],
-            //     ),
-            //     child: Column(
-            //       children: [
-            //         Text("Ayo tap-tap untuk menjadi relawan!"),
-            //         Icon(Icons.touch_app),
-            //       ],
-            //     ),
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.all(20),
               child: Container(
@@ -123,6 +108,7 @@ class _HomepageState extends State<Homepage> {
                           ],
                         ),
                         Spacer(),
+
                         Image.asset(AppImages.v3, height: 80),
                       ],
                     ),
@@ -130,47 +116,113 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
             ),
+            height(18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: categories.map((category) {
+                    final bool isSelected = selectedCategory == category;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ChoiceChip(
+                        label: Text(
+                          category,
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        selected: isSelected,
+                        selectedColor: const Color(0xFF4962BF),
+                        backgroundColor: Colors.white,
+                        showCheckmark: false,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(
+                            color: isSelected
+                                ? const Color(0xFF4962BF)
+                                : Colors.grey.shade400,
+                          ),
+                        ),
+                        onSelected: (bool selected) {
+                          setState(() {
+                            selectedCategory = selected ? category : null;
+                          });
 
-Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: categories.map((category) {
-                final bool isSelected = selectedCategory == category;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(
-                      category,
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black87,
+                          if (selected) {
+                            // Navigasi ke halaman berdasarkan kategori
+                            switch (category) {
+                              case 'Lingkungan':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Lingkungan(),
+                                  ),
+                                );
+                                break;
+
+                              case 'Pendidikan':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Pendidikan(),
+                                  ),
+                                );
+                                break;
+
+                              case 'Sosial':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Sosial(),
+                                  ),
+                                );
+                                break;
+
+                              case 'Kesehatan':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Kesehatan(),
+                                  ),
+                                );
+                                break;
+
+                              case 'Budaya':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Budaya(),
+                                  ),
+                                );
+                                break;
+
+                              default:
+                                break;
+                            }
+                          }
+                        },
                       ),
-                    ),
-                    selected: isSelected,
-                    selectedColor: const Color(0xFF4962BF),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(
-                        color: isSelected
-                            ? const Color(0xFF4962BF)
-                            : Colors.grey.shade400,
-                      ),
-                    ),
-                    onSelected: (bool selected) {
-                      setState(() {
-                        selectedCategory =
-                            selected ? category : null;
-                      });
-                    },
-                  ),
-                );
-              }).toList(),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
-          ),
-        ),
 
+            height(15),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Row(
+                children: [
+                  Text(
+                    "Semua Kegiatan",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ],
+              ),
+            ),
+            height(8),
             ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 10),
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -187,6 +239,7 @@ Padding(
                       MaterialPageRoute(builder: (context) => TapEvents()),
                     );
                   },
+
                   child: HomeWidget(
                     volImage: event['image'] ?? '',
                     titleText: event['titleText'] ?? '',
