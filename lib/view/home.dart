@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:uvol/constant/categories_home.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/dummy/detail_events.dart';
+import 'package:uvol/dummy/home_events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/events.dart';
+import 'package:uvol/view/stories_volunteer.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
 
@@ -85,6 +87,14 @@ class _HomepageState extends State<Homepage> {
                 padding: EdgeInsets.all(25),
                 decoration: BoxDecoration(
                   color: Colors.white,
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topLeft,
+                  //   end: Alignment.bottomRight,
+                  //   colors: [
+                  //     Color(0xFF94b7ee).withOpacity(0.3),
+                  //     Color(0xFF4962BF).withOpacity(0.3),
+                  //   ],
+                  // ),
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
                 ),
@@ -116,6 +126,53 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
             ),
+
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CeritaVolunteersPage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.4),
+                        blurRadius: 5,
+                        offset: const Offset(2, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Cerita Volunteers",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        "Lihat kisah inspiratif para relawan",
+                        style: TextStyle(color: Colors.black54, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
             height(18),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

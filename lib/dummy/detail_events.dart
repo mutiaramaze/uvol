@@ -28,12 +28,3 @@ final eventData = {
   "location":
       "Dusun Mangkubatu, Desa Rajawali, Kec. Banda Neira, Kab. Maluku Tengah, Maluku",
 };
-
-//chip
-final List<String> categories = [
-  "Lingkungan",
-  "Pendidikan",
-  "Sosial",
-  "Kesehatan",
-  "Budaya",
-];

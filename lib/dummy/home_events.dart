@@ -15,3 +15,12 @@ final List<Map<String, String>> activities = [
     'image': 'assets/images/v3.png',
   },
 ];
+
+//chip
+final List<String> categories = [
+  "Lingkungan",
+  "Pendidikan",
+  "Sosial",
+  "Kesehatan",
+  "Budaya",
+];
