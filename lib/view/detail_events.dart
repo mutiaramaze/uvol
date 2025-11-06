@@ -62,7 +62,7 @@ class _TapEventsState extends State<TapEvents> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Belajar bersama adik Banda Neira",
+                        "Scent of Indonesia",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -78,7 +78,7 @@ class _TapEventsState extends State<TapEvents> {
                         children: [
                           Icon(Icons.date_range, size: 18),
                           width(5),
-                          Text("15 - 30 Januari 2026"),
+                          Text("12-14 Desember 2025"),
                         ],
                       ),
                       height(5),
@@ -89,7 +89,7 @@ class _TapEventsState extends State<TapEvents> {
                           width(5),
                           Expanded(
                             child: Text(
-                              "Dusun Mangkubatu, Desa Rajawali, Kec. Banda Neira, Kab. Maluku Tengah, Maluku",
+                              "Pasaraya, Blok M, Jakarta Selatan",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -110,8 +110,33 @@ class _TapEventsState extends State<TapEvents> {
                             ),
                           ),
                           Text(
-                            'Laut Banda menyimpan cerita, tentang sejarah, tentang budaya, dan tentang makna yang belum sempat kamu temui. Lewat semesta Jelajah Nusantara, kami mengajakmu menulis bab baru. Tentang perjalanan yang memberi arti',
+                            "Experience it from the inside, be part of Indonesia's first local fragrance market behind the scenes!",
                           ),
+Text(
+                            'Requirements',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            "1. Minimum age: 17 years old.",
+Text("2. Willing to fully participate in our event for 3 days (12-14 December 2025)."
+                          ),
+Text(
+                            'Benefits',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            "1. Networking",
+                          ),
+Text("2. Konsumsi 2x sehari (Selama event)"),
+Text("3. Fee IDR300,000 (Nominal total selama event)"),
+Text("4. ID card"),
+Text("5. E-certificate"),
                         ],
                       ),
                     ],
@@ -128,7 +153,7 @@ class _TapEventsState extends State<TapEvents> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          "Kamu berhasil terdaftar! Selamat telah menjadi relawan",
+                          "Kamu berhasil terdaftar! Silahkan tunggu konfirmasi",
                           style: TextStyle(color: Colors.white),
                         ),
                         backgroundColor: Color(0xFF4962BF),
