@@ -55,7 +55,7 @@ class _QuestioningEventState extends State<QuestioningEvent> {
               controller: _controller,
               maxLines: null,
               decoration: InputDecoration(
-                hintText: "What's on your mind?",
+                hintText: "Apa alasan kamu ingin join kegiatan ini?",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
