@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/view/events.dart';
+import 'package:uvol/view/questioning_event.dart';
 import 'package:uvol/widget/app_images.dart';
 
 class TapEvents extends StatefulWidget {
@@ -23,7 +24,7 @@ class _TapEventsState extends State<TapEvents> {
                 Container(
                   width: double.infinity,
                   height: 200,
-                  child: Image.asset(AppImages.v3, fit: BoxFit.cover),
+                  child: Image.asset(AppImages.soi, fit: BoxFit.cover),
                 ),
 
                 Positioned(
@@ -112,31 +113,34 @@ class _TapEventsState extends State<TapEvents> {
                           Text(
                             "Experience it from the inside, be part of Indonesia's first local fragrance market behind the scenes!",
                           ),
-Text(
+                          height(8),
+                          Text(
                             'Requirements',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
                           ),
+
+                          Text("1. Minimum age: 17 years old."),
                           Text(
-                            "1. Minimum age: 17 years old.",
-Text("2. Willing to fully participate in our event for 3 days (12-14 December 2025)."
+                            "2. Willing to fully participate in our event for 3 days (12-14 December 2025).",
                           ),
-Text(
+                          height(8),
+                          Text(
                             'Benefits',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
                           ),
+                          Text("1. Networking"),
+                          Text("2. Konsumsi 2x sehari (Selama event)"),
                           Text(
-                            "1. Networking",
+                            "3. Fee IDR300,000 (Nominal total selama event)",
                           ),
-Text("2. Konsumsi 2x sehari (Selama event)"),
-Text("3. Fee IDR300,000 (Nominal total selama event)"),
-Text("4. ID card"),
-Text("5. E-certificate"),
+                          Text("4. ID card"),
+                          Text("5. E-certificate"),
                         ],
                       ),
                     ],
@@ -149,23 +153,13 @@ Text("5. E-certificate"),
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          "Kamu berhasil terdaftar! Silahkan tunggu konfirmasi",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        backgroundColor: Color(0xFF4962BF),
-                        duration: Duration(seconds: 1),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuestioningEvent(),
                       ),
                     );
-                    Future.delayed(Duration(seconds: 2), () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Events()),
-                      );
-                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 255, 255, 255),

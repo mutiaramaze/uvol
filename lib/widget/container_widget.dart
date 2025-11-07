@@ -183,6 +183,35 @@ class ParticipatedWidget extends StatelessWidget {
                   Text("Pantai Anyer, Banten"),
                 ],
               ),
+              height(20),
+              Positioned(
+                bottom: 8,
+                right: 15,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF4962BF), // warna biru elegan
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.download, color: Colors.white, size: 18),
+                      width(5),
+                      Text(
+                        "Certificate",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

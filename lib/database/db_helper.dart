@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uvol/model/aboutme_model.dart';
 import 'package:uvol/model/events.model.dart';
 import 'package:uvol/model/forum_model.dart';
 import 'package:uvol/model/user_model.dart';
@@ -12,6 +13,7 @@ class DbHelper {
   static const tableUser = 'users';
   static const tableForum = 'forum';
   static const tableEvents = 'events';
+  static const tableAbout = 'about';
 
   static Future<Database> db() async {
     final dbPath = await getDatabasesPath();
@@ -124,18 +126,6 @@ class DbHelper {
     return results.map((e) => ForumModel.fromMap(e)).toList();
   }
 
-  // static Future<List<ForumModel>> getPengeluaranByKategori(
-  //   String kategori,
-  // ) async {
-  //   final dbs = await db();
-  //   final List<Map<String, dynamic>> results = await dbs.query(
-  //     tableForum,
-  //     where: 'kategoriPengeluaran = ?',
-  //     whereArgs: [kategori],
-  //   );
-  //   return results.map((e) => ForumModel.fromMap(e)).toList();
-  // }
-
   static Future<void> updatePostingan(ForumModel postingan) async {
     final dbs = await db();
     await dbs.update(
@@ -183,5 +173,27 @@ class DbHelper {
   static Future<void> deleteEvents(int id) async {
     final dbs = await db();
     await dbs.delete(tableEvents, where: 'id = ?', whereArgs: [id]);
+  }
+
+  //==ABOUT ME==
+  static Future<void> insertAbout(AboutModel about) async {
+    final dbs = await db();
+    //Insert adalah fungsi untuk menambahkan data (CREATE)
+    await dbs.insert(
+      tableAbout,
+      about.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(about.toMap());
+  }
+
+  static Future<void> updateAbout(AboutModel about) async {
+    final dbs = await db();
+    await dbs.update(
+      tableAbout,
+      about.toMap(),
+      where: 'id = ?',
+      whereArgs: [about.id],
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 
 class AboutMe extends StatefulWidget {
@@ -10,9 +11,9 @@ class AboutMe extends StatefulWidget {
 
 class _AboutMeState extends State<AboutMe> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _aboutController = TextEditingController();
-  final TextEditingController _skillsController = TextEditingController();
-
+  final TextEditingController aboutController = TextEditingController();
+  final TextEditingController skillsController = TextEditingController();
+  final TextEditingController cvController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class _AboutMeState extends State<AboutMe> {
               ),
               SizedBox(height: 8),
               TextFormField(
-                controller: _aboutController,
+                controller: aboutController,
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: "Ceritakan sedikit tentang dirimu...",
@@ -50,16 +51,40 @@ class _AboutMeState extends State<AboutMe> {
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
-              const Text(
+              height(20),
+              Text(
                 "Skill yang Dimiliki",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               TextFormField(
-                controller: _skillsController,
+                controller: skillsController,
                 decoration: InputDecoration(
-                  hintText: "Misalnya: Mengajar, Public Speaking, Menulis...",
+                  hintText: "Misalnya: Mengajar, Public Speaking, Fotografi...",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Bagian ini tidak boleh kosong";
+                  }
+                  return null;
+                },
+              ),
+              height(20),
+              Text(
+                "CV",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              SizedBox(height: 8),
+              TextFormField(
+                controller: cvController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  hintText: "Kirimkan CV anda (pdf)",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -88,8 +113,9 @@ class _AboutMeState extends State<AboutMe> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final about = _aboutController.text;
-                      final skills = _skillsController.text;
+                      final about = aboutController.text;
+                      final skills = skillsController.text;
+                      final cv = cvController.text;
                     }
 
                     Navigator.push(

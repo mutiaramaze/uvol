@@ -1,9 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/dummy/detail_events.dart';
+import 'package:uvol/view/detail_events.dart';
+import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
 
 class Events extends StatefulWidget {
@@ -25,27 +26,41 @@ class _EventsState extends State<Events> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFE9EFF8),
-      appBar: AppBar(
-        title: Text("My Events", style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF4962BF),
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
-      body: volunteerEvents.isEmpty
-          ? const Center(child: Text("Belum ada event yang kamu daftar"))
-          : ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(height: 10),
-              padding: const EdgeInsets.all(20),
-              itemCount: volunteerEvents.length,
-              itemBuilder: (BuildContext context, int index) {
-                final event = volunteerEvents[index];
-                return HomeWidget(
-                  volImage: event['image'] ?? '',
-                  titleText: event['titleText'] ?? '',
-                  date: event['date'] ?? '',
-                  location: event['location'] ?? '',
-                );
-              },
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: const Color(0xFF4962BF),
+              borderRadius: BorderRadius.circular(20),
             ),
+            child: const Row(
+              children: [
+                Text(
+                  "My Events",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(height: 10),
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: volunteerEvents.length,
+            itemBuilder: (BuildContext context, int index) {
+              final event = volunteerEvents[index];
+              HomeWidget(
+                volImage: event['image'] ?? '',
+                titleText: event['titleText'] ?? '',
+                date: event['date'] ?? '',
+                location: event['location'] ?? '',
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

@@ -19,6 +19,7 @@ class _RegisterState extends State<Register> {
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final nohpController = TextEditingController();
   bool isVisibility = false;
   @override
   Widget build(BuildContext context) {
@@ -115,6 +116,27 @@ class _RegisterState extends State<Register> {
                           },
                         ),
 
+                        height(20),
+                        Row(
+                          children: [
+                            Text(
+                              "Nomor Handphone",
+                              style: TextStyle(color: Color(0xFF4962BF)),
+                            ),
+                          ],
+                        ),
+                        buildTextField(
+                          hintText: "Masukkan nomor handphone kamu",
+                          controller: nohpController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Nomor tidak boleh kosong";
+                            } else if (value.length < 6) {
+                              return "Nomor minimal 12 karakter";
+                            }
+                            return null;
+                          },
+                        ),
                         height(20),
                         Row(
                           children: [

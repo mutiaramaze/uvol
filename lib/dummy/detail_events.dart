@@ -2,10 +2,10 @@ import 'package:uvol/widget/app_images.dart';
 
 final List<Map<String, String>> volunteerEvents = [
   {
-    'image': AppImages.v3,
-    'titleText': 'Jelajah Banda Neira',
-    'date': '20-08-2025',
-    'location': 'Banda Neira, Maluku',
+    'image': AppImages.soi,
+    'titleText': 'Scent of Indonesia',
+    'date': '12-14 DEsember 2025',
+    'location': 'Pasaraya, Blok M, Jakarta Selatan',
   },
   {
     'image': AppImages.v1,
@@ -22,7 +22,7 @@ final List<Map<String, String>> volunteerEvents = [
 ];
 
 final eventData = {
-  "image": AppImages.v3,
+  "image": AppImages.soi,
   "titleText": "Belajar bersama adik Banda Neira",
   "date": "15 - 30 Januari 2026",
   "location":
