@@ -4,10 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/about_me.dart';
+import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/view/home.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/bottom_nav.dart';
-import 'package:uvol/widget/button.dart';
+import 'package:uvol/widget/build_text_field.dart';
+import 'package:uvol/widget/move_button.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -20,9 +22,11 @@ class _LoginState extends State<Login> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   bool isVisibility = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 221, 231, 248)),
       backgroundColor: Color.fromARGB(255, 221, 231, 248),
 
       body: Stack(children: [buildLayer()]),
@@ -42,7 +46,7 @@ class _LoginState extends State<Login> {
             children: [
               height(30),
 
-              Image.asset(AppImages.uvol, height: 100),
+              Image.asset(AppImages.uvolpng, height: 100),
               height(15),
               Text("Login to access your account"),
               height(24),
@@ -53,7 +57,7 @@ class _LoginState extends State<Login> {
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
                     children: [
@@ -65,7 +69,7 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
-                      buildTextField(
+                      BuildTextField(
                         hintText: "Masukkan email anda",
                         controller: emailController,
                         validator: (value) {
@@ -91,12 +95,15 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
-                      buildTextField(
-                        hintText: "Masukkan password Anda",
+                      BuildTextField(
+                        hintText: "Masukkan password kamu",
+                        isPassword: true,
                         controller: passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Password wajib diisi";
+                            return "Password tidak boleh kosong";
+                          } else if (value.length < 6) {
+                            return "Password minimal 6 karakter";
                           }
                           return null;
                         },
@@ -108,7 +115,7 @@ class _LoginState extends State<Login> {
 
               height(30),
 
-              Button(
+              MoveButton(
                 text: "Login",
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -149,33 +156,10 @@ class _LoginState extends State<Login> {
                 },
               ),
               Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50),
-                child: Image.asset(AppImages.uvolpng, height: 50),
-              ),
             ],
           ),
         ),
       ),
     );
   }
-
-  TextFormField buildTextField({
-    String? hintText,
-
-    TextEditingController? controller,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      validator: validator,
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-      ),
-    );
-  }
-
-  SizedBox height(double height) => SizedBox(height: height);
-  SizedBox width(double width) => SizedBox(width: width);
 }

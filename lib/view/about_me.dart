@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/view/detail_events.dart';
 import 'package:uvol/widget/bottom_nav.dart';
+import 'package:uvol/widget/move_button.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AboutMe extends StatefulWidget {
   const AboutMe({super.key});
@@ -14,6 +16,21 @@ class _AboutMeState extends State<AboutMe> {
   final TextEditingController aboutController = TextEditingController();
   final TextEditingController skillsController = TextEditingController();
   final TextEditingController cvController = TextEditingController();
+  String? pdfPath;
+
+  Future<void> pickPdf() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      setState(() {
+        pdfPath = result.files.single.path;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +42,6 @@ class _AboutMeState extends State<AboutMe> {
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-
             children: [
               SizedBox(height: 20),
               Text(
@@ -98,35 +114,21 @@ class _AboutMeState extends State<AboutMe> {
                   return null;
                 },
               ),
-              const SizedBox(height: 30),
+              height(30),
               Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4962BF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 50,
-                      vertical: 15,
-                    ),
-                  ),
+                child: MoveButton(
+                  text: "Simpan",
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       final about = aboutController.text;
                       final skills = skillsController.text;
                       final cv = cvController.text;
                     }
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => BottomNav()),
                     );
                   },
-                  child: const Text(
-                    "Simpan",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
                 ),
               ),
             ],

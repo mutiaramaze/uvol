@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
-
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/login.dart';
-import 'package:uvol/widget/button.dart';
+import 'package:uvol/widget/build_text_field.dart';
+import 'package:uvol/widget/move_button.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -17,10 +17,10 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final nohpController = TextEditingController();
   bool isVisibility = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  "Please register",
+                  "Daftar dulu yuk",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -77,8 +77,8 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-                        buildTitle("Nama"),
-                        buildTextField(
+
+                        BuildTextField(
                           hintText: "Masukkan nama kamu",
                           controller: nameController,
                           validator: (value) {
@@ -98,8 +98,8 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-                        buildTitle("Email"),
-                        buildTextField(
+
+                        BuildTextField(
                           hintText: "Masukkan email kamu",
                           controller: emailController,
                           validator: (value) {
@@ -125,7 +125,7 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-                        buildTextField(
+                        BuildTextField(
                           hintText: "Masukkan nomor handphone kamu",
                           controller: nohpController,
                           validator: (value) {
@@ -146,8 +146,8 @@ class _RegisterState extends State<Register> {
                             ),
                           ],
                         ),
-                        buildTitle("Password"),
-                        buildTextField(
+
+                        BuildTextField(
                           hintText: "Buat password kamu",
                           isPassword: true,
                           controller: passwordController,
@@ -166,7 +166,7 @@ class _RegisterState extends State<Register> {
                 ),
 
                 height(20),
-                Button(
+                MoveButton(
                   text: "Register",
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -194,7 +194,7 @@ class _RegisterState extends State<Register> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have an account?",
+                      "Sudah punya akun?",
                       style: TextStyle(
                         color: const Color.fromARGB(255, 128, 127, 127),
                       ),
@@ -219,59 +219,6 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  TextFormField buildTextField({
-    String? hintText,
-    bool isPassword = false,
-    TextEditingController? controller,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      validator: validator,
-      controller: controller,
-      obscureText: isPassword ? isVisibility : false,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: const Color.fromARGB(255, 214, 212, 212).withOpacity(0.2),
-            width: 0.5,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.black, width: 1.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: Colors.black.withOpacity(0.2),
-            width: 1.0,
-          ),
-        ),
-        suffixIcon: isPassword
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    isVisibility = !isVisibility;
-                  });
-                },
-                icon: Icon(
-                  isVisibility ? Icons.visibility_off : Icons.visibility,
-                ),
-              )
-            : null,
-      ),
-    );
-  }
-
   SizedBox height(double height) => SizedBox(height: height);
   SizedBox width(double width) => SizedBox(width: width);
-
-  Widget buildTitle(String text) {
-    return Row(children: [
-      
-      ],
-    );
-  }
 }

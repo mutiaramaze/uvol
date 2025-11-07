@@ -8,7 +8,7 @@ import 'package:uvol/view/events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/settings.dart';
 import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/widget/button.dart';
+import 'package:uvol/widget/move_button.dart';
 import 'package:uvol/widget/container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,6 +20,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? user;
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
 
   void initState() {
     super.initState();
@@ -42,7 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             spacing: 12,
-            children: [buildTextField(hintText: "Name", controller: editNameC)],
+            children: [],
+            // children: [buildTextField(hintText: "Name", controller: editNameC)],
           ),
           actions: [
             TextButton(
@@ -215,37 +218,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-}
-
-TextFormField buildTextField({
-  String? hintText,
-  bool isPassword = false,
-  TextEditingController? controller,
-  String? Function(String?)? validator,
-}) {
-  return TextFormField(
-    validator: validator,
-    controller: controller,
-    decoration: InputDecoration(
-      hintText: hintText,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32),
-        borderSide: BorderSide(
-          color: Colors.black.withOpacity(0.2),
-          width: 1.0,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32),
-        borderSide: BorderSide(color: Colors.black, width: 1.0),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32),
-        borderSide: BorderSide(
-          color: Colors.black.withOpacity(0.2),
-          width: 1.0,
-        ),
-      ),
-    ),
-  );
 }
