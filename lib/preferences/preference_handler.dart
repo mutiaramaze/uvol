@@ -6,7 +6,6 @@ import 'package:uvol/dummy/detail_events.dart';
 class PreferenceHandler {
   static const String isLogin = "isLogin";
   static const String isId = "isId";
-  static const String storedEvents = "registered_events";
 
   //Save data login pada saat login
   static saveLogin(bool value) async {

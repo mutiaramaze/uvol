@@ -141,6 +141,56 @@ class _TapEventsState extends State<TapEvents> {
                           ),
                           Text("4. ID card"),
                           Text("5. E-certificate"),
+                          height(10),
+
+                          Divider(),
+                          Text(
+                            'Volunteer Position & Job Description',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(2, (index) {
+                              final roles = [
+                                {
+                                  "title": "Ticketing",
+                                  "desc":
+                                      "Bertugas membantu jalannya acara dan berkoordinasi dengan tim pelaksana.",
+                                },
+                                {
+                                  "title": "Usher",
+                                  "desc":
+                                      "Menyambut tamu, membantu registrasi, dan mengarahkan tempat duduk.",
+                                },
+                              ];
+
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      height: 1.5,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            "${index + 1}. ${roles[index]['title']}\n",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(text: roles[index]['desc']),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
                         ],
                       ),
                     ],

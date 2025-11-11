@@ -1,4 +1,4 @@
-package com.example.uvol
+package com.ppkd.uvol
 
 import io.flutter.embedding.android.FlutterActivity
 

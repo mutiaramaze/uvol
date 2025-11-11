@@ -30,7 +30,10 @@ class ForumWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Row(
             children: [
-              CircleAvatar(radius: 20),
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage(AppImages.ali),
+              ),
               width(10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +164,7 @@ class ParticipatedWidget extends StatelessWidget {
           boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
         ),
         child: ListTile(
-          leading: Image.asset(AppImages.v3),
+          leading: Image.asset(AppImages.beachcleanup, height: 200),
           title: Text(
             "Beach Cleanup",
             style: TextStyle(fontWeight: FontWeight.bold),

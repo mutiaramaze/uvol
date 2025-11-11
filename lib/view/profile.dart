@@ -118,7 +118,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     height(20),
                     Row(
                       children: [
-                        const CircleAvatar(radius: 40),
+                        const CircleAvatar(
+                          radius: 40,
+                          backgroundImage: AssetImage(AppImages.ali),
+                        ),
                         width(15),
                         Row(
                           children: [

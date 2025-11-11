@@ -77,8 +77,15 @@ class _HomepageState extends State<Homepage> {
             height(10),
 
             Padding(
-              padding: const EdgeInsets.all(15),
-              child: SearchBar(leading: Icon(Icons.search), hintText: "Search"),
+              padding: const EdgeInsets.all(20),
+              child: SizedBox(
+                height: 40,
+                child: SearchBar(
+                  leading: const Icon(Icons.search),
+                  hintText: "Search",
+                  backgroundColor: WidgetStatePropertyAll(Colors.white),
+                ),
+              ),
             ),
 
             Padding(

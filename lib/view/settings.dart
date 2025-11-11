@@ -13,7 +13,11 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      backgroundColor: Color(0xFFE9EFF8),
+      appBar: AppBar(
+        title: Text('Settings', style: TextStyle(color: Colors.white)),
+        backgroundColor: Color(0xFF4962BF),
+      ),
       body: Column(
         children: [
           Padding(
@@ -21,7 +25,14 @@ class _SettingsState extends State<Settings> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Akun'),
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Akun anda",
+                    style: TextStyle(color: Colors.black, fontSize: 15),
+                  ),
+                ),
+
                 Divider(),
                 Text('Beri Masukan'),
                 Divider(),
