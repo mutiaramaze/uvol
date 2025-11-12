@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/dummy/detail_events.dart';
 import 'package:uvol/view/events.dart';
+import 'package:uvol/widget/widget_%20detail.dart';
 
 class QuestioningEvent extends StatefulWidget {
   const QuestioningEvent({super.key});
@@ -14,6 +16,7 @@ class _QuestioningEventState extends State<QuestioningEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE9EFF8),
       body: Column(
         children: [
           const SizedBox(height: 10),
@@ -49,19 +52,7 @@ class _QuestioningEventState extends State<QuestioningEvent> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: TextField(
-              controller: _controller,
-              maxLines: null,
-              decoration: InputDecoration(
-                hintText: "Apa alasan kamu ingin join kegiatan ini?",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-          ),
+          DropDownDetail(),
         ],
       ),
     );

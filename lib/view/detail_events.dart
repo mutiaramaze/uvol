@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uvol/dummy/detail_events.dart';
 import 'package:uvol/view/events.dart';
 import 'package:uvol/view/questioning_event.dart';
 import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/widget/widget_%20detail.dart';
 
 class TapEvents extends StatefulWidget {
   const TapEvents({super.key});
@@ -144,6 +146,7 @@ class _TapEventsState extends State<TapEvents> {
                           height(10),
 
                           Divider(),
+                          height(10),
                           Text(
                             'Volunteer Position & Job Description',
                             style: TextStyle(
@@ -151,42 +154,19 @@ class _TapEventsState extends State<TapEvents> {
                               fontSize: 18,
                             ),
                           ),
+
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(2, (index) {
-                              final roles = [
-                                {
-                                  "title": "Ticketing",
-                                  "desc":
-                                      "Bertugas membantu jalannya acara dan berkoordinasi dengan tim pelaksana.",
-                                },
-                                {
-                                  "title": "Usher",
-                                  "desc":
-                                      "Menyambut tamu, membantu registrasi, dan mengarahkan tempat duduk.",
-                                },
-                              ];
-
+                            children: List.generate(volunteerRoles.length, (
+                              index,
+                            ) {
+                              final role = volunteerRoles[index];
                               return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      height: 1.5,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            "${index + 1}. ${roles[index]['title']}\n",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(text: roles[index]['desc']),
-                                    ],
-                                  ),
+                                padding: const EdgeInsets.only(bottom: 15),
+                                child: buildVolunteerRoleWithPoints(
+                                  number: index + 1, //otomatis urut
+                                  title: role['title']!,
+                                  points: List<String>.from(role['points']!),
                                 ),
                               );
                             }),
