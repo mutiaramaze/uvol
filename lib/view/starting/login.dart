@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/about_me.dart';
+import 'package:uvol/view/starting/about_me.dart';
 import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/home.dart';
+import 'package:uvol/view/main%20page/home.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/build_text_field.dart';
@@ -127,7 +128,11 @@ class _LoginState extends State<Login> {
                     );
 
                     if (data != null) {
-                      Navigator.push(
+                      await PreferenceHandler.saveLogin(true);
+                      await PreferenceHandler.saveUser(
+                        data,
+                      ); // simpan data user
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => AboutMe()),
                       );

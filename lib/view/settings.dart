@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/view/events.dart';
-import 'package:uvol/view/register.dart';
+import 'package:uvol/view/main%20page/events.dart';
+import 'package:uvol/view/starting/register.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

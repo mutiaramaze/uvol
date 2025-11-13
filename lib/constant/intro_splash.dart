@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-
-import 'package:uvol/view/login.dart';
-import 'package:uvol/view/register.dart';
+import 'package:uvol/view/starting/login.dart';
+import 'package:uvol/view/starting/about_me.dart';
+import 'package:uvol/view/starting/register.dart';
 import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/widget/bottom_nav.dart';
 
 class IntroSplash extends StatefulWidget {
   const IntroSplash({super.key});
@@ -21,22 +22,18 @@ class _IntroSplashState extends State<IntroSplash> {
 
   isLoginFunction() async {
     Future.delayed(const Duration(seconds: 3)).then((value) async {
-      var isLogin = await PreferenceHandler.getLogin();
-      print(isLogin);
+      bool isLogin = await PreferenceHandler.getLogin();
+      print("isLogin: $isLogin");
 
-      if (isLogin != null && isLogin == true) {
-        Navigator.pushAndRemoveUntil(
+      if (isLogin) {
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => const Register(),
-          ), // ← mungkin ini Login?
-          (route) => false,
+          MaterialPageRoute(builder: (context) => BottomNav()),
         );
       } else {
-        Navigator.pushAndRemoveUntil(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Login()),
-          (route) => false,
         );
       }
     });

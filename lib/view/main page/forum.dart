@@ -4,7 +4,7 @@ import 'package:uvol/constant/time_ago.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/model/forum_model.dart';
 import 'package:uvol/model/user_model.dart';
-import 'package:uvol/view/events.dart';
+import 'package:uvol/view/main%20page/events.dart';
 import 'package:uvol/view/make_post.dart';
 import 'package:uvol/view/profile.dart';
 import 'package:uvol/widget/app_images.dart';

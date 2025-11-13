@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/events.dart';
+import 'package:uvol/view/main%20page/events.dart';
 import 'package:uvol/widget/app_images.dart';
 
 //forum

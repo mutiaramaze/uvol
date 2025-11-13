@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:uvol/view/events.dart';
-import 'package:uvol/view/forum.dart';
-import 'package:uvol/view/home.dart';
+import 'package:uvol/view/main%20page/events.dart';
+import 'package:uvol/view/main%20page/forum.dart';
+import 'package:uvol/view/main%20page/home.dart';
 import 'package:uvol/view/profile.dart';
 
 class BottomNav extends StatefulWidget {

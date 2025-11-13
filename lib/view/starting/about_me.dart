@@ -46,13 +46,17 @@ class _AboutMeState extends State<AboutMe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 221, 231, 248)),
-      backgroundColor: Color.fromARGB(255, 221, 231, 248),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: const Color(0xFFE9EFF8),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF4962BF),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+          child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,26 +80,34 @@ class _AboutMeState extends State<AboutMe> {
                       Row(
                         children: [
                           Text(
-                            "Tentang Saya",
+                            "Tentang saya",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 15,
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 8),
-                      BuildTextFieldAbout(
+                      TextFormField(
                         controller: aboutController,
-                        hintText: "Ceritakan tentang dirimu...",
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: "Tulis jawaban kamu di sini...",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Bagian ini tidak boleh kosong";
+                          if (value == null || value.trim().isEmpty) {
+                            return "Jawaban tidak boleh kosong";
                           }
                           return null;
                         },
                       ),
-                      height(20),
+                      height(15),
                       Row(
                         children: [
                           Text(
@@ -108,13 +120,20 @@ class _AboutMeState extends State<AboutMe> {
                         ],
                       ),
                       SizedBox(height: 8),
-                      BuildTextFieldAbout(
+                      TextFormField(
                         controller: skillsController,
-
-                        hintText: "Isi dengan skill kamu yaa",
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: "Tulis jawaban kamu di sini...",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Bagian ini tidak boleh kosong";
+                          if (value == null || value.trim().isEmpty) {
+                            return "Jawaban tidak boleh kosong";
                           }
                           return null;
                         },
@@ -234,33 +253,6 @@ class _AboutMeState extends State<AboutMe> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class BuildTextFieldAbout2 extends StatelessWidget {
-  final TextEditingController controller;
-  final String hintText;
-  final String? Function(String?)? validator;
-
-  BuildTextFieldAbout2({
-    super.key,
-    required this.controller,
-    required this.hintText,
-    this.validator,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-        fillColor: Colors.white,
-        filled: true,
-      ),
-      validator: validator,
     );
   }
 }

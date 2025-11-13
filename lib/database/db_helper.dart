@@ -26,6 +26,9 @@ class DbHelper {
         await db.execute(
           "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, posts TEXT)",
         );
+        await db.execute(
+          "CREATE TABLE $tableAbout(id INTEGER PRIMARY KEY AUTOINCREMENT, storyaboutme TEXT, skill TEXT, cv TEXT)",
+        );
       },
 
       onUpgrade: (db, oldVersion, newVersion) async {
@@ -51,21 +54,28 @@ class DbHelper {
   }
 
   static Future<UserModel?> loginUser({
-    //required String name,
     required String email,
     required String password,
   }) async {
     final dbs = await db();
-    //query adalah fungsi untuk menampilkan data (READ)
+
+    // Query untuk mencari user dengan email & password cocok
     final List<Map<String, dynamic>> results = await dbs.query(
       tableUser,
       where: 'email = ? AND password = ?',
       whereArgs: [email, password],
     );
+
     if (results.isNotEmpty) {
-      PreferenceHandler.saveUserId(UserModel.fromMap(results.first).id!);
-      return UserModel.fromMap(results.first);
+      final user = UserModel.fromMap(results.first);
+
+      // Simpan status login & data user ke SharedPreferences
+      await PreferenceHandler.saveLogin(true);
+      await PreferenceHandler.saveUser(user);
+
+      return user;
     }
+
     return null;
   }
 
@@ -79,7 +89,7 @@ class DbHelper {
 
   static Future<UserModel> getUser() async {
     final dbs = await db();
-    final id = await PreferenceHandler.getUserId();
+    final id = await PreferenceHandler.getUser();
     final result = await dbs.query(tableUser, where: "id = ?", whereArgs: [id]);
     print(UserModel.fromMap(result.first));
     print(UserModel.fromMap(result.first).name);
@@ -176,15 +186,14 @@ class DbHelper {
   }
 
   //==ABOUT ME==
-  static Future<void> insertAbout(AboutModel about) async {
-    final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
-    await dbs.insert(
+  static Future<int> insertAbout(AboutModel about) async {
+    final database = await db();
+    return await database.insert(
       tableAbout,
       about.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm:
+          ConflictAlgorithm.replace, // supaya tidak crash kalau id sama
     );
-    print(about.toMap());
   }
 
   static Future<void> updateAbout(AboutModel about) async {

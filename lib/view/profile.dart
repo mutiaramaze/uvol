@@ -4,10 +4,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/events.dart';
+import 'package:uvol/view/main%20page/events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/settings.dart';
 import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/widget/build_text_field.dart';
 import 'package:uvol/widget/move_button.dart';
 import 'package:uvol/widget/container_widget.dart';
 
@@ -44,8 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             spacing: 12,
-            children: [],
-            // children: [buildTextField(hintText: "Name", controller: editNameC)],
+            children: [BuildTextField(hintText: "Name", controller: editNameC)],
           ),
           actions: [
             TextButton(

@@ -5,7 +5,7 @@ import 'package:uvol/dummy/detail_events.dart';
 import 'package:uvol/dummy/home_events.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/events.dart';
+import 'package:uvol/view/main%20page/events.dart';
 
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';

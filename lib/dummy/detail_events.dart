@@ -73,12 +73,3 @@ final List<Map<String, dynamic>> volunteerRoles = [
     ],
   },
 ];
-
-final List<String> listRole = [
-  "Ticketing",
-  "Usher & Crowd Control",
-  "Safety & Security",
-  "Event",
-  "Liasion Officer(LO)",
-  "Consumption",
-];

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/view/events.dart';
-import 'package:uvol/view/forum.dart';
+import 'package:uvol/view/main%20page/events.dart';
+import 'package:uvol/view/main%20page/forum.dart';
 import 'package:flutter/material.dart';
 
 class MakePost extends StatefulWidget {

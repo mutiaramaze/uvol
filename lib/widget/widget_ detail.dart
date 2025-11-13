@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/dummy/detail_events.dart';
+import 'package:uvol/view/detail_events.dart';
 
 Widget buildVolunteerRoleWithPoints({
   required int number,
@@ -59,39 +60,58 @@ Widget buildVolunteerRoleWithPoints({
 }
 
 class DropDownDetail extends StatefulWidget {
-  const DropDownDetail({super.key});
+  const DropDownDetail({super.key, required this.selectdivision});
+
+  final String selectdivision;
 
   @override
-  State<DropDownDetail> createState() => _DropDownDetailState();
+  State<DropDownDetail> createState() => _DropDownState();
 }
 
-class _DropDownDetailState extends State<DropDownDetail> {
+class _DropDownState extends State<DropDownDetail> {
+  final List<String> listRole = [
+    'Ticketing',
+    'Usher & Crowd Control',
+    "Safety & Security",
+    'Event',
+    'Liasion Officer (LO)',
+    'Consumption',
+  ];
+
   String? dropDownValue;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "Divisi yang kamu inginkan",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-        ),
-        DropdownButton(
-          dropdownColor: Colors.white,
-          value: dropDownValue,
-          items: listRole.map((String val) {
-            return DropdownMenuItem(
-              value: val,
-              child: Text(val, style: TextStyle(color: Colors.black)),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              dropDownValue = value;
-            });
-            print(dropDownValue);
-          },
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.only(right: 20, left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.selectdivision,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          height(8),
+          DropdownButton<String>(
+            dropdownColor: Colors.white,
+            value: dropDownValue,
+            hint: Text("Pilih divisi kamu"),
+            isExpanded: true,
+            items: listRole.map((String val) {
+              return DropdownMenuItem(
+                value: val,
+                child: Text(val, style: TextStyle(color: Colors.black)),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                dropDownValue = value!;
+              });
+              print("Dipilih $dropDownValue");
+            },
+          ),
+        ],
+      ),
     );
   }
 }
