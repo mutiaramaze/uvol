@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/model/user_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/main%20page/events.dart';
-import 'package:uvol/model/user_model.dart';
 import 'package:uvol/view/settings.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/build_text_field.dart';
-import 'package:uvol/widget/move_button.dart';
 import 'package:uvol/widget/container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -21,89 +18,111 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel? user;
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
 
+  @override
   void initState() {
     super.initState();
     _loadUser();
   }
 
   Future<void> _loadUser() async {
-    final data = await DbHelper.getUser();
+    final data = await PreferenceHandler.getUser();
+    print("DEBUG PROFILE: USER LOADED FROM PREF -> $data");
     setState(() => user = data);
   }
 
-  Future<void> _onEdit(UserModel? user) async {
-    if (user == null) return;
-    final editNameC = TextEditingController(text: user.name);
-    final res = await showDialog(
+  Future<void> _onEdit() async {
+    print("DEBUG PROFILE: _onEdit dipanggil, user = $user");
+
+    if (user == null) {
+      Fluttertoast.showToast(msg: "Data user belum tersedia");
+      return;
+    }
+
+    final currentUser = user!;
+    final editNameC = TextEditingController(text: currentUser.name ?? "");
+
+    final res = await showDialog<bool>(
       context: context,
       builder: (context) {
+        print("DEBUG PROFILE: showDialog builder jalan");
         return AlertDialog(
-          title: Text("Edit nama"),
+          title: const Text("Edit nama"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            spacing: 12,
             children: [BuildTextField(hintText: "Name", controller: editNameC)],
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("Batal"),
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text("Batal"),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              child: Text("Simpan"),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text("Simpan"),
             ),
           ],
         );
       },
     );
 
+    print("DEBUG PROFILE: hasil dialog -> $res");
+
     if (res == true) {
       final updated = UserModel(
-        id: user.id,
+        id: currentUser.id,
         name: editNameC.text,
-        email: user.email,
+        email: currentUser.email,
+        password: currentUser.password,
       );
-      await DbHelper.updateUser(updated);
-      _loadUser();
-      Fluttertoast.showToast(msg: "Data berhasil di update");
+
+      print("DEBUG PROFILE: update data -> ${updated.toMap()}");
+
+      try {
+        await DbHelper.updateUser(updated);
+      } catch (e) {
+        print("DEBUG PROFILE: DbHelper.updateUser error -> $e");
+      }
+
+      await PreferenceHandler.saveUser(updated);
+
+      setState(() {
+        user = updated;
+      });
+
+      Fluttertoast.showToast(msg: "Data berhasil diupdate");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE9EFF8),
+      backgroundColor: const Color(0xFFE9EFF8),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // HEADER PROFILE
             Container(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Color(0xFF4962BF),
+                color: const Color(0xFF4962BF),
                 borderRadius: BorderRadius.circular(15),
-                boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+                boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 5)],
               ),
               child: Padding(
                 padding: const EdgeInsets.all(25),
                 child: Column(
                   children: [
+                    // BARIS ATAS: TITLE + SETTINGS
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Profile",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         IconButton(
-                          icon: Icon(Icons.settings, color: Colors.white),
+                          icon: const Icon(Icons.settings, color: Colors.white),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -116,91 +135,108 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     height(20),
+
+                    // BARIS PROFILE: AVATAR + NAMA + EMAIL + TOMBOL EDIT
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const CircleAvatar(
                           radius: 40,
                           backgroundImage: AssetImage(AppImages.ali),
                         ),
                         width(15),
-                        Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  user?.name ?? "",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // TEKS NAMA + EMAIL
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      user?.name ?? "",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      user?.email ?? "",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
                                 ),
-                                width(8),
-                                Text(
-                                  user?.email ?? "",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _onEdit(user);
-                              },
-                              icon: Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 18,
                               ),
-                            ),
-                          ],
+                              // ICON EDIT
+                              IconButton(
+                                onPressed: () {
+                                  print("DEBUG PROFILE: Icon edit diklik");
+                                  _onEdit();
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                tooltip: "Edit profil",
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                     height(20),
-                    Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(children: [Text("3 Partisipasi")]),
-                        ),
-                      ],
+
+                    // KOTAK PARTISIPASI
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(children: [Text("3 Partisipasi")]),
                     ),
                   ],
                 ),
               ),
             ),
 
+            // BODY
             Padding(
               padding: const EdgeInsets.all(25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Tentang Saya",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  Text(
+                  const Text(
                     "Seorang relawan yang bersemangat di bidang lingkungan dan pendidikan anak. Mahir dalam desain grafis dan penulisan konten. Siap membantu di area Jakarta dan sekitarnya.",
                   ),
                   height(30),
-                  Text(
+                  const Text(
                     "Skill saya",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  Text("Fotografi, Editing, dan lain-lain"),
+                  const Text("Fotografi, Editing, dan lain-lain"),
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             height(8),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 1, left: 12),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 1, left: 12),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
