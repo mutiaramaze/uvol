@@ -23,22 +23,22 @@ class DbHelper {
         await db.execute(
           "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)",
         );
-        await db.execute(
-          "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, posts TEXT)",
-        );
+        // await db.execute(
+        //   "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, posts TEXT)",
+        // );
         await db.execute(
           "CREATE TABLE $tableAbout(id INTEGER PRIMARY KEY AUTOINCREMENT, storyaboutme TEXT, skill TEXT, cv TEXT)",
         );
+        await db.execute(
+          "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, upload TEXT)",
+        );
       },
 
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < newVersion) {
-          await db.execute(
-            "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, upload TEXT)",
-          );
-        }
-      },
-      version: 5,
+      // onUpgrade: (db, oldVersion, newVersion) async {
+      //   if (oldVersion < newVersion) {
+      //   }
+      // },
+      version: 1,
     );
   }
 
@@ -186,14 +186,9 @@ class DbHelper {
   }
 
   //==ABOUT ME==
-  static Future<int> insertAbout(AboutModel about) async {
+  static Future<void> insertAbout(AboutModel about) async {
     final database = await db();
-    return await database.insert(
-      tableAbout,
-      about.toMap(),
-      conflictAlgorithm:
-          ConflictAlgorithm.replace, // supaya tidak crash kalau id sama
-    );
+    await database.insert(tableAbout, about.toMap());
   }
 
   static Future<void> updateAbout(AboutModel about) async {

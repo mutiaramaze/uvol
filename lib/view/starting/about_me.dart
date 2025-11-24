@@ -218,6 +218,7 @@ class _AboutMeState extends State<AboutMe> {
                         ),
                       ),
                       onPressed: () async {
+                        print('ditekan');
                         if (_formKey.currentState!.validate()) {
                           final aboutme = AboutModel(
                             storyaboutme: aboutController.text,
@@ -227,7 +228,6 @@ class _AboutMeState extends State<AboutMe> {
 
                           await DbHelper.insertAbout(aboutme);
                           Fluttertoast.showToast(msg: "Data anda tersimpan");
-
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

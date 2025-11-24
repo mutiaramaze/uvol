@@ -21,14 +21,21 @@ class _HomepageState extends State<Homepage> {
   UserModel? user;
   String? selectedCategory;
 
+  @override
   void initState() {
     super.initState();
     _loadUser();
+    print(user?.name);
   }
 
   Future<void> _loadUser() async {
     final data = await DbHelper.getUser();
-    setState(() => user = data);
+    setState(() {
+      user = data;
+    });
+
+    // Debug kalau mau
+    print("USER DARI DB: ${user?.name}");
   }
 
   @override
@@ -53,7 +60,7 @@ class _HomepageState extends State<Homepage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Welcome back,",
+                          "Hello,",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -87,39 +94,73 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
-                padding: EdgeInsets.all(25),
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+                  color: const Color(0xFF4962BF),
+                  borderRadius: BorderRadius.circular(18),
+                  image: DecorationImage(
+                    image: AssetImage(AppImages.v3),
+                    alignment: Alignment.centerRight,
+                    opacity: 0.15,
+                    fit: BoxFit.contain,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0, 5),
+                      blurRadius: 12,
+                    ),
+                  ],
                 ),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
                               "UVOL",
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1,
                               ),
                             ),
-                            Text("Be part of", style: TextStyle(fontSize: 15)),
-                            Text("Something bigger!"),
-                          ],
-                        ),
-                        Spacer(),
-
-                        Image.asset(AppImages.v3, height: 80),
-                      ],
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            "Be Part of Something Bigger!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          const Text(
+                            "Temukan kegiatan relawan terbaik untuk menambah pengalamanmu.",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

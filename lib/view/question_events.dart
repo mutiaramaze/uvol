@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/view/main%20page/events.dart';
+import 'package:uvol/view/main%20page/home.dart';
+import 'package:uvol/view/thanks.dart';
 import 'package:uvol/widget/widget_%20detail.dart';
 
 class QuestioningEvent extends StatefulWidget {
@@ -125,17 +127,14 @@ class _QuestioningEventState extends State<QuestioningEvent> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const Events(),
+                            builder: (context) => const ThanksPage(),
                           ),
                           (route) => false,
                         );
                       });
                     }
                   },
-                  child: const Text(
-                    "Kirim Jawaban",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
+                  child: Text("Simpan", style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],
