@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class EventsModel {
-  int? id;
+  String? id;
   String? image;
   String? title;
   String? icon;
@@ -31,7 +31,7 @@ class EventsModel {
 
   factory EventsModel.fromMap(Map<String, dynamic> map) {
     return EventsModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null ? map['id'] as String : null,
       image: map['image'] != null ? map['image'] as String : null,
       title: map['title'] != null ? map['title'] as String : null,
       icon: map['icon'] != null ? map['icon'] as String : null,

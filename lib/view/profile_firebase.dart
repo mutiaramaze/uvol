@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/firebase/models/user_firebase_model.dart';
+import 'package:uvol/firebase/service/firebase.dart';
+import 'package:uvol/firebase/service/user_firebase.dart';
 import 'package:uvol/model/aboutme_model.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
@@ -10,26 +13,31 @@ import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/build_text_field.dart';
 import 'package:uvol/widget/container_widget.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePageFirebase extends StatefulWidget {
+  const ProfilePageFirebase({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePageFirebase> createState() => _ProfilePageFirebaseState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  UserModel? user;
+class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
+  UserFirebaseModel? user;
   AboutModel? about;
 
   @override
   void initState() {
     super.initState();
     _loadUser();
-    _loadAbout();
+    // _loadAbout();
+  }
+
+  getData() {
+    UserFirebaseService.getAllUser();
+    setState(() {});
   }
 
   Future<void> _loadAbout() async {
-    final data = await DbHelper.getAbout(); // BUKAN insertAbout
+    final data = await DbHelper.getAbout();
 
     setState(() {
       about = data;
@@ -39,8 +47,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadUser() async {
-    final data = await PreferenceHandler.getUser();
-    print("DEBUG PROFILE: USER LOADED FROM PREF -> $data");
+    final token = await PreferenceHandler.getToken();
+    // print(token);
+    final data = await UserFirebaseService.getUser(token!);
+    print("DEBUG PROFILE: USER LOADED FROM PREF -> ${data!.toJson()}");
     setState(() => user = data);
   }
 
@@ -82,22 +92,23 @@ class _ProfilePageState extends State<ProfilePage> {
     print("DEBUG PROFILE: hasil dialog -> $res");
 
     if (res == true) {
-      final updated = UserModel(
-        id: currentUser.id,
+      final updated = UserFirebaseModel(
+        uid: currentUser.uid,
         name: editNameC.text,
         email: currentUser.email,
-        password: currentUser.password,
       );
 
       print("DEBUG PROFILE: update data -> ${updated.toMap()}");
 
       try {
-        await DbHelper.updateUser(updated);
+        final result = await UserFirebaseService.updateUser(updated);
+
+        // print(result);
       } catch (e) {
         print("DEBUG PROFILE: DbHelper.updateUser error -> $e");
       }
 
-      await PreferenceHandler.saveUser(updated);
+      // await PreferenceHandler.saveUser(updated);
 
       setState(() {
         user = updated;
@@ -269,12 +280,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Data Pribadi",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Data Pribadi",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            print("DEBUG PROFILE: Icon edit diklik");
+                            _onEdit();
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                            size: 18,
+                          ),
+                          tooltip: "Edit Data",
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 15),
@@ -322,14 +349,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TextField(
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        hintText: "Masukkan nomor telepon",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                    Text(
+                      user?.phone ?? "",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -339,7 +367,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Divider(),
             height(8),
             const Padding(
-              padding: EdgeInsets.only(left: 25),
+              padding: EdgeInsets.only(bottom: 1, left: 12),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

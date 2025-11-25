@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:uvol/firebase/model/user_firebase_model.dart';
+import 'package:uvol/firebase/models/user_firebase_model.dart';
 
 class FirebaseService {
   static final FirebaseAuth auth = FirebaseAuth.instance;

@@ -155,7 +155,7 @@ class ParticipatedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(

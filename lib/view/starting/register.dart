@@ -20,7 +20,7 @@ class _RegisterState extends State<Register> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final nohpController = TextEditingController();
+  final phoneController = TextEditingController();
   bool isVisibility = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -127,7 +127,7 @@ class _RegisterState extends State<Register> {
                           ),
                           BuildTextField(
                             hintText: "Masukkan nomor handphone kamu",
-                            controller: nohpController,
+                            controller: phoneController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Nomor tidak boleh kosong";

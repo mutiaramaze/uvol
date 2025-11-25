@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uvol/firebase/models/user_firebase_model.dart';
 import 'package:uvol/model/user_model.dart';
 
 class PreferenceHandler {
   static const String isLogin = "isLogin";
   static const String userKey = "userData";
+  static const String isToken = "isToken";
 
   // Simpan status login
   static Future<void> saveLogin(bool value) async {
@@ -24,6 +26,11 @@ class PreferenceHandler {
     await prefs.setString(userKey, user.toJson());
   }
 
+  static Future<void> saveUserFirebase(UserFirebaseModel user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(userKey, user.toJson());
+  }
+
   // Ambil data user dari penyimpanan
   static Future<UserModel?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
@@ -32,10 +39,27 @@ class PreferenceHandler {
     return UserModel.fromJson(jsonString);
   }
 
+  static Future<UserFirebaseModel?> getUserFirebase() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(userKey);
+    if (jsonString == null) return null;
+    return UserFirebaseModel.fromJson(jsonString);
+  }
+
   // Hapus data login dan user (logout)
   static Future<void> removeLogin() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(isLogin);
     await prefs.remove(userKey);
+  }
+
+  static saveToken(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(isToken, value);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(isToken);
   }
 }

@@ -13,13 +13,13 @@ import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/build_text_field.dart';
 import 'package:uvol/widget/move_button.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginFirebase extends StatefulWidget {
+  const LoginFirebase({super.key});
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginFirebase> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<LoginFirebase> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -27,7 +27,6 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // utility kecil untuk spacing
   SizedBox height(double h) => SizedBox(height: h);
 
   @override
@@ -56,10 +55,9 @@ class _LoginState extends State<Login> {
                 height(30),
                 Image.asset(AppImages.uvolpng, height: 100),
                 height(15),
-                const Text("Login to access your account"),
+                const Text("LoginFirebase to access your account"),
                 height(24),
 
-                // KOTAK FORM + TOMBOL LOGIN + REGISTER
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -114,7 +112,6 @@ class _LoginState extends State<Login> {
 
                       height(25),
 
-                      // TOMBOL LOGIN (deket sama password)
                       Center(
                         child: MoveButton(
                           text: "Login",

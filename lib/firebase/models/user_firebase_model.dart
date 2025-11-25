@@ -5,12 +5,14 @@ class UserFirebaseModel {
   String? uid;
   String? name;
   String? email;
+  String? phone;
   String? createdAt;
   String? updatedAt;
   UserFirebaseModel({
     this.uid,
     this.name,
     this.email,
+    this.phone,
     this.createdAt,
     this.updatedAt,
   });
@@ -20,6 +22,7 @@ class UserFirebaseModel {
       'uid': uid,
       'name': name,
       'email': email,
+      'phone': phone,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -30,6 +33,7 @@ class UserFirebaseModel {
       uid: map['uid'] != null ? map['uid'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
+      phone: map['phone'] != null ? map['phone'] as String : null,
       createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
       updatedAt: map['updatedAt'] != null ? map['updatedAt'] as String : null,
     );

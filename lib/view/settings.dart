@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/view/main%20page/events.dart';
 import 'package:uvol/view/starting/register.dart';
+import 'package:uvol/view/starting/register_firebase.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -46,7 +47,9 @@ class _SettingsState extends State<Settings> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Register()),
+                      MaterialPageRoute(
+                        builder: (context) => RegisterFirebase(),
+                      ),
                     );
                     print('Tekan seali');
                   },

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
 class MoveButton extends StatelessWidget {
-  const MoveButton({super.key, this.onPressed, required this.text});
+  const MoveButton({
+    super.key,
+    this.onPressed,
+    required this.text,
+    this.isLoading,
+  });
   final void Function()? onPressed;
   final String text;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {

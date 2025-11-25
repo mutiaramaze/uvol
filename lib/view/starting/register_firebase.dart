@@ -1,203 +1,263 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/firebase/models/user_firebase_model.dart';
+import 'package:uvol/firebase/service/firebase.dart';
+import 'package:uvol/model/user_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/view/starting/about_me.dart';
-import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/main%20page/home.dart';
-import 'package:uvol/view/starting/register.dart';
-import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/widget/bottom_nav.dart';
+import 'package:uvol/view/starting/login.dart';
+import 'package:uvol/view/starting/login_firebase.dart';
 import 'package:uvol/widget/build_text_field.dart';
 import 'package:uvol/widget/move_button.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class RegisterFirebase extends StatefulWidget {
+  const RegisterFirebase({super.key});
+  static const id = "/registerFirebase";
+
   @override
-  State<Login> createState() => _LoginState();
+  State<RegisterFirebase> createState() => _RegisterFirebaseState();
 }
 
-class _LoginState extends State<Login> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
+class _RegisterFirebaseState extends State<RegisterFirebase> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
   bool isVisibility = false;
+  bool isLoading = false;
+  UserFirebaseModel? user;
 
   final _formKey = GlobalKey<FormState>();
-
-  // utility kecil untuk spacing
-  SizedBox height(double h) => SizedBox(height: h);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color.fromARGB(255, 221, 231, 248)),
-      backgroundColor: Color.fromARGB(255, 221, 231, 248),
-      body: buildLayer(context),
+      backgroundColor: const Color.fromARGB(255, 221, 231, 248),
+      body: Stack(children: [buildLayer()]),
     );
   }
 
-  Widget buildLayer(BuildContext context) {
-    // supaya kalau keyboard muncul, bisa scroll dan nggak overflow
-    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
-
+  SafeArea buildLayer() {
     return SafeArea(
       child: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(bottom: bottomInset),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                height(30),
-                Image.asset(AppImages.uvolpng, height: 100),
-                height(15),
-                const Text("Login to access your account"),
-                height(24),
-
-                // KOTAK FORM + TOMBOL LOGIN + REGISTER
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+            child: SingleChildScrollView(
+              // supaya bisa di-scroll
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Hello volunteers!",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2E2E5D),
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Label email
-                      const Text(
-                        "Email",
-                        style: TextStyle(color: Color(0xFF4962BF)),
+                  const SizedBox(height: 5),
+                  const Text(
+                    "Daftar dulu yuk",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2E2E5D),
+                    ),
+                  ),
+                  height(16),
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      BuildTextField(
-                        hintText: "Masukkan email anda",
-                        controller: emailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Email tidak boleh kosong";
-                          } else if (!value.contains('@')) {
-                            return "Email tidak valid";
-                          } else if (!RegExp(
-                            r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
-                          ).hasMatch(value)) {
-                            return "Format Email tidak valid";
-                          }
-                          return null;
-                        },
-                      ),
-
-                      height(20),
-
-                      // Label password
-                      const Text(
-                        "Password",
-                        style: TextStyle(color: Color(0xFF4962BF)),
-                      ),
-                      BuildTextField(
-                        hintText: "Masukkan password kamu",
-                        isPassword: true,
-                        controller: passwordController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Password tidak boleh kosong";
-                          } else if (value.length < 6) {
-                            return "Password minimal 6 karakter";
-                          }
-                          return null;
-                        },
-                      ),
-
-                      height(25),
-
-                      // TOMBOL LOGIN (deket sama password)
-                      Center(
-                        child: MoveButton(
-                          text: "Login",
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              print(passwordController.text);
-                              PreferenceHandler.saveLogin(true);
-                              final data = await DbHelper.loginUser(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
-
-                              if (data != null) {
-                                await PreferenceHandler.saveLogin(true);
-                                await PreferenceHandler.saveUser(
-                                  data,
-                                ); // simpan data user
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AboutMe(),
-                                  ),
-                                );
-                              } else {
-                                Fluttertoast.showToast(
-                                  msg: "Email atau password salah",
-                                );
-                              }
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Validation Error"),
-                                    content: const Text(
-                                      "Please fill all fields",
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        child: const Text("OK"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          },
-                        ),
-                      ),
-
-                      height(10),
-
-                      // LINK REGISTER
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
-                          const Text("Belum punya akun?"),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Register(),
-                                ),
-                              );
+                          Row(
+                            children: const [
+                              Text(
+                                "Nama",
+                                style: TextStyle(color: Color(0xFF4962BF)),
+                              ),
+                            ],
+                          ),
+                          BuildTextField(
+                            hintText: "Masukkan nama kamu",
+                            controller: nameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Nama tidak boleh kosong";
+                              }
+                              return null;
                             },
-                            child: const Text("Register"),
+                          ),
+                          height(20),
+                          Row(
+                            children: const [
+                              Text(
+                                "Email",
+                                style: TextStyle(color: Color(0xFF4962BF)),
+                              ),
+                            ],
+                          ),
+                          BuildTextField(
+                            hintText: "Masukkan email kamu",
+                            controller: emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Email tidak boleh kosong";
+                              } else if (!value.contains('@')) {
+                                return "Email tidak valid";
+                              } else if (!RegExp(
+                                r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+                              ).hasMatch(value)) {
+                                return "Format Email tidak valid";
+                              }
+                              return null;
+                            },
+                          ),
+                          height(20),
+                          Row(
+                            children: const [
+                              Text(
+                                "Nomor Handphone",
+                                style: TextStyle(color: Color(0xFF4962BF)),
+                              ),
+                            ],
+                          ),
+                          BuildTextField(
+                            hintText: "Masukkan nomor handphone kamu",
+                            controller: phoneController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Nomor tidak boleh kosong";
+                              } else if (value.length < 12) {
+                                return "Nomor minimal 12 karakter";
+                              }
+                              return null;
+                            },
+                          ),
+                          height(20),
+                          Row(
+                            children: const [
+                              Text(
+                                "Password",
+                                style: TextStyle(color: Color(0xFF4962BF)),
+                              ),
+                            ],
+                          ),
+                          BuildTextField(
+                            hintText: "Buat password kamu",
+                            isPassword: true,
+                            controller: passwordController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Password tidak boleh kosong";
+                              } else if (value.length < 6) {
+                                return "Password minimal 6 karakter";
+                              }
+                              return null;
+                            },
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  height(20),
+
+                  // tombol registerFirebase
+                  MoveButton(
+                    text: "Register",
+                    isLoading: isLoading,
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          isLoading = true;
+                        });
+
+                        try {
+                          final result = await FirebaseService.registerUser(
+                            email: emailController.text,
+                            name: nameController.text,
+                            password: passwordController.text,
+                          );
+
+                          setState(() {
+                            isLoading = false;
+                            user = result;
+                          });
+
+                          if (user?.uid != null) {
+                            await PreferenceHandler.saveToken(user!.uid!);
+                          }
+
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginFirebase(),
+                            ),
+                          );
+                        } catch (e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          // Coba decode json error kalau bisa
+                          try {
+                            final errorJson = jsonDecode(e.toString());
+                            final msg =
+                                errorJson["message"] ?? "Terjadi kesalahan";
+
+                            Fluttertoast.showToast(msg: msg);
+                          } catch (_) {
+                            Fluttertoast.showToast(msg: e.toString());
+                          }
+
+                          return;
+                        }
+                      }
+                    },
+                  ),
+                  height(15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Sudah punya akun?",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 128, 127, 127),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginFirebase(),
+                            ),
+                          );
+                        },
+                        child: const Text("Sign in"),
+                      ),
                     ],
                   ),
-                ),
-
-                height(20),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+
+  SizedBox height(double height) => SizedBox(height: height);
+  SizedBox width(double width) => SizedBox(width: width);
 }

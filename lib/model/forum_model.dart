@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class ForumModel {
-  int? id;
+  String? id;
   String? name;
   String? posts;
   String? time;
@@ -20,7 +20,7 @@ class ForumModel {
 
   factory ForumModel.fromMap(Map<String, dynamic> map) {
     return ForumModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       posts: map['posts'] != null ? map['posts'] as String : null,
       time: map['time'] != null ? map['time'] as String : null,

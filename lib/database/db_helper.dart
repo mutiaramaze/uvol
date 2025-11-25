@@ -21,7 +21,7 @@ class DbHelper {
       join(dbPath, 'uvol.db'),
       onCreate: (db, version) async {
         await db.execute(
-          "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT)",
+          "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT, phone TEXT)",
         );
         // await db.execute(
         //   "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, posts TEXT)",
@@ -146,7 +146,7 @@ class DbHelper {
     );
   }
 
-  static Future<void> deletePostingan(int id) async {
+  static Future<void> deletePostingan(String id) async {
     final dbs = await db();
     await dbs.delete(tableForum, where: 'id = ?', whereArgs: [id]);
   }
@@ -186,6 +186,17 @@ class DbHelper {
   }
 
   //==ABOUT ME==
+  static Future<AboutModel?> getAbout() async {
+    final dbs = await db();
+
+    final res = await dbs.query(tableAbout, limit: 1);
+
+    if (res.isNotEmpty) {
+      return AboutModel.fromMap(res.first);
+    }
+    return null;
+  }
+
   static Future<void> insertAbout(AboutModel about) async {
     final database = await db();
     await database.insert(tableAbout, about.toMap());

@@ -5,15 +5,17 @@ class UserModel {
   int? id;
   String? name;
   String? email;
+  String? phone;
   String? password;
 
-  UserModel({this.id, this.name, this.email, this.password});
+  UserModel({this.id, this.name, this.email, this.phone, this.password});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'name': name,
       'email': email,
+      'phone': phone,
       'password': password,
     };
   }
@@ -23,6 +25,7 @@ class UserModel {
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
+      phone: map['phone'] != null ? map['phone'] as String : null,
       password: map['password'] != null ? map['password'] as String : null,
     );
   }

@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:uvol/constant/intro_splash.dart';
+import 'package:uvol/firebase_options.dart';
 import 'package:uvol/view/starting/about_me.dart';
 import 'package:uvol/view/main%20page/events.dart';
 import 'package:uvol/view/main%20page/forum.dart';
@@ -9,8 +11,12 @@ import 'package:uvol/view/make_post.dart';
 import 'package:uvol/view/profile.dart';
 import 'package:uvol/view/starting/register.dart';
 import 'package:uvol/widget/bottom_nav.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

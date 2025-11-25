@@ -3,7 +3,9 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:uvol/view/main%20page/events.dart';
 import 'package:uvol/view/main%20page/forum.dart';
 import 'package:uvol/view/main%20page/home.dart';
+import 'package:uvol/view/main%20page/home_firebase.dart';
 import 'package:uvol/view/profile.dart';
+import 'package:uvol/view/profile_firebase.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -15,10 +17,10 @@ class BottomNav extends StatefulWidget {
 class _Tugas8State extends State<BottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = [
-    Homepage(),
+    HomepageFirebase(),
     Events(),
     Forum(),
-    ProfilePage(),
+    ProfilePageFirebase(),
   ];
   @override
   Widget build(BuildContext context) {

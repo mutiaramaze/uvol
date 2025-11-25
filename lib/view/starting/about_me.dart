@@ -227,6 +227,7 @@ class _AboutMeState extends State<AboutMe> {
                           );
 
                           await DbHelper.insertAbout(aboutme);
+                          Navigator.pop(context, true);
                           Fluttertoast.showToast(msg: "Data anda tersimpan");
                           Navigator.pushReplacement(
                             context,
