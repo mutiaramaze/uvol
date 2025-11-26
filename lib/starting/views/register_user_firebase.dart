@@ -1,33 +1,43 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uvol/starting/views/register_organizer_firebase.dart';
 import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/firebase/models/user_firebase_model.dart';
+import 'package:uvol/firebase/service/firebase.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/starting/about_me.dart';
-import 'package:uvol/view/starting/login.dart';
+import 'package:uvol/volunteer/view/starting/about_me.dart';
+import 'package:uvol/volunteer/view/starting/login.dart';
+import 'package:uvol/volunteer/login_firebase.dart';
 import 'package:uvol/widget/build_text_field.dart';
+import 'package:uvol/widget/container_widget.dart';
 import 'package:uvol/widget/move_button.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
-  static const id = "/register";
+class RegisterUserFirebase extends StatefulWidget {
+  const RegisterUserFirebase({super.key});
+  static const id = "/registerUserFirebase";
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<RegisterUserFirebase> createState() => _RegisterUserFirebaseState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterUserFirebaseState extends State<RegisterUserFirebase> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
   bool isVisibility = false;
+  bool isLoading = false;
+  UserFirebaseModel? user;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 221, 231, 248)),
       backgroundColor: const Color.fromARGB(255, 221, 231, 248),
       body: Stack(children: [buildLayer()]),
     );
@@ -92,14 +102,8 @@ class _RegisterState extends State<Register> {
                             },
                           ),
                           height(20),
-                          Row(
-                            children: const [
-                              Text(
-                                "Email",
-                                style: TextStyle(color: Color(0xFF4962BF)),
-                              ),
-                            ],
-                          ),
+
+                          Row(children: [formLabel("Email")]),
                           BuildTextField(
                             hintText: "Masukkan email kamu",
                             controller: emailController,
@@ -117,14 +121,7 @@ class _RegisterState extends State<Register> {
                             },
                           ),
                           height(20),
-                          Row(
-                            children: const [
-                              Text(
-                                "Nomor Handphone",
-                                style: TextStyle(color: Color(0xFF4962BF)),
-                              ),
-                            ],
-                          ),
+                          Row(children: [formLabel("Nomor Handphone")]),
                           BuildTextField(
                             hintText: "Masukkan nomor handphone kamu",
                             controller: phoneController,
@@ -165,32 +162,56 @@ class _RegisterState extends State<Register> {
                   ),
                   height(20),
 
-                  // ✅ tombol register
+                  // tombol registerUserFirebase
                   MoveButton(
                     text: "Register",
+                    isLoading: isLoading,
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        final UserModel data = UserModel(
-                          name: nameController.text,
-                          email: emailController.text,
-                          password: passwordController.text,
-                        );
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                        // simpan ke database
-                        await DbHelper.registerUser(data);
-
-                        // simpan status login & data user ke preferences
-                        await PreferenceHandler.saveLogin(true);
-                        await PreferenceHandler.saveUser(data);
-
-                        Fluttertoast.showToast(msg: "Register Berhasil");
-
-                        // pindah ke halaman AboutMe
-                        if (mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => Login()),
+                        try {
+                          final result = await FirebaseService.registerUser(
+                            email: emailController.text,
+                            name: nameController.text,
+                            password: passwordController.text,
                           );
+
+                          setState(() {
+                            isLoading = false;
+                            user = result;
+                          });
+
+                          if (user?.uid != null) {
+                            await PreferenceHandler.saveToken(user!.uid!);
+                          }
+
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginFirebase(),
+                            ),
+                          );
+                        } catch (e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          // Coba decode json error kalau bisa
+                          try {
+                            final errorJson = jsonDecode(e.toString());
+                            final msg =
+                                errorJson["message"] ?? "Terjadi kesalahan";
+
+                            Fluttertoast.showToast(msg: msg);
+                          } catch (_) {
+                            Fluttertoast.showToast(msg: e.toString());
+                          }
+
+                          return;
                         }
                       }
                     },
@@ -210,7 +231,7 @@ class _RegisterState extends State<Register> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const Login(),
+                              builder: (context) => const LoginFirebase(),
                             ),
                           );
                         },

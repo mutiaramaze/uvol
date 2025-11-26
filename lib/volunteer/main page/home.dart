@@ -3,25 +3,21 @@ import 'package:uvol/constant/categories_home.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/dummy/detail_events.dart';
 import 'package:uvol/dummy/home_events.dart';
-import 'package:uvol/firebase/models/user_firebase_model.dart';
-import 'package:uvol/firebase/service/user_firebase.dart';
 import 'package:uvol/model/user_model.dart';
-import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/main%20page/events.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
 
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
 
-class HomepageFirebase extends StatefulWidget {
-  const HomepageFirebase({super.key});
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
 
   @override
-  State<HomepageFirebase> createState() => _HomepageFirebaseState();
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageFirebaseState extends State<HomepageFirebase> {
-  UserFirebaseModel? user;
+class _HomepageState extends State<Homepage> {
+  UserModel? user;
   String? selectedCategory;
 
   @override
@@ -32,10 +28,7 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
   }
 
   Future<void> _loadUser() async {
-    final token = await PreferenceHandler.getToken();
-    // print(token);
-    final data = await UserFirebaseService.getUser(token!);
-    print(data);
+    final data = await DbHelper.getUser();
     setState(() {
       user = data;
     });

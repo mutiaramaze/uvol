@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/dummy/detail_events.dart';
-import 'package:uvol/view/main%20page/events.dart';
-import 'package:uvol/view/question_events.dart';
+import 'package:uvol/volunteer/view/main%20page/events.dart';
+import 'package:uvol/volunteer/view/question_events.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/widget_%20detail.dart';
 

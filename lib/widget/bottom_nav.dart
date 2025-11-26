@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:uvol/view/main%20page/events.dart';
-import 'package:uvol/view/main%20page/forum.dart';
-import 'package:uvol/view/main%20page/home.dart';
-import 'package:uvol/view/main%20page/home_firebase.dart';
-import 'package:uvol/view/profile.dart';
-import 'package:uvol/view/profile_firebase.dart';
+import 'package:uvol/volunteer/main%20page/forum_firebase.dart';
+import 'package:uvol/volunteer/view/main%20page/events.dart';
+import 'package:uvol/volunteer/view/main%20page/forum.dart';
+import 'package:uvol/volunteer/view/main%20page/home.dart';
+import 'package:uvol/volunteer/view/main%20page/home_firebase.dart';
+import 'package:uvol/volunteer/view/profile.dart';
+import 'package:uvol/volunteer/main%20page/profile_firebase.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -19,7 +20,7 @@ class _Tugas8State extends State<BottomNav> {
   static const List<Widget> _widgetOptions = [
     HomepageFirebase(),
     Events(),
-    Forum(),
+    ForumFirebase(),
     ProfilePageFirebase(),
   ];
   @override

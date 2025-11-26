@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/starting/login.dart';
-import 'package:uvol/view/starting/about_me.dart';
-import 'package:uvol/view/starting/login_firebase.dart';
-import 'package:uvol/view/starting/register.dart';
-import 'package:uvol/view/starting/register_firebase.dart';
+import 'package:uvol/starting/register_choice.dart';
+import 'package:uvol/volunteer/view/starting/login.dart';
+import 'package:uvol/volunteer/view/starting/about_me.dart';
+import 'package:uvol/volunteer/login_firebase.dart';
+import 'package:uvol/volunteer/view/starting/register.dart';
+import 'package:uvol/starting/views/register_user_firebase.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 
@@ -35,7 +36,7 @@ class _IntroSplashState extends State<IntroSplash> {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const RegisterFirebase()),
+          MaterialPageRoute(builder: (context) => const RegisterUserFirebase()),
         );
       }
     });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/dummy/detail_events.dart';
-import 'package:uvol/view/detail_events.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
 
 Widget buildVolunteerRoleWithPoints({
   required int number,

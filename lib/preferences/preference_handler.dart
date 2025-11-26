@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uvol/firebase/models/aboutme_firebase_model.dart';
 import 'package:uvol/firebase/models/user_firebase_model.dart';
 import 'package:uvol/model/user_model.dart';
 
@@ -7,6 +8,8 @@ class PreferenceHandler {
   static const String isLogin = "isLogin";
   static const String userKey = "userData";
   static const String isToken = "isToken";
+  static const String aboutKey = "aboutMe";
+  static const String userRole = "userRole";
 
   // Simpan status login
   static Future<void> saveLogin(bool value) async {
@@ -61,5 +64,27 @@ class PreferenceHandler {
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(isToken);
+  }
+
+  static Future<void> saveAboutMe(AboutmeFirebaseModel about) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(aboutKey, about.toJson());
+  }
+
+  static Future<AboutmeFirebaseModel?> getAboutMe() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString(aboutKey);
+    if (jsonString == null) return null;
+    return AboutmeFirebaseModel.fromJson(jsonString);
+  }
+
+  static Future<void> saveRole(String role) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(userRole, role);
+  }
+
+  static Future<String?> getRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(userRole);
   }
 }

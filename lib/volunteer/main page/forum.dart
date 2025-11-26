@@ -4,16 +4,15 @@ import 'package:uvol/constant/time_ago.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/model/forum_model.dart';
 import 'package:uvol/model/user_model.dart';
-import 'package:uvol/view/main%20page/events.dart';
-import 'package:uvol/view/make_post.dart';
-import 'package:uvol/view/profile.dart';
+import 'package:uvol/volunteer/view/make_post.dart';
+import 'package:uvol/volunteer/view/profile.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/model/forum_model.dart';
 import 'package:uvol/model/user_model.dart';
-import 'package:uvol/view/make_post.dart';
+import 'package:uvol/volunteer/view/make_post.dart';
 
 class Forum extends StatefulWidget {
   const Forum({super.key});

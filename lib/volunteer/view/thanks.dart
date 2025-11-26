@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/view/main%20page/home.dart';
+import 'package:uvol/volunteer/view/main%20page/home.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 
 class ThanksPage extends StatelessWidget {

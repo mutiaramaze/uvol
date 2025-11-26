@@ -3,22 +3,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/firebase/models/aboutme_firebase_model.dart';
 import 'package:uvol/model/aboutme_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/detail_events.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/build_text_field.dart';
 import 'package:uvol/widget/move_button.dart';
 import 'package:file_picker/file_picker.dart';
 
-class AboutMe extends StatefulWidget {
-  AboutMe({super.key});
+class AboutMeFirebase extends StatefulWidget {
+  AboutMeFirebase({super.key});
 
   @override
-  State<AboutMe> createState() => _AboutMeState();
+  State<AboutMeFirebase> createState() => _AboutMeFirebaseState();
 }
 
-class _AboutMeState extends State<AboutMe> {
+class _AboutMeFirebaseState extends State<AboutMeFirebase> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController aboutController = TextEditingController();
   final TextEditingController skillsController = TextEditingController();
@@ -227,6 +228,14 @@ class _AboutMeState extends State<AboutMe> {
                           );
 
                           await DbHelper.insertAbout(aboutme);
+                          await PreferenceHandler.saveAboutMe(
+                            AboutmeFirebaseModel(
+                              storyaboutme: aboutController.text,
+                              skill: skillsController.text,
+                              cv: cvController.text,
+                            ),
+                          );
+
                           Navigator.pop(context, true);
                           Fluttertoast.showToast(msg: "Data anda tersimpan");
                           Navigator.pushReplacement(

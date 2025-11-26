@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/view/main%20page/events.dart';
-import 'package:uvol/view/main%20page/home.dart';
-import 'package:uvol/view/thanks.dart';
+import 'package:uvol/volunteer/view/main%20page/events.dart';
+import 'package:uvol/volunteer/view/main%20page/home.dart';
+import 'package:uvol/volunteer/view/thanks.dart';
 import 'package:uvol/widget/widget_%20detail.dart';
 
 class QuestioningEvent extends StatefulWidget {

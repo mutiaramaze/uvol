@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/dummy/detail_events.dart';
-import 'package:uvol/view/detail_events.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
 

@@ -188,9 +188,7 @@ class DbHelper {
   //==ABOUT ME==
   static Future<AboutModel?> getAbout() async {
     final dbs = await db();
-
     final res = await dbs.query(tableAbout, limit: 1);
-
     if (res.isNotEmpty) {
       return AboutModel.fromMap(res.first);
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/main%20page/events.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
+import 'package:uvol/volunteer/view/main%20page/events.dart';
 import 'package:uvol/widget/app_images.dart';
 
 //forum
@@ -187,31 +187,33 @@ class ParticipatedWidget extends StatelessWidget {
                 ],
               ),
               height(20),
-              Positioned(
-                bottom: 8,
-                right: 15,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF4962BF), // warna biru elegan
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.download, color: Colors.white, size: 18),
-                      width(5),
-                      Text(
-                        "Certificate",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+              GestureDetector(
+                child: Positioned(
+                  bottom: 8,
+                  right: 15,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4962BF), // warna biru elegan
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.download, color: Colors.white, size: 18),
+                        width(5),
+                        Text(
+                          "Sertifikat",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -246,13 +248,7 @@ class HomeWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white,
-                blurRadius: 5,
-                offset: Offset(2, 4),
-              ),
-            ],
+            boxShadow: [BoxShadow(color: Colors.white, blurRadius: 5)],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -263,11 +259,19 @@ class HomeWidget extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
-                child: Image.asset(
+                child: Image.network(
                   volImage,
-                  width: double.infinity,
                   height: 150,
+                  width: double.infinity,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      height: 90,
+                      width: 110,
+                      color: Colors.grey.shade300,
+                      child: Icon(Icons.image_not_supported),
+                    );
+                  },
                 ),
               ),
 
@@ -332,4 +336,79 @@ class HomeWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+// Widget label(String text) {
+//   return Padding(
+//     padding: const EdgeInsets.only(bottom: 6, top: 16),
+//     child: Text(text, style: TextStyle(color: Color(0xFF4962BF))),
+//   );
+// }
+
+class BuildTextField extends StatefulWidget {
+  final String? hintText;
+  final bool isPassword;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final int maxLines;
+  final TextInputType keyboardType;
+
+  const BuildTextField({
+    super.key,
+    this.hintText,
+    this.isPassword = false,
+    this.controller,
+    this.validator,
+    this.maxLines = 1,
+    this.keyboardType = TextInputType.text,
+  });
+
+  @override
+  State<BuildTextField> createState() => _BuildTextFieldState();
+}
+
+class _BuildTextFieldState extends State<BuildTextField> {
+  bool isVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.controller,
+      validator: widget.validator,
+      obscureText: widget.isPassword ? !isVisible : false,
+      maxLines: widget.isPassword ? 1 : widget.maxLines,
+      keyboardType: widget.keyboardType,
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        filled: true,
+        fillColor: const Color(0xFFF5F6FA),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+
+        // suffix icon untuk password
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    isVisible = !isVisible;
+                  });
+                },
+                icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off),
+              )
+            : null,
+      ),
+    );
+  }
+}
+
+Widget formLabel(String text) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 18, bottom: 8),
+    child: Text(
+      text,
+      style: const TextStyle(
+        color: Color(0xFF4962BF),
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  );
 }

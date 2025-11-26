@@ -4,22 +4,23 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/starting/about_me.dart';
-import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/main%20page/home.dart';
-import 'package:uvol/view/starting/register.dart';
+import 'package:uvol/volunteer/view/starting/about_me.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
+import 'package:uvol/volunteer/main%20page/home.dart';
+import 'package:uvol/volunteer/view/starting/register.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/build_text_field.dart';
+import 'package:uvol/widget/container_widget.dart';
 import 'package:uvol/widget/move_button.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginFirebase extends StatefulWidget {
+  const LoginFirebase({super.key});
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginFirebase> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<LoginFirebase> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -27,7 +28,6 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // utility kecil untuk spacing
   SizedBox height(double h) => SizedBox(height: h);
 
   @override
@@ -59,7 +59,6 @@ class _LoginState extends State<Login> {
                 const Text("Login to access your account"),
                 height(24),
 
-                // KOTAK FORM + TOMBOL LOGIN + REGISTER
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -114,7 +113,6 @@ class _LoginState extends State<Login> {
 
                       height(25),
 
-                      // TOMBOL LOGIN (deket sama password)
                       Center(
                         child: MoveButton(
                           text: "Login",

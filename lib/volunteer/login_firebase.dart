@@ -4,13 +4,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/starting/about_me.dart';
-import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/main%20page/home.dart';
-import 'package:uvol/view/starting/register.dart';
+import 'package:uvol/starting/views/register_user_firebase.dart';
+import 'package:uvol/volunteer/view/starting/about_me.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
+import 'package:uvol/volunteer/view/main%20page/home.dart';
+import 'package:uvol/volunteer/view/starting/register.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 import 'package:uvol/widget/build_text_field.dart';
+import 'package:uvol/widget/container_widget.dart';
 import 'package:uvol/widget/move_button.dart';
 
 class LoginFirebase extends StatefulWidget {
@@ -55,7 +57,7 @@ class _LoginState extends State<LoginFirebase> {
                 height(30),
                 Image.asset(AppImages.uvolpng, height: 100),
                 height(15),
-                const Text("LoginFirebase to access your account"),
+                const Text("Login to access your account"),
                 height(24),
 
                 Container(
@@ -177,7 +179,8 @@ class _LoginState extends State<LoginFirebase> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const Register(),
+                                  builder: (context) =>
+                                      const RegisterUserFirebase(),
                                 ),
                               );
                             },

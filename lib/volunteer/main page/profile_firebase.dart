@@ -7,8 +7,8 @@ import 'package:uvol/firebase/service/user_firebase.dart';
 import 'package:uvol/model/aboutme_model.dart';
 import 'package:uvol/model/user_model.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/view/detail_events.dart';
-import 'package:uvol/view/settings.dart';
+import 'package:uvol/volunteer/view/detail_events.dart';
+import 'package:uvol/volunteer/view/settings.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/build_text_field.dart';
 import 'package:uvol/widget/container_widget.dart';
@@ -28,7 +28,7 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
   void initState() {
     super.initState();
     _loadUser();
-    // _loadAbout();
+    _loadAbout();
   }
 
   getData() {
@@ -245,10 +245,8 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
                     "Tentang saya",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
+                  Text(about?.skill ?? "Belum ada data"),
 
-                  const Text(
-                    "Seorang relawan yang bersemangat di bidang lingkungan dan pendidikan anak. Mahir dalam desain grafis dan penulisan konten. Siap membantu di area Jakarta dan sekitarnya.",
-                  ),
                   height(30),
                   const Text(
                     "Skill saya",
@@ -312,30 +310,6 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
                           ? about!.cv!.split('/').last
                           : "Belum ada CV",
                       overflow: TextOverflow.ellipsis,
-                    ),
-
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
-                        horizontal: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade400),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.attach_file, size: 20),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              "Pilih file CV",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
 
                     const SizedBox(height: 20),
