@@ -1,23 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uvol/model/events.model.dart';
 
-class EventsFirebaseService {
-  static final _ref = FirebaseFirestore.instance.collection("events");
+class JoinEventService {
+  static final _db = FirebaseFirestore.instance;
 
-  static Future<void> insertEvents(EventsModel data) async {
-    await _ref.add(data.toMap());
+  static Future<void> joinEvent({
+    required String userId,
+    required Map<String, dynamic> event,
+  }) async {
+    await _db
+        .collection('users')
+        .doc(userId)
+        .collection('my_events')
+        .doc(event['id']) // id event unik
+        .set(event);
   }
 
-  static Future<List<EventsModel>> getAllEvents() async {
-    final snap = await _ref.get();
-    return snap.docs.map((e) => EventsModel.fromMap(e.data())).toList();
-  }
-
-  static Future<void> updateEvents(EventsModel data) async {
-    await _ref.doc(data.id).update(data.toMap());
-  }
-
-  static Future<void> deleteEvents(String id) async {
-    await _ref.doc(id).delete();
+  static Stream<List<Map<String, dynamic>>> getMyEvents(String userId) {
+    return _db
+        .collection('users')
+        .doc(userId)
+        .collection('my_events')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 }

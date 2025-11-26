@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:uvol/volunteer/main%20page/forum_firebase.dart';
 import 'package:uvol/volunteer/view/main%20page/events.dart';
+import 'package:uvol/volunteer/view/main%20page/events_firebase.dart';
 import 'package:uvol/volunteer/view/main%20page/forum.dart';
 import 'package:uvol/volunteer/view/main%20page/home.dart';
 import 'package:uvol/volunteer/view/main%20page/home_firebase.dart';
@@ -19,7 +20,7 @@ class _Tugas8State extends State<BottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = [
     HomepageFirebase(),
-    Events(),
+    EventsFirebase(),
     ForumFirebase(),
     ProfilePageFirebase(),
   ];

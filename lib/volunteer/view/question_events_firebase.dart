@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/firebase/service/events_firebase.dart';
 import 'package:uvol/model/events.model.dart';
+import 'package:uvol/preferences/preference_handler.dart';
 import 'package:uvol/volunteer/view/main%20page/events.dart';
 import 'package:uvol/volunteer/view/main%20page/home.dart';
 import 'package:uvol/volunteer/view/thanks.dart';
@@ -112,30 +114,50 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      final uid = await PreferenceHandler.getUserID();
+                      if (uid == null) return;
+
+                      final event = widget.event;
+
+                      // DATA YANG AKAN DISIMPAN
+                      final joinedEvent = {
+                        "id": event.title, // atau event.id jika ada
+                        "titleText": event.title,
+                        "date": event.date,
+                        "location": event.location,
+                        "image": event.image,
+                        "answer1": answer1Controller.text,
+                        "answer2": answer2Controller.text,
+                        "time": DateTime.now().toIso8601String(),
+                      };
+
+                      await JoinEventService.joinEvent(
+                        userId: uid,
+                        event: joinedEvent,
+                      );
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
-                            "Kamu berhasil mengirim jawaban! Tunggu konfirmasi ya!",
+                            "Kamu berhasil mendaftar event!",
                             style: TextStyle(color: Colors.white),
                           ),
                           backgroundColor: Color(0xFF4962BF),
-                          duration: Duration(seconds: 2),
                         ),
                       );
 
-                      Future.delayed(const Duration(seconds: 2), () {
+                      Future.delayed(Duration(seconds: 2), () {
                         Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const ThanksPage(),
-                          ),
+                          MaterialPageRoute(builder: (_) => const ThanksPage()),
                           (route) => false,
                         );
                       });
                     }
                   },
+
                   child: Text("Simpan", style: TextStyle(color: Colors.white)),
                 ),
               ),

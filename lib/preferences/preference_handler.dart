@@ -10,6 +10,7 @@ class PreferenceHandler {
   static const String isToken = "isToken";
   static const String aboutKey = "aboutMe";
   static const String userRole = "userRole";
+  static const String userIDKey = "userID";
 
   // Simpan status login
   static Future<void> saveLogin(bool value) async {
@@ -86,5 +87,15 @@ class PreferenceHandler {
   static Future<String?> getRole() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(userRole);
+  }
+
+  static Future<void> saveUserID(String uid) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(userIDKey, uid);
+  }
+
+  static Future<String?> getUserID() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(userIDKey);
   }
 }

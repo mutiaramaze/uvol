@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       ),
 
       // 👇 GANTI halaman awal ke Splash Screen
-      home: const IntroSplash(),
+      home: const BottomNav(),
 
       // 👇 Tambahkan route agar bisa navigasi ke halaman lain dengan mudah
       routes: {
