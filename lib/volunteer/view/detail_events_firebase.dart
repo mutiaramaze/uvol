@@ -1,183 +1,190 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uvol/dummy/detail_events.dart';
-import 'package:uvol/volunteer/view/main%20page/events.dart';
+import 'package:uvol/firebase/models/detail_model_firebase.dart';
+import 'package:uvol/views/starting/views/login_firebase.dart';
 import 'package:uvol/volunteer/view/question_events.dart';
-import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/volunteer/view/question_events_firebase.dart';
 import 'package:uvol/widget/widget_%20detail.dart';
 
-class TapEventsFirebase extends StatefulWidget {
-  const TapEventsFirebase({super.key});
+class TapEventsFirebase extends StatelessWidget {
+  final DetailModelFirebase event;
+  const TapEventsFirebase({super.key, required this.event});
 
-  @override
-  State<TapEventsFirebase> createState() => _TapEventsFirebaseState();
-}
-
-class _TapEventsFirebaseState extends State<TapEventsFirebase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 221, 231, 248),
+      backgroundColor: Color(0xFFE9EFF8),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // ================= IMAGE HEADER =================
             Stack(
               children: [
                 Container(
                   width: double.infinity,
                   height: 200,
-                  child: Image.asset(AppImages.soi, fit: BoxFit.cover),
+                  child: Image.asset(event.image!, fit: BoxFit.cover),
                 ),
 
                 Positioned(
                   top: 40,
                   left: 15,
-                  right: 15,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white.withOpacity(0.8),
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back, color: Colors.black),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.8),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.black),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ),
                 ),
               ],
             ),
 
+            // ================= DETAIL CONTENT =================
             Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Text(
+                      event.title ?? "",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
 
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Scent of Indonesia",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                    SizedBox(height: 15),
+                    Text(
+                      "Activity Details",
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                    SizedBox(height: 8),
+
+                    Row(
+                      children: [
+                        Icon(Icons.date_range, size: 18),
+                        SizedBox(width: 5),
+                        Text(event.date ?? ""),
+                      ],
+                    ),
+
+                    SizedBox(height: 5),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.pin_drop, size: 18),
+                        SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            event.location ?? "",
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      height(15),
-                      Text(
-                        "Activity Details",
-                        style: TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                      height(8),
-                      Row(
-                        children: [
-                          Icon(Icons.date_range, size: 18),
-                          width(5),
-                          Text("12-14 Desember 2025"),
-                        ],
-                      ),
-                      height(5),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.pin_drop, size: 18),
-                          width(5),
-                          Expanded(
-                            child: Text(
-                              "Pasaraya, Blok M, Jakarta Selatan",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
+                      ],
+                    ),
 
-                      height(20),
-                      Divider(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'About',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text(
-                            "Experience it from the inside, be part of Indonesia's first local fragrance market behind the scenes!",
-                          ),
-                          height(8),
-                          Text(
-                            'Requirements',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
+                    SizedBox(height: 20),
+                    Divider(),
 
-                          Text("1. Minimum age: 17 years old."),
-                          Text(
-                            "2. Willing to fully participate in our event for 3 days (12-14 December 2025).",
-                          ),
-                          height(8),
-                          Text(
-                            'Benefits',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          Text("1. Networking"),
-                          Text("2. Konsumsi 2x sehari (Selama event)"),
-                          Text(
-                            "3. Fee IDR300,000 (Nominal total selama event)",
-                          ),
-                          Text("4. ID card"),
-                          Text("5. E-certificate"),
-                          height(10),
-
-                          Divider(),
-                          height(10),
-                          Text(
-                            'Volunteer Position & Job Description',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(volunteerRoles.length, (
-                              index,
-                            ) {
-                              final role = volunteerRoles[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 15),
-                                child: buildVolunteerRoleWithPoints(
-                                  number: index + 1, //otomatis urut
-                                  title: role['title']!,
-                                  points: List<String>.from(role['points']!),
-                                ),
-                              );
-                            }),
-                          ),
-                        ],
+                    // ================= ABOUT =================
+                    Text(
+                      "About",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 6),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: event.about!.map((a) => Text("• $a")).toList(),
+                    ),
+
+                    SizedBox(height: 15),
+
+                    // ================= REQUIREMENTS =================
+                    Text(
+                      "Requirements",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: event.requirements!
+                          .asMap()
+                          .entries
+                          .map((e) => Text("${e.key + 1}. ${e.value}"))
+                          .toList(),
+                    ),
+
+                    SizedBox(height: 15),
+
+                    // ================= BENEFITS =================
+                    Text(
+                      "Benefits",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: event.benefits!
+                          .asMap()
+                          .entries
+                          .map((e) => Text("${e.key + 1}. ${e.value}"))
+                          .toList(),
+                    ),
+
+                    SizedBox(height: 20),
+                    Divider(),
+
+                    // ================= POSITIONS =================
+                    Text(
+                      "Volunteer Position & Job Description",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(event.positions!.length, (index) {
+                        final role = event.positions![index];
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: buildVolunteerRoleWithPoints(
+                            number: index + 1,
+                            title: role["title"],
+                            points: List<String>.from(role["points"]),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
               ),
             ),
+
+            // ================= BUTTON DAFTAR =================
             Padding(
               padding: const EdgeInsets.all(15),
               child: Align(
@@ -191,17 +198,16 @@ class _TapEventsFirebaseState extends State<TapEventsFirebase> {
                       ),
                     );
                   },
+
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   child: Text(
-                    'Daftar',
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 6, 94, 167),
-                    ),
+                    "Daftar",
+                    style: TextStyle(color: Color(0xFF065EA7)),
                   ),
                 ),
               ),
@@ -212,6 +218,3 @@ class _TapEventsFirebaseState extends State<TapEventsFirebase> {
     );
   }
 }
-
-SizedBox height(double height) => SizedBox(height: height);
-SizedBox width(double width) => SizedBox(width: width);

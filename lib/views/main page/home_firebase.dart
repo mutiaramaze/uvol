@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/constant/categories_home.dart';
-import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/dummy/data_events.dart';
 import 'package:uvol/dummy/detail_events.dart';
 import 'package:uvol/dummy/home_events.dart';
 import 'package:uvol/firebase/models/user_firebase_model.dart';
 import 'package:uvol/firebase/service/user_firebase.dart';
-import 'package:uvol/model/user_model.dart';
-import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/volunteer/view/detail_events.dart';
-import 'package:uvol/volunteer/view/main%20page/events.dart';
-
+import 'package:uvol/preferences/preference_handler_firebase.dart';
+import 'package:uvol/volunteer/view/detail_events_firebase.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/container_widget.dart';
+import 'package:uvol/model/events.model.dart';
 
 class HomepageFirebase extends StatefulWidget {
   const HomepageFirebase({super.key});
@@ -23,35 +19,72 @@ class HomepageFirebase extends StatefulWidget {
 
 class _HomepageFirebaseState extends State<HomepageFirebase> {
   UserFirebaseModel? user;
-  String? selectedCategory;
+  String? selectedCategory = "All";
+
+  // 🔥 SEARCH VARIABLE
+  final TextEditingController searchC = TextEditingController();
+  String searchText = "";
+
+  // FILTER RESULT
+  List<EventsModel> filteredEvents = dataEvents;
 
   @override
   void initState() {
     super.initState();
     _loadUser();
-    print(user?.name);
+
+    filteredEvents = dataEvents;
+    selectedCategory = "All";
   }
 
+  // =========================================================
+  // GET USER
+  // =========================================================
   Future<void> _loadUser() async {
-    final token = await PreferenceHandler.getToken();
-    // print(token);
-    final data = await UserFirebaseService.getUser(token!);
-    print(data);
-    setState(() {
-      user = data;
-    });
+    final savedUser = await PreferenceHandlerFirebase.getFirebaseUser();
 
-    // Debug kalau mau
-    print("USER DARI DB: ${user?.name}");
+    if (savedUser != null) {
+      setState(() => user = savedUser);
+    }
+
+    final token = await PreferenceHandlerFirebase.getToken();
+    if (token == null) return;
+
+    final data = await UserFirebaseService.getUser(token);
+    if (data != null) {
+      setState(() => user = data);
+      await PreferenceHandlerFirebase.saveFirebaseUser(data);
+    }
+  }
+
+  // =========================================================
+  // 🔥 FINAL FILTERING (CATEGORY + SEARCH)
+  // =========================================================
+  List<EventsModel> get finalFilteredEvents {
+    List<EventsModel> list = filteredEvents;
+
+    // SEARCH
+    if (searchText.isNotEmpty) {
+      list = list.where((ev) {
+        final title = ev.title?.toLowerCase() ?? "";
+        final location = ev.location?.toLowerCase() ?? "";
+        return title.contains(searchText) || location.contains(searchText);
+      }).toList();
+    }
+
+    return list;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 221, 231, 248),
+      backgroundColor: const Color(0xFFE9EFF8),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // =====================================================
+            // HEADER
+            // =====================================================
             Container(
               padding: EdgeInsets.all(30),
               decoration: BoxDecoration(
@@ -75,32 +108,40 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
                           ),
                         ),
                         Text(
-                          "${user?.name ?? ""} 👋",
+                          "${user?.name ?? ''} 👋",
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.notifications, color: Colors.white),
-                  ),
                 ],
               ),
             ),
+
             height(10),
 
+            // =====================================================
+            // 🔍 SEARCH BAR — berfungsi sekarang
+            // =====================================================
             Padding(
               padding: const EdgeInsets.all(20),
               child: SizedBox(
                 height: 40,
                 child: SearchBar(
+                  controller: searchC,
+                  onChanged: (value) {
+                    setState(() => searchText = value.toLowerCase());
+                  },
                   leading: const Icon(Icons.search),
                   hintText: "Search",
                   backgroundColor: WidgetStatePropertyAll(Colors.white),
                 ),
               ),
             ),
+
+            // =====================================================
+            // BANNER
+            // =====================================================
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
@@ -174,7 +215,11 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
               ),
             ),
 
-            height(18),
+            height(10),
+
+            // =====================================================
+            // CATEGORY FILTER
+            // =====================================================
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SingleChildScrollView(
@@ -182,84 +227,70 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
                 child: Row(
                   children: categories.map((category) {
                     final bool isSelected = selectedCategory == category;
+
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: ChoiceChip(
-                        label: Text(
-                          category,
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black87,
+                        label: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 2,
+                          ),
+                          child: Text(
+                            category,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: isSelected ? Colors.white : Colors.black87,
+                            ),
                           ),
                         ),
                         selected: isSelected,
-                        selectedColor: const Color(0xFF4962BF),
+
+                        // warna chip
                         backgroundColor: Colors.white,
+                        selectedColor: const Color(0xFF4962BF),
+
+                        // hilangkan check icon
                         showCheckmark: false,
+
+                        // bikin chip lebih rounded + border stylish
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(25),
                           side: BorderSide(
+                            width: 1.4,
                             color: isSelected
                                 ? const Color(0xFF4962BF)
                                 : Colors.grey.shade400,
                           ),
                         ),
+
+                        // efek bayangan kecil khusus chip yg dipilih
+                        elevation: isSelected ? 3 : 0,
+                        pressElevation: 1,
+
                         onSelected: (bool selected) {
                           setState(() {
-                            selectedCategory = selected ? category : null;
-                          });
+                            if (selected) {
+                              selectedCategory = category;
 
-                          if (selected) {
-                            // Navigasi ke halaman berdasarkan kategori
-                            switch (category) {
-                              case 'Lingkungan':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Lingkungan(),
-                                  ),
-                                );
-                                break;
-
-                              case 'Pendidikan':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Pendidikan(),
-                                  ),
-                                );
-                                break;
-
-                              case 'Sosial':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Sosial(),
-                                  ),
-                                );
-                                break;
-
-                              case 'Kesehatan':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Kesehatan(),
-                                  ),
-                                );
-                                break;
-
-                              case 'Budaya':
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Budaya(),
-                                  ),
-                                );
-                                break;
-
-                              default:
-                                break;
+                              if (category == "All") {
+                                filteredEvents =
+                                    dataEvents; // 🔥 tampilkan semua
+                              } else {
+                                filteredEvents = dataEvents
+                                    .where(
+                                      (ev) =>
+                                          ev.category?.toLowerCase() ==
+                                          category.toLowerCase(),
+                                    )
+                                    .toList();
+                              }
+                            } else {
+                              selectedCategory = "All"; // fallback tetap All
+                              filteredEvents = dataEvents;
                             }
-                          }
+                          });
                         },
                       ),
                     );
@@ -268,33 +299,32 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
               ),
             ),
 
-            height(15),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Row(
-                children: [
-                  Text(
-                    "Semua Kegiatan",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-            height(8),
+            height(10),
+
+            // =====================================================
+            // LIST EVENT YANG SUDAH SEARCH+FILTER
+            // =====================================================
             ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 10),
               padding: EdgeInsets.symmetric(horizontal: 20),
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: dataEvents.length,
-              itemBuilder: (BuildContext context, int index) {
-                final event = dataEvents[index];
+              itemCount: finalFilteredEvents.length,
+              itemBuilder: (context, index) {
+                final event = finalFilteredEvents[index];
 
                 return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
+                    final detail = detailEvents.firstWhere(
+                      (d) => d.title == event.title,
+                    );
+
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TapEvents()),
+                      MaterialPageRoute(
+                        builder: (context) => TapEventsFirebase(event: detail),
+                      ),
                     );
                   },
 
@@ -313,3 +343,5 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
     );
   }
 }
+
+SizedBox height(double h) => SizedBox(height: h);

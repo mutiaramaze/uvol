@@ -1,4 +1,4 @@
-// lib/day_19/services/user_firebase_service.dart
+// lib/firebase/service/user_firebase_service.dart
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uvol/firebase/models/user_firebase_model.dart';
@@ -7,92 +7,89 @@ class UserFirebaseService {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   static CollectionReference<Map<String, dynamic>> get _userRef =>
-      firestore.collection('user');
+      firestore.collection('users');
 
-  /// CREATE user (tambah siswa)
+  // ==============================================================
+  // CREATE USER (buat akun baru)
+  // ==============================================================
   static Future<UserFirebaseModel> createUser(UserFirebaseModel user) async {
-    // bikin dokumen baru dengan auto id
-    final doc = _userRef.doc();
+    final doc = _userRef.doc(); // auto UID
 
-    // siapkan map untuk disimpan
     final data = {
       ...user.toMap(),
-      'id': doc.id,
+      'uid': doc.id, // ← WAJIB
       'createdAt': DateTime.now().toIso8601String(),
       'updatedAt': DateTime.now().toIso8601String(),
     };
 
-    // simpan ke Firestore
     await doc.set(data);
-    log('data: $data');
-    log('data doc id: ${doc.id}');
-    // kembalikan model dengan id dokumen (kalau UserModelFirebase support id String)
-    // sesuaikan dengan konstruktor UserModelFirebase kamu
-    return UserFirebaseModel.fromMap({
-      // 'id': doc.id, // pastikan fromMap bisa handle String
-      ...data,
-    });
+
+    log("✔ USER CREATED: $data");
+
+    return UserFirebaseModel.fromMap(data);
   }
 
-  /// READ ALL user (ambil semua siswa)
-  static Future<List<UserFirebaseModel>> getAllUser() async {
-    final snap = await _userRef.orderBy('createdAt', descending: false).get();
+  // ==============================================================
+  // GET USER BY UID
+  // ==============================================================
+  static Future<UserFirebaseModel?> getUser(String uid) async {
+    final doc = await _userRef.doc(uid).get();
+    if (!doc.exists) return null;
 
-    final list = snap.docs.map((doc) {
-      final data = doc.data();
+    final data = doc.data()!;
+    data['uid'] = doc.id; // ← WAJIB
 
-      // gabung doc.id sebagai id ke map
-      return UserFirebaseModel.fromMap({'id': doc.id, ...data});
-    }).toList();
-
-    return list;
+    return UserFirebaseModel.fromMap(data);
   }
 
-  static Stream<List<UserFirebaseModel>> streamAllUser() {
-    return _userRef.orderBy('createdAt', descending: false).snapshots().map((
-      snap,
-    ) {
-      return snap.docs.map((doc) {
-        final data = doc.data();
-
-        // pastikan id selalu ada
-        data['id'] ??= doc.id;
-
-        return UserFirebaseModel.fromMap(data);
-      }).toList();
-    });
-  }
-
-  /// UPDATE user
-  ///
-  /// asumsi: di UserModelFirebase sudah ada field `id` yang menyimpan docId Firestore
+  // ==============================================================
+  // UPDATE USER
+  // ==============================================================
   static Future<void> updateUser(UserFirebaseModel user) async {
-    if (user.uid!.isEmpty) {
-      print("❌ UID kosong! Update dibatalkan");
+    if (user.uid == null || user.uid!.isEmpty) {
+      log("❌ UPDATE dibatalkan: UID kosong");
       return;
     }
 
-    final data = user.toMap()
-      ..removeWhere((key, value) => value == null); // HINDARI overwrite null
+    final data = user.toMap()..removeWhere((key, value) => value == null);
 
-    print("UPDATE FIREBASE => $data");
+    data['updatedAt'] = DateTime.now().toIso8601String();
 
-    await firestore
-        .collection('user')
-        .doc(user.uid)
-        .set(data, SetOptions(merge: true));
+    await _userRef.doc(user.uid).set(data, SetOptions(merge: true));
+
+    log("✔ USER UPDATED: $data");
   }
 
-  /// DELETE user
-  ///
-  /// docId = id dokumen di Firestore
-  static Future<void> deleteuser(String docId) async {
-    await _userRef.doc(docId).delete();
+  // ==============================================================
+  // DELETE USER
+  // ==============================================================
+  static Future<void> deleteUser(String uid) async {
+    await _userRef.doc(uid).delete();
   }
 
-  static Future<UserFirebaseModel?> getUser(String uid) async {
-    final doc = await firestore.collection('user').doc(uid).get();
-    if (!doc.exists) return null;
-    return UserFirebaseModel.fromMap(doc.data()!);
+  // ==============================================================
+  // GET ALL USERS
+  // ==============================================================
+  static Future<List<UserFirebaseModel>> getAllUser() async {
+    final snap = await _userRef.orderBy('createdAt').get();
+
+    return snap.docs.map((doc) {
+      final data = doc.data();
+      data['uid'] = doc.id; // ← WAJIB
+      return UserFirebaseModel.fromMap(data);
+    }).toList();
+  }
+
+  // ==============================================================
+  // STREAM ALL USERS
+  // ==============================================================
+  static Stream<List<UserFirebaseModel>> streamAllUser() {
+    return _userRef.orderBy('createdAt').snapshots().map((snap) {
+      return snap.docs.map((doc) {
+        final data = doc.data();
+        data['uid'] = doc.id; // ← WAJIB
+        return UserFirebaseModel.fromMap(data);
+      }).toList();
+    });
   }
 }

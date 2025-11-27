@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:uvol/firebase/models/user_firebase_model.dart';
+import 'package:uvol/preferences/preference_handler_firebase.dart';
 
 class FirebaseService {
   static final FirebaseAuth auth = FirebaseAuth.instance;
@@ -11,20 +12,30 @@ class FirebaseService {
     required String email,
     required String name,
     required String password,
+    required String phone,
   }) async {
     final cred = await auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
     final user = cred.user!;
+
     final model = UserFirebaseModel(
       uid: user.uid,
       name: name,
+      phone: phone,
       email: email,
       createdAt: DateTime.now().toIso8601String(),
       updatedAt: DateTime.now().toIso8601String(),
     );
-    await firestore.collection('user').doc(user.uid).set(model.toMap());
+
+    await firestore.collection('users').doc(user.uid).set(model.toMap());
+
+    //  WAJIB — SIMPAN UID
+    await PreferenceHandlerFirebase.saveFirebaseUser(model);
+    await PreferenceHandlerFirebase.saveToken(model.uid!);
+
     return model;
   }
 

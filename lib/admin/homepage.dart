@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/admin/create_events.dart';
-import 'package:uvol/starting/register_choice.dart';
+import 'package:uvol/views/starting/register_choice.dart';
 import 'package:uvol/volunteer/view/settings.dart';
-import 'package:uvol/volunteer/login_firebase.dart';
 
 class OrganizerPage extends StatelessWidget {
   const OrganizerPage({super.key});

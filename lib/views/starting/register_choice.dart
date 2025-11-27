@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/starting/views/register_organizer_firebase.dart';
+import 'package:uvol/views/starting/views/register_organizer_firebase.dart';
 import 'package:uvol/volunteer/view/main%20page/events.dart';
-import 'package:uvol/starting/views/register_user_firebase.dart';
+import 'package:uvol/views/starting/views/register_user_firebase.dart';
 
 class RegisterChoicePage extends StatelessWidget {
   const RegisterChoicePage({super.key});

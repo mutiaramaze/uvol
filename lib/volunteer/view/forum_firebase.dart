@@ -85,7 +85,6 @@ class _ForumFirebaseState extends State<ForumFirebase> {
     return Scaffold(
       backgroundColor: Color(0xFFE9EFF8),
 
-      // 🔥 FAB Add Post
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF4962BF),
         child: Icon(Icons.add, color: Colors.white),

@@ -1,26 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uvol/firebase/models/questionnig_model_firebase.dart';
 
 class JoinEventService {
   static final _db = FirebaseFirestore.instance;
 
+  /// SAVE EVENT AFTER USER JOINS
   static Future<void> joinEvent({
     required String userId,
-    required Map<String, dynamic> event,
+    required QuestionningModelFirebase event,
   }) async {
-    await _db
+    // Auto-generate document ID
+    final docRef = _db
         .collection('users')
         .doc(userId)
         .collection('my_events')
-        .doc(event['id']) // id event unik
-        .set(event);
+        .doc(); // AUTO-ID
+
+    final eventId = docRef.id;
+
+    // Convert model ke map
+    final data = event.toMap();
+
+    // Pastikan ID tersimpan
+    data['id'] = eventId;
+
+    // Tambahkan waktu join
+    data['timeJoined'] = DateTime.now().toIso8601String();
+
+    // SIMPAN DATA
+    await docRef.set(data);
   }
 
-  static Stream<List<Map<String, dynamic>>> getMyEvents(String userId) {
+  /// GET ALL EVENTS JOINED BY USER
+  static Stream<List<QuestionningModelFirebase>> getMyEvents(String userId) {
     return _db
         .collection('users')
         .doc(userId)
         .collection('my_events')
+        .orderBy('timeJoined', descending: true)
         .snapshots()
-        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+        .map((snap) {
+          return snap.docs.map((doc) {
+            final data = doc.data();
+
+            // Set id dari firestore
+            data['id'] = doc.id;
+
+            return QuestionningModelFirebase.fromMap(data);
+          }).toList();
+        });
   }
 }

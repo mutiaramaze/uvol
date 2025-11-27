@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:uvol/volunteer/main%20page/forum_firebase.dart';
+import 'package:uvol/views/main%20page/forum_firebase.dart';
 import 'package:uvol/volunteer/view/main%20page/events.dart';
-import 'package:uvol/volunteer/view/main%20page/events_firebase.dart';
+import 'package:uvol/views/main%20page/events_firebase.dart';
 import 'package:uvol/volunteer/view/main%20page/forum.dart';
 import 'package:uvol/volunteer/view/main%20page/home.dart';
-import 'package:uvol/volunteer/view/main%20page/home_firebase.dart';
+import 'package:uvol/views/main%20page/home_firebase.dart';
 import 'package:uvol/volunteer/view/profile.dart';
-import 'package:uvol/volunteer/main%20page/profile_firebase.dart';
+import 'package:uvol/views/main%20page/profile_firebase.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -29,19 +29,23 @@ class _Tugas8State extends State<BottomNav> {
     return Scaffold(
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
         backgroundColor: Colors.white,
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFF4962BF),
-        unselectedItemColor: Color(0xFFB6B8C0),
-        selectedLabelStyle: TextStyle(color: Color(0xFF4962BF)),
-        unselectedLabelStyle: TextStyle(color: Color(0xFFB6B8C0)),
+        selectedItemColor: const Color(0xFF4962BF),
+        unselectedItemColor: const Color(0xFFB6B8C0),
+
+        selectedLabelStyle: const TextStyle(color: Color(0xFF4962BF)),
+        unselectedLabelStyle: const TextStyle(color: Color(0xFFB6B8C0)),
+
         onTap: (index) {
-          print(index);
           setState(() {
             _selectedIndex = index;
           });
         },
-        items: [
+
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.event), label: "Events"),
           BottomNavigationBarItem(icon: Icon(Icons.message), label: "Forum"),

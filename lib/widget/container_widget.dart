@@ -402,13 +402,17 @@ class _BuildTextFieldState extends State<BuildTextField> {
 
 Widget formLabel(String text) {
   return Padding(
-    padding: const EdgeInsets.only(top: 18, bottom: 8),
-    child: Text(
-      text,
-      style: const TextStyle(
-        color: Color(0xFF4962BF),
-        fontWeight: FontWeight.w600,
-      ),
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Row(
+      children: [
+        Text(
+          text,
+          style: const TextStyle(
+            color: Color(0xFF4962BF),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     ),
   );
 }

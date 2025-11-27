@@ -8,6 +8,7 @@ class EventsModel {
   String? icon;
   String? date;
   String? location;
+  String? category;
 
   EventsModel({
     this.id,
@@ -16,6 +17,7 @@ class EventsModel {
     this.icon,
     this.date,
     this.location,
+    this.category,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class EventsModel {
       'icon': icon,
       'date': date,
       'location': location,
+      'category': category,
     };
   }
 
@@ -37,6 +40,7 @@ class EventsModel {
       icon: map['icon'] != null ? map['icon'] as String : null,
       date: map['date'] != null ? map['date'] as String : null,
       location: map['location'] != null ? map['location'] as String : null,
+      category: map['category'] != null ? map['category'] as String : null,
     );
   }
 

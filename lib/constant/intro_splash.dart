@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/starting/register_choice.dart';
-import 'package:uvol/volunteer/view/starting/login.dart';
-import 'package:uvol/volunteer/view/starting/about_me.dart';
-import 'package:uvol/volunteer/login_firebase.dart';
-import 'package:uvol/volunteer/view/starting/register.dart';
-import 'package:uvol/starting/views/register_user_firebase.dart';
+import 'package:uvol/views/starting/views/register_user_firebase.dart';
 import 'package:uvol/widget/app_images.dart';
 import 'package:uvol/widget/bottom_nav.dart';
 
@@ -20,26 +15,30 @@ class _IntroSplashState extends State<IntroSplash> {
   @override
   void initState() {
     super.initState();
-    isLoginFunction();
+    _navigateUser();
   }
 
-  isLoginFunction() async {
-    Future.delayed(const Duration(seconds: 3)).then((value) async {
-      bool isLogin = await PreferenceHandler.getLogin();
-      print("isLogin: $isLogin");
+  Future<void> _navigateUser() async {
+    await Future.delayed(const Duration(seconds: 3));
 
-      if (isLogin) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNav()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const RegisterUserFirebase()),
-        );
-      }
-    });
+    final bool isLogin = await PreferenceHandler.getLogin();
+    final String? uid = await PreferenceHandler.getUserID();
+
+    print("CHECK LOGIN => isLogin:$isLogin | uid:$uid");
+
+    if (isLogin == true && uid != null) {
+      // langsung masuk ke app tanpa login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => BottomNav()),
+      );
+    } else {
+      // pertama kali > wajib register
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const RegisterUserFirebase()),
+      );
+    }
   }
 
   @override

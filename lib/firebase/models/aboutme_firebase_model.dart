@@ -1,37 +1,28 @@
 import 'dart:convert';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 class AboutmeFirebaseModel {
-  String? id;
-  String? storyaboutme;
-  String? skill;
-  String? cv;
+  final String? storyaboutme;
+  final String? skill;
+  final String? cv;
 
-  AboutmeFirebaseModel({this.id, this.storyaboutme, this.skill, this.cv});
+  AboutmeFirebaseModel({this.storyaboutme, this.skill, this.cv});
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'storyaboutme': storyaboutme,
-      'skill': skill,
-      'cv': cv,
-    };
+    return {'storyaboutme': storyaboutme, 'skill': skill, 'cv': cv};
   }
 
   factory AboutmeFirebaseModel.fromMap(Map<String, dynamic> map) {
     return AboutmeFirebaseModel(
-      id: map['id'] != null ? map['id'] as String : null,
-      storyaboutme: map['storyaboutme'] != null
-          ? map['storyaboutme'] as String
-          : null,
-      skill: map['skill'] != null ? map['skill'] as String : null,
-      cv: map['cv'] != null ? map['cv'] as String : null,
+      storyaboutme: map['storyaboutme'] as String?,
+      skill: map['skill'] as String?,
+      cv: map['cv'] as String?,
     );
   }
 
+  // 🔹 dipakai saat simpan ke SharedPreferences
   String toJson() => json.encode(toMap());
 
+  // 🔹 dipakai di PreferenceHandler.getAboutMe()
   factory AboutmeFirebaseModel.fromJson(String source) =>
       AboutmeFirebaseModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

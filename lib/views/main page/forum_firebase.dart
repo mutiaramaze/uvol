@@ -1,49 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/constant/time_ago.dart';
-import 'package:uvol/database/db_helper.dart';
+import 'package:uvol/firebase/models/user_firebase_model.dart';
+import 'package:uvol/firebase/service/forum_firebase.dart';
+import 'package:uvol/firebase/service/user_firebase.dart';
 import 'package:uvol/model/forum_model.dart';
-import 'package:uvol/model/user_model.dart';
-import 'package:uvol/volunteer/view/make_post.dart';
-import 'package:uvol/volunteer/view/profile.dart';
-import 'package:uvol/widget/app_images.dart';
+import 'package:uvol/preferences/preference_handler.dart';
+import 'package:uvol/volunteer/view/make_post_firebase.dart';
 import 'package:uvol/widget/container_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:uvol/model/forum_model.dart';
-import 'package:uvol/model/user_model.dart';
-import 'package:uvol/volunteer/view/make_post.dart';
 
-class Forum extends StatefulWidget {
-  const Forum({super.key});
+class ForumFirebase extends StatefulWidget {
+  const ForumFirebase({super.key});
 
   @override
-  State<Forum> createState() => _ForumState();
+  State<ForumFirebase> createState() => _ForumFirebaseState();
 }
 
-class _ForumState extends State<Forum> {
-  final nameC = TextEditingController();
-  final postsC = TextEditingController();
+class _ForumFirebaseState extends State<ForumFirebase> {
+  final TextEditingController searchC = TextEditingController();
+  String searchText = "";
+
   List<ForumModel>? forumData;
+  UserFirebaseModel? user;
 
   @override
   void initState() {
     super.initState();
     getAllPostingan();
+    loadUser();
   }
 
+  Future<void> loadUser() async {
+    final uid = await PreferenceHandler.getUserID();
+    user = await UserFirebaseService.getUser(uid!);
+    setState(() {});
+  }
+
+  // 🔥 GET ALL dari Firebase
   Future<void> getAllPostingan() async {
-    final data = await DbHelper.getAllPostingan();
-    if (data != null) {
-      data.sort((a, b) {
-        DateTime timeA = DateTime.tryParse(a.time ?? "") ?? DateTime.now();
-        DateTime timeB = DateTime.tryParse(b.time ?? "") ?? DateTime.now();
-        return timeB.compareTo(timeA); // terbaru di atas
-      });
-    }
+    final data = await ForumFirebaseService.getAllPosts();
     setState(() => forumData = data);
   }
 
+  // 🔥 FILTER LIST — INI YANG DITAMBAHKAN
+  List<ForumModel> get filteredForum {
+    if (searchText.isEmpty || forumData == null) return forumData ?? [];
+
+    return forumData!.where((post) {
+      final name = post.name?.toLowerCase() ?? "";
+      final text = post.posts?.toLowerCase() ?? "";
+      return name.contains(searchText) || text.contains(searchText);
+    }).toList();
+  }
+
+  // 🔥 EDIT POST
   Future<void> _onEdit(ForumModel postingan) async {
     final editPostsC = TextEditingController(text: postingan.posts);
 
@@ -51,9 +61,6 @@ class _ForumState extends State<Forum> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(10),
-          ),
           title: Text("Edit Postingan"),
           content: TextField(
             controller: editPostsC,
@@ -84,14 +91,16 @@ class _ForumState extends State<Forum> {
         posts: editPostsC.text,
         time: DateTime.now().toString(),
       );
-      await DbHelper.updatePostingan(updated);
+
+      await ForumFirebaseService.updatePostingan(updated);
       await getAllPostingan();
       Fluttertoast.showToast(msg: "Postingan berhasil diupdate");
     }
   }
 
+  // 🔥 DELETE POST
   Future<void> _onDelete(ForumModel postingan) async {
-    await DbHelper.deletePostingan(postingan.id!);
+    await ForumFirebaseService.deletePostingan(postingan.id!);
     await getAllPostingan();
     Fluttertoast.showToast(msg: "Postingan berhasil dihapus");
   }
@@ -131,24 +140,26 @@ class _ForumState extends State<Forum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE9EFF8),
+      backgroundColor: const Color(0xFFE9EFF8),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF4962BF),
         child: Icon(Icons.add, color: Colors.white),
         onPressed: () async {
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MakePost()),
+            MaterialPageRoute(builder: (context) => MakePostFirebase()),
           );
 
           if (result != null && result is String) {
-            final user = await DbHelper.getUser();
+            final userName = user?.name ?? "";
+
             final data = ForumModel(
               posts: result,
               time: DateTime.now().toString(),
-              name: user?.name,
+              name: userName,
             );
-            await DbHelper.insertPostingan(data);
+
+            await ForumFirebaseService.insertPostingan(data);
             await getAllPostingan();
           }
         },
@@ -156,6 +167,7 @@ class _ForumState extends State<Forum> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // HEADER
             Container(
               padding: EdgeInsets.all(30),
               decoration: BoxDecoration(
@@ -171,35 +183,46 @@ class _ForumState extends State<Forum> {
                 ],
               ),
             ),
+
+            // SEARCH
             Padding(
               padding: EdgeInsets.all(20),
               child: SizedBox(
                 height: 40,
                 child: SearchBar(
+                  controller: searchC,
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value.toLowerCase();
+                    });
+                  },
                   leading: Icon(Icons.search, size: 20),
                   hintText: "Search",
                   backgroundColor: WidgetStatePropertyAll(Colors.white),
                 ),
               ),
             ),
+
+            // DATA LIST
             if (forumData == null)
               Padding(
                 padding: EdgeInsets.all(20),
                 child: CircularProgressIndicator(),
               )
-            else if (forumData!.isEmpty)
+            else if (filteredForum.isEmpty)
               Padding(
                 padding: EdgeInsets.all(20),
-                child: Text("Belum ada postingan."),
+                child: Text("Tidak ada hasil."),
               )
             else
               ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: forumData!.length,
+                itemCount: filteredForum.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final item = forumData![index];
+                  final item = filteredForum[index];
+
                   return Container(
                     margin: EdgeInsets.only(bottom: 15),
                     decoration: BoxDecoration(
@@ -229,9 +252,7 @@ class _ForumState extends State<Forum> {
                           top: 5,
                           right: 5,
                           child: IconButton(
-                            onPressed: () {
-                              _showPostOptions(context, item);
-                            },
+                            onPressed: () => _showPostOptions(context, item),
                             icon: Icon(Icons.more_vert, color: Colors.grey),
                           ),
                         ),
