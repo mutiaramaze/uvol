@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/views/starting/views/register_user_firebase.dart';
-import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/widget/bottom_nav.dart';
+import 'package:uvol/database/preferences/preference_handler_firebase.dart';
+import 'package:uvol/features/firebase/auth/register_user_firebase.dart';
+import 'package:uvol/widgets/app_images.dart';
+import 'package:uvol/widgets/bottom_nav.dart';
 
 class IntroSplash extends StatefulWidget {
   const IntroSplash({super.key});
@@ -19,21 +19,21 @@ class _IntroSplashState extends State<IntroSplash> {
   }
 
   Future<void> _navigateUser() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
-    final bool isLogin = await PreferenceHandler.getLogin();
-    final String? uid = await PreferenceHandler.getUserID();
+    final bool isLogin = await PreferenceHandlerFirebase.getLogin();
+    final String? uid = await PreferenceHandlerFirebase.getUserID();
 
     print("CHECK LOGIN => isLogin:$isLogin | uid:$uid");
 
-    if (isLogin == true && uid != null) {
-      // langsung masuk ke app tanpa login
+    if (!mounted) return;
+
+    if (isLogin && uid != null && uid.isNotEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => BottomNav()),
       );
     } else {
-      // pertama kali > wajib register
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const RegisterUserFirebase()),

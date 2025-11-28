@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:uvol/model/aboutme_model.dart';
-import 'package:uvol/model/events.model.dart';
-import 'package:uvol/model/forum_model.dart';
-import 'package:uvol/model/user_model.dart';
+import 'package:uvol/database/model/aboutme_model.dart';
+import 'package:uvol/database/model/events.model.dart';
+import 'package:uvol/database/model/forum_model.dart';
+import 'package:uvol/database/model/user_model.dart';
 import 'package:path/path.dart';
-import 'package:uvol/preferences/preference_handler.dart';
+import 'package:uvol/database/preferences/preference_handler.dart';
 
 class DbHelper {
   static const tableUser = 'users';
