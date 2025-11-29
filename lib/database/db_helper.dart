@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uvol/database/model/aboutme_model.dart';
 import 'package:uvol/database/model/events.model.dart';
@@ -23,9 +20,6 @@ class DbHelper {
         await db.execute(
           "CREATE TABLE $tableUser(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT, phone TEXT)",
         );
-        // await db.execute(
-        //   "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, posts TEXT)",
-        // );
         await db.execute(
           "CREATE TABLE $tableAbout(id INTEGER PRIMARY KEY AUTOINCREMENT, storyaboutme TEXT, skill TEXT, cv TEXT)",
         );
@@ -33,24 +27,17 @@ class DbHelper {
           "CREATE TABLE $tableForum(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, time TEXT, upload TEXT)",
         );
       },
-
-      // onUpgrade: (db, oldVersion, newVersion) async {
-      //   if (oldVersion < newVersion) {
-      //   }
-      // },
       version: 1,
     );
   }
 
   static Future<void> registerUser(UserModel user) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.insert(
       tableUser,
       user.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(user.toMap());
   }
 
   static Future<UserModel?> loginUser({
@@ -59,7 +46,6 @@ class DbHelper {
   }) async {
     final dbs = await db();
 
-    // Query untuk mencari user dengan email & password cocok
     final List<Map<String, dynamic>> results = await dbs.query(
       tableUser,
       where: 'email = ? AND password = ?',
@@ -69,7 +55,6 @@ class DbHelper {
     if (results.isNotEmpty) {
       final user = UserModel.fromMap(results.first);
 
-      // Simpan status login & data user ke SharedPreferences
       await PreferenceHandler.saveLogin(true);
       await PreferenceHandler.saveUser(user);
 
@@ -79,11 +64,9 @@ class DbHelper {
     return null;
   }
 
-  //GET USER
   static Future<List<UserModel>> getAllUser() async {
     final dbs = await db();
     final List<Map<String, dynamic>> results = await dbs.query(tableUser);
-    print(results.map((e) => UserModel.fromMap(e)).toList());
     return results.map((e) => UserModel.fromMap(e)).toList();
   }
 
@@ -91,15 +74,11 @@ class DbHelper {
     final dbs = await db();
     final id = await PreferenceHandler.getUser();
     final result = await dbs.query(tableUser, where: "id = ?", whereArgs: [id]);
-    print(UserModel.fromMap(result.first));
-    print(UserModel.fromMap(result.first).name);
     return UserModel.fromMap(result.first);
   }
 
-  //UPDATE
   static Future<void> updateUser(UserModel user) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.update(
       tableUser,
       user.toMap(),
@@ -107,32 +86,25 @@ class DbHelper {
       whereArgs: [user.id],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(user.toMap());
   }
 
-  //DELETE
   static Future<void> deleteUser(int id) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tableUser, where: "id = ?", whereArgs: [id]);
   }
 
-  //====Forum====
   static Future<void> insertPostingan(ForumModel postingan) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.insert(
       tableForum,
       postingan.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(postingan.toMap());
   }
 
   static Future<List<ForumModel>> getAllPostingan() async {
     final dbs = await db();
     final List<Map<String, dynamic>> results = await dbs.query(tableForum);
-    print(results.map((e) => ForumModel.fromMap(e)).toList());
     return results.map((e) => ForumModel.fromMap(e)).toList();
   }
 
@@ -151,22 +123,18 @@ class DbHelper {
     await dbs.delete(tableForum, where: 'id = ?', whereArgs: [id]);
   }
 
-  //====EVENTS====
   static Future<void> insertEvents(EventsModel events) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.insert(
       tableEvents,
       events.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print(events.toMap());
   }
 
   static Future<List<EventsModel>> getAllEvents() async {
     final dbs = await db();
     final List<Map<String, dynamic>> results = await dbs.query(tableEvents);
-    print(results.map((e) => EventsModel.fromMap(e)).toList());
     return results.map((e) => EventsModel.fromMap(e)).toList();
   }
 
@@ -185,7 +153,6 @@ class DbHelper {
     await dbs.delete(tableEvents, where: 'id = ?', whereArgs: [id]);
   }
 
-  //==ABOUT ME==
   static Future<AboutModel?> getAbout() async {
     final dbs = await db();
     final res = await dbs.query(tableAbout, limit: 1);

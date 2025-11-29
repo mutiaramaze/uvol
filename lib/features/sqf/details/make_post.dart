@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
-import 'package:uvol/features/sqf/main%20page/forum.dart';
-import 'package:flutter/material.dart';
 
 class MakePost extends StatefulWidget {
   const MakePost({super.key});

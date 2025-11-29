@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:uvol/features/firebase/main%20page/forum_firebase.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
 import 'package:uvol/features/firebase/main%20page/events_firebase.dart';
-import 'package:uvol/features/sqf/main%20page/forum.dart';
-import 'package:uvol/features/sqf/main%20page/home.dart';
 import 'package:uvol/features/firebase/main%20page/home_firebase.dart';
-import 'package:uvol/features/sqf/main%20page/profile.dart';
 import 'package:uvol/features/firebase/main%20page/profile_firebase.dart';
 
 class BottomNav extends StatefulWidget {

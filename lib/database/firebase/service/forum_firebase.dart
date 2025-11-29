@@ -5,7 +5,12 @@ class ForumFirebaseService {
   static final _ref = FirebaseFirestore.instance.collection("forum");
 
   static Future<void> insertPostingan(ForumModel data) async {
-    await _ref.add({"name": data.name, "posts": data.posts, "time": data.time});
+    await _ref.add({
+      "name": data.name,
+      "posts": data.posts,
+      "time": data.time,
+      "userId": data.userId,
+    });
   }
 
   static Future<List<ForumModel>> getAllPosts() async {
@@ -16,6 +21,7 @@ class ForumFirebaseService {
         name: doc["name"],
         posts: doc["posts"],
         time: doc["time"],
+        userId: doc["userId"],
       );
     }).toList();
   }
@@ -26,5 +32,24 @@ class ForumFirebaseService {
 
   static Future<void> deletePostingan(String id) async {
     await _ref.doc(id).delete();
+  }
+
+  static Future<void> updateNameForUser(String userId, String newName) async {
+    final query = _ref.where("userId", isEqualTo: userId);
+    const int batchSize = 500;
+    QuerySnapshot snapshot = await query.limit(batchSize).get();
+
+    while (snapshot.docs.isNotEmpty) {
+      final WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      for (final doc in snapshot.docs) {
+        batch.update(doc.reference, {"name": newName});
+      }
+
+      await batch.commit();
+
+      final lastDoc = snapshot.docs.last;
+      snapshot = await query.startAfterDocument(lastDoc).limit(batchSize).get();
+    }
   }
 }

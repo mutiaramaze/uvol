@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uvol/features/sqf/details/detail_events.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
 import 'package:uvol/utils/safe_image.dart';
 import 'package:uvol/widgets/app_images.dart';
 
-//forum
 class ForumWidget extends StatelessWidget {
   const ForumWidget({
     super.key,
@@ -83,7 +80,6 @@ class ForumWidget extends StatelessWidget {
   }
 }
 
-//events (upcoming dan in review)
 class EventsWidget extends StatelessWidget {
   const EventsWidget({
     super.key,
@@ -149,7 +145,6 @@ class EventsWidget extends StatelessWidget {
   }
 }
 
-//profil (participated)
 class ParticipatedWidget extends StatelessWidget {
   const ParticipatedWidget({super.key});
 
@@ -198,7 +193,7 @@ class ParticipatedWidget extends StatelessWidget {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF4962BF), // warna biru elegan
+                      color: const Color(0xFF4962BF), 
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
@@ -226,7 +221,6 @@ class ParticipatedWidget extends StatelessWidget {
   }
 }
 
-//home
 class HomeWidget extends StatelessWidget {
   const HomeWidget({
     super.key,
@@ -243,7 +237,6 @@ class HomeWidget extends StatelessWidget {
   final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
-    print(volImage);
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -336,12 +329,7 @@ class HomeWidget extends StatelessWidget {
   }
 }
 
-// Widget label(String text) {
-//   return Padding(
-//     padding: const EdgeInsets.only(bottom: 6, top: 16),
-//     child: Text(text, style: TextStyle(color: Color(0xFF4962BF))),
-//   );
-// }
+
 
 class BuildTextField extends StatefulWidget {
   final String? hintText;
@@ -382,7 +370,6 @@ class _BuildTextFieldState extends State<BuildTextField> {
         fillColor: const Color(0xFFF5F6FA),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
 
-        // suffix icon untuk password
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () {
@@ -414,3 +401,135 @@ Widget formLabel(String text) {
     ),
   );
 }
+
+class ParticipatedWidgetFirebase extends StatelessWidget {
+  final String image;
+  final String title;
+  final String date;
+  final String location;
+  final VoidCallback? onCertificate;
+
+  const ParticipatedWidgetFirebase({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.date,
+    required this.location,
+    this.onCertificate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: image.startsWith("http")
+                  ? Image.network(
+                      image,
+                      height: 70,
+                      width: 70,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      image,
+                      height: 70,
+                      width: 70,
+                      fit: BoxFit.cover,
+                    ),
+            ),
+
+            const SizedBox(width: 12),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  Row(
+                    children: [
+                      const Icon(Icons.date_range, size: 16, color: Colors.black),
+                      const SizedBox(width: 5),
+                      Text(date),
+                    ],
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  Row(
+                    children: [
+                      const Icon(Icons.pin_drop, size: 16, color: Colors.black),
+                      const SizedBox(width: 5),
+                      Text(location),
+                    ],
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: onCertificate,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4962BF),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.download, color: Colors.white, size: 18),
+                              SizedBox(width: 5),
+                              Text(
+                                "Sertifikat",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

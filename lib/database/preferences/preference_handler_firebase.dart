@@ -7,12 +7,11 @@ class PreferenceHandlerFirebase {
   static const String isLoginKey = "isLogin";
   static const String localUserKey = "localUser";
   static const String firebaseUserKey = "firebaseUser";
-  static const String tokenKey = "token"; // UID Firebase
+  static const String tokenKey = "token"; 
   static const String aboutKey = "aboutMe";
   static const String roleKey = "userRole";
   static const String userIDKey = "userID";
 
-  // ===================== LOGIN =====================
   static Future<void> saveLogin(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(isLoginKey, value);
@@ -23,7 +22,6 @@ class PreferenceHandlerFirebase {
     return prefs.getBool(isLoginKey) ?? false;
   }
 
-  // ===================== LOCAL USER =====================
   static Future<void> saveLocalUser(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(localUserKey, user.toJson());
@@ -36,7 +34,6 @@ class PreferenceHandlerFirebase {
     return UserModel.fromJson(json);
   }
 
-  // ===================== FIREBASE USER =====================
   static Future<void> saveFirebaseUser(UserFirebaseModel user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(firebaseUserKey, user.toJson());
@@ -49,7 +46,6 @@ class PreferenceHandlerFirebase {
     return UserFirebaseModel.fromJson(json);
   }
 
-  // ===================== TOKEN (UID) =====================
   static Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(tokenKey, token);
@@ -60,7 +56,6 @@ class PreferenceHandlerFirebase {
     return prefs.getString(tokenKey);
   }
 
-  // ===================== ABOUT ME =====================
   static Future<void> saveAboutMe(AboutmeFirebaseModel data) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(aboutKey, data.toJson());
@@ -73,7 +68,6 @@ class PreferenceHandlerFirebase {
     return AboutmeFirebaseModel.fromJson(json);
   }
 
-  // ===================== ROLE =====================
   static Future<void> saveRole(String role) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(roleKey, role);
@@ -84,7 +78,6 @@ class PreferenceHandlerFirebase {
     return prefs.getString(roleKey);
   }
 
-  // ===================== USER ID =====================
   static Future<void> saveUserID(String uid) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(userIDKey, uid);
@@ -95,9 +88,8 @@ class PreferenceHandlerFirebase {
     return prefs.getString(userIDKey);
   }
 
-  // ===================== LOGOUT =====================
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.clear(); // Hapus semua
+    await prefs.clear(); 
   }
 }

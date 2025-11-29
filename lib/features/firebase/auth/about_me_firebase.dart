@@ -7,7 +7,6 @@ import 'package:uvol/database/firebase/models/aboutme_firebase_model.dart';
 import 'package:uvol/database/firebase/service/about_firebase.dart';
 import 'package:uvol/database/preferences/preference_handler_firebase.dart';
 import 'package:uvol/features/firebase/auth/login_firebase.dart';
-import 'package:uvol/widgets/bottom_nav.dart';
 
 class AboutMeFirebase extends StatefulWidget {
   AboutMeFirebase({super.key});
@@ -25,7 +24,6 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
 
   String? pdfPath;
 
-  // PICK FILE (PDF)
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -46,7 +44,6 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
     }
   }
 
-  // BUILD UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +73,6 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
 
                 const SizedBox(height: 30),
 
-                // ================= FORM UI (TIDAK DIUBAH) =================
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -228,7 +224,6 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
 
                 const SizedBox(height: 30),
 
-                // ================= SAVE BUTTON - LOGIC FIX =================
                 Center(
                   child: SizedBox(
                     width: 300,
@@ -244,11 +239,9 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
 
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          // 🔥 coba ambil dari userID dulu
                           String? uid =
                               await PreferenceHandlerFirebase.getUserID();
 
-                          // 🔥 kalau userID kosong, fallback ke token (yang sebenarnya juga UID)
                           uid ??= await PreferenceHandlerFirebase.getToken();
 
                           if (uid == null || uid.isEmpty) {
@@ -264,7 +257,6 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
                             cv: cvController.text.trim(),
                           );
 
-                          // Simpan ke Firestore
                           await AboutFirebaseService.saveAboutMe(
                             uid: uid,
                             story: aboutFirebase.storyaboutme ?? '',
@@ -272,7 +264,6 @@ class _AboutMeFirebaseState extends State<AboutMeFirebase> {
                             cv: aboutFirebase.cv ?? '',
                           );
 
-                          // Simpan ke SharedPreferences
                           await PreferenceHandlerFirebase.saveAboutMe(
                             aboutFirebase,
                           );

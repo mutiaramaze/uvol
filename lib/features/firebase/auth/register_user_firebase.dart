@@ -7,8 +7,6 @@ import 'package:uvol/database/firebase/service/user_firebase.dart';
 import 'package:uvol/database/preferences/preference_handler_firebase.dart';
 import 'package:uvol/features/firebase/auth/about_me_firebase.dart';
 import 'package:uvol/features/firebase/auth/login_firebase.dart';
-import 'package:uvol/features/sqf/starting/about_me.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 import 'package:uvol/widgets/move_button.dart';
 
@@ -181,7 +179,6 @@ class _RegisterUserFirebaseState extends State<RegisterUserFirebase> {
     setState(() => isLoading = true);
 
     try {
-      // 1️⃣ Register ke FirebaseAuth
       final authUser = await FirebaseService.registerUser(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -195,9 +192,8 @@ class _RegisterUserFirebaseState extends State<RegisterUserFirebase> {
       }
 
       final uid = authUser.uid!;
-      print("🔥 FirebaseAuth UID: $uid");
+      print("FirebaseAuth UID: $uid");
 
-      // 2️⃣ Buat User Model untuk disimpan ke Firestore
       final user = UserFirebaseModel(
         uid: uid,
         name: nameController.text.trim(),
@@ -207,15 +203,14 @@ class _RegisterUserFirebaseState extends State<RegisterUserFirebase> {
         updatedAt: DateTime.now().toIso8601String(),
       );
 
-      // 3️⃣ Simpan ke Firestore
       await UserFirebaseService.updateUser(user);
-      print("🔥 Firestore user saved");
+      print("Firestore user saved");
 
       await PreferenceHandlerFirebase.saveLogin(true);
       await PreferenceHandlerFirebase.saveUserID(user.uid!);
       await PreferenceHandlerFirebase.saveFirebaseUser(user);
 
-      print("🔥 User saved to SharedPreferences");
+      print("User saved to SharedPreferences");
 
       setState(() => isLoading = false);
 
@@ -228,7 +223,7 @@ class _RegisterUserFirebaseState extends State<RegisterUserFirebase> {
     } catch (e) {
       setState(() => isLoading = false);
 
-      print("🔥 ERROR: $e");
+      print("ERROR: $e");
 
       try {
         final errorJson = jsonDecode(e.toString());

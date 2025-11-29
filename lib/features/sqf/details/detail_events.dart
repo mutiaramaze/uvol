@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/dummy/detail_events.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
 import 'package:uvol/features/sqf/details/question_events.dart';
 import 'package:uvol/widgets/app_images.dart';
 import 'package:uvol/widgets/widget_%20detail.dart';
@@ -164,7 +162,7 @@ class _TapEventsState extends State<TapEvents> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 15),
                                 child: buildVolunteerRoleWithPoints(
-                                  number: index + 1, //otomatis urut
+                                  number: index + 1, 
                                   title: role['title']!,
                                   points: List<String>.from(role['points']!),
                                 ),

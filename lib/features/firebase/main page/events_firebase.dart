@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:uvol/database/firebase/models/questionning_firebase_model.dart';
 import 'package:uvol/database/firebase/service/events_firebase.dart';
-import 'package:uvol/database/firebase/models/questionnig_model_firebase.dart';
 import 'package:uvol/database/preferences/preference_handler.dart';
-import 'package:uvol/widgets/container_widget.dart';
+import 'package:uvol/widgets/my_event_container.dart';
 
 class EventsFirebase extends StatefulWidget {
   const EventsFirebase({super.key});
@@ -12,6 +12,7 @@ class EventsFirebase extends StatefulWidget {
 }
 
 class _EventsFirebaseState extends State<EventsFirebase> {
+  late BuildContext rootContext;
   String? uid;
 
   @override
@@ -25,8 +26,45 @@ class _EventsFirebaseState extends State<EventsFirebase> {
     setState(() {});
   }
 
+  Future<void> _markCompleted(
+    BuildContext ctx,
+    QuestionningModelFirebase ev,
+  ) async {
+    if (uid == null) {
+      ScaffoldMessenger.of(
+        ctx,
+      ).showSnackBar(const SnackBar(content: Text("User not logged in")));
+      return;
+    }
+
+    showDialog(
+      context: ctx,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      await JoinEventService.updateStatus(
+        userId: uid!,
+        eventId: ev.id,
+        status: "completed",
+      );
+
+      Navigator.of(ctx).pop(); 
+      ScaffoldMessenger.of(
+        ctx,
+      ).showSnackBar(const SnackBar(content: Text("Event marked completed")));
+    } catch (e) {
+      Navigator.of(ctx).pop(); 
+      ScaffoldMessenger.of(
+        ctx,
+      ).showSnackBar(SnackBar(content: Text("Gagal mengubah status: $e")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    rootContext = context;
     return Scaffold(
       backgroundColor: const Color(0xFFE9EFF8),
       body: Column(
@@ -55,7 +93,7 @@ class _EventsFirebaseState extends State<EventsFirebase> {
           else
             Expanded(
               child: StreamBuilder<List<QuestionningModelFirebase>>(
-                stream: JoinEventService.getMyEvents(uid!),
+                stream: JoinEventService.streamActiveEvents(uid!),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
@@ -76,7 +114,10 @@ class _EventsFirebaseState extends State<EventsFirebase> {
                     itemBuilder: (context, index) {
                       final event = events[index];
 
-                      return HomeWidget(
+                      return MyEventContainer(
+                        onComplete: () {
+                          _markCompleted(rootContext, event);
+                        },
                         volImage: event.image ?? "",
                         titleText: event.title ?? "",
                         date: event.date ?? "",

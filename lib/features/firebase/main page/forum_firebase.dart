@@ -30,19 +30,16 @@ class _ForumFirebaseState extends State<ForumFirebase> {
     loadUser();
   }
 
-  // ============================================================
-  // 🔥 LOAD USER
-  // ============================================================
   Future<void> loadUser() async {
     final uid = await PreferenceHandler.getUserID();
     if (uid == null) {
-      print("❌ UID tidak ditemukan di preferences");
+      print("UID tidak ditemukan di preferences");
       return;
     }
 
     user = await UserFirebaseService.getUser(uid);
 
-    print("🔥 USER LOADED --> NAME: ${user?.name}");
+    print("USER LOADED --> NAME: ${user?.name}");
 
     setState(() {});
   }
@@ -63,6 +60,14 @@ class _ForumFirebaseState extends State<ForumFirebase> {
   }
 
   Future<void> _onEdit(ForumModel postingan) async {
+    print('id : ${user!.uid}, id post: ${postingan.userId}');
+    if (user == null || (user?.uid ?? "") != (postingan.userId ?? "")) {
+      Fluttertoast.showToast(
+        msg: "Anda tidak punya izin untuk mengedit postingan ini.",
+      );
+      return;
+    }
+
     final editPostsC = TextEditingController(text: postingan.posts);
 
     final res = await showDialog<bool>(
@@ -107,6 +112,12 @@ class _ForumFirebaseState extends State<ForumFirebase> {
   }
 
   Future<void> _onDelete(ForumModel postingan) async {
+    if (user == null || (user?.uid ?? "") != (postingan.userId ?? "")) {
+      Fluttertoast.showToast(
+        msg: "Anda tidak punya izin untuk menghapus postingan ini.",
+      );
+      return;
+    }
     await ForumFirebaseService.deletePostingan(postingan.id!);
     await getAllPostingan();
     Fluttertoast.showToast(msg: "Postingan berhasil dihapus");
@@ -153,14 +164,12 @@ class _ForumFirebaseState extends State<ForumFirebase> {
         backgroundColor: const Color(0xFF4962BF),
         child: const Icon(Icons.add, color: Colors.white),
         onPressed: () async {
-          // Pastikan user loaded
           if (user == null || (user?.name?.isEmpty ?? true)) {
             Fluttertoast.showToast(msg: "Sedang memuat user...");
             await loadUser();
             if (user == null) return;
           }
 
-          // Pergi ke halaman buat post
           final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const MakePostFirebase()),
@@ -171,6 +180,7 @@ class _ForumFirebaseState extends State<ForumFirebase> {
               posts: result,
               time: DateTime.now().toString(),
               name: user!.name ?? "Anonymous",
+              userId: user!.uid,
             );
 
             await ForumFirebaseService.insertPostingan(data);

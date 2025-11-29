@@ -12,16 +12,13 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   Future<void> _logout(BuildContext context) async {
-    // Hapus semua data login
     await PreferenceHandler.removeLogin();
 
-    // Bersihkan shared preferences agar benar-benar kosong
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
 
     print("User berhasil logout dan data preferences dibersihkan");
 
-    // Navigasi ke login dan hilangkan semua halaman sebelumnya
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginFirebase()),
@@ -62,7 +59,6 @@ class _SettingsState extends State<Settings> {
                 const Text('Kebijakan Penggunaan'),
                 const Divider(),
 
-                // 🔥 TOMBOL LOGOUT FIXED
                 ElevatedButton(
                   onPressed: () => _logout(context),
                   style: ElevatedButton.styleFrom(

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:uvol/database/firebase/models/user_firebase_model.dart';
 import 'package:uvol/database/preferences/preference_handler_firebase.dart';
 
@@ -32,7 +31,6 @@ class FirebaseService {
 
     await firestore.collection('users').doc(user.uid).set(model.toMap());
 
-    //  WAJIB — SIMPAN UID
     await PreferenceHandlerFirebase.saveFirebaseUser(model);
     await PreferenceHandlerFirebase.saveToken(model.uid!);
 
@@ -54,16 +52,14 @@ class FirebaseService {
       if (!snap.exists) return null;
       return UserFirebaseModel.fromMap({'uid': user.uid, ...snap.data()!});
     } on FirebaseAuthException catch (e) {
-      // handle credential error → return null, biar UI bisa "Email/password salah"
       if (e.code == 'invalid-credential' ||
           e.code == 'wrong-password' ||
           e.code == 'user-not-found') {
         return null;
       }
 
-      // kalau error lain (network, too-many-requests, dll) boleh kamu log
       print('FirebaseAuthException: ${e.code} - ${e.message}');
-      rethrow; // biar ketauan saat debug
+      rethrow; 
     }
   }
 }

@@ -3,17 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/constant/time_ago.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/database/model/forum_model.dart';
-import 'package:uvol/database/model/user_model.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
 import 'package:uvol/features/sqf/details/make_post.dart';
-import 'package:uvol/features/sqf/main%20page/profile.dart';
-import 'package:uvol/widgets/app_images.dart';
 import 'package:uvol/widgets/container_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:uvol/database/model/forum_model.dart';
-import 'package:uvol/database/model/user_model.dart';
-import 'package:uvol/features/sqf/details/make_post.dart';
 
 class Forum extends StatefulWidget {
   const Forum({super.key});
@@ -39,7 +30,7 @@ class _ForumState extends State<Forum> {
       data.sort((a, b) {
         DateTime timeA = DateTime.tryParse(a.time ?? "") ?? DateTime.now();
         DateTime timeB = DateTime.tryParse(b.time ?? "") ?? DateTime.now();
-        return timeB.compareTo(timeA); // terbaru di atas
+        return timeB.compareTo(timeA); 
       });
     }
     setState(() => forumData = data);

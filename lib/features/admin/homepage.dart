@@ -43,9 +43,6 @@ class OrganizerPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ============================
-            // HEADER ORGANISASI
-            // ============================
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -92,9 +89,6 @@ class OrganizerPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // ============================
-            // STATISTIK
-            // ============================
             const Text(
               "Statistik",
               style: TextStyle(
@@ -117,9 +111,6 @@ class OrganizerPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // ============================
-            // MENU AKSI CEPAT
-            // ============================
             const Text(
               "Aktivitas",
               style: TextStyle(
@@ -156,9 +147,6 @@ class OrganizerPage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            // ============================
-            // EVENT TERBARU
-            // ============================
             const Text(
               "Event Terbaru",
               style: TextStyle(
@@ -195,9 +183,6 @@ class OrganizerPage extends StatelessWidget {
     );
   }
 
-  // ==================================================
-  // WIDGET STAT CARD
-  // ==================================================
   Widget statCard(String label, String value, IconData icon) {
     return Expanded(
       child: Container(
@@ -230,9 +215,6 @@ class OrganizerPage extends StatelessWidget {
     );
   }
 
-  // ==================================================
-  // WIDGET AKSI CEPAT
-  // ==================================================
   Widget expandedButton({
     required String text,
     required IconData icon,
@@ -266,9 +248,6 @@ class OrganizerPage extends StatelessWidget {
     );
   }
 
-  // ==================================================
-  // WIDGET ITEM EVENT
-  // ==================================================
   Widget eventItem({
     required String title,
     required String date,

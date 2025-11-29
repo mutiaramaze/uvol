@@ -1,10 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uvol/database/dummy/detail_events.dart';
-import 'package:uvol/features/sqf/details/detail_events.dart';
-import 'package:uvol/widgets/app_images.dart';
 import 'package:uvol/widgets/container_widget.dart';
 
 class Events extends StatefulWidget {
@@ -51,7 +45,7 @@ class _EventsState extends State<Events> {
             itemCount: volunteerEvents.length,
             itemBuilder: (BuildContext context, int index) {
               final event = volunteerEvents[index];
-              HomeWidget(
+              return HomeWidget(
                 volImage: event['image'] ?? '',
                 titleText: event['titleText'] ?? '',
                 date: event['date'] ?? '',

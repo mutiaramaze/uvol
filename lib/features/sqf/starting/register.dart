@@ -3,9 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/database/model/user_model.dart';
 import 'package:uvol/database/preferences/preference_handler.dart';
-import 'package:uvol/features/sqf/starting/about_me.dart';
 import 'package:uvol/features/sqf/starting/login.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 import 'package:uvol/widgets/move_button.dart';
 
@@ -42,7 +40,6 @@ class _RegisterState extends State<Register> {
           padding: const EdgeInsets.all(15.0),
           child: Center(
             child: SingleChildScrollView(
-              // supaya bisa di-scroll
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -166,7 +163,6 @@ class _RegisterState extends State<Register> {
                   ),
                   height(20),
 
-                  // ✅ tombol register
                   MoveButton(
                     text: "Register",
                     onPressed: () async {
@@ -177,16 +173,13 @@ class _RegisterState extends State<Register> {
                           password: passwordController.text,
                         );
 
-                        // simpan ke database
                         await DbHelper.registerUser(data);
 
-                        // simpan status login & data user ke preferences
                         await PreferenceHandler.saveLogin(true);
                         await PreferenceHandler.saveUser(data);
 
                         Fluttertoast.showToast(msg: "Register Berhasil");
 
-                        // pindah ke halaman AboutMe
                         if (mounted) {
                           Navigator.pushReplacement(
                             context,

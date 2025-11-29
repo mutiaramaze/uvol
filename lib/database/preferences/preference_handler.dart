@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/firebase/models/aboutme_firebase_model.dart';
 import 'package:uvol/database/firebase/models/user_firebase_model.dart';
@@ -12,19 +11,16 @@ class PreferenceHandler {
   static const String userRole = "userRole";
   static const String userIDKey = "userID";
 
-  // Simpan status login
   static Future<void> saveLogin(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(isLogin, value);
   }
 
-  // Ambil status login
   static Future<bool> getLogin() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(isLogin) ?? false;
   }
 
-  // Simpan data user (dalam JSON)
   static Future<void> saveUser(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(userKey, user.toJson());
@@ -35,7 +31,6 @@ class PreferenceHandler {
     await prefs.setString(userKey, user.toJson());
   }
 
-  // Ambil data user dari penyimpanan
   static Future<UserModel?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(userKey);
@@ -50,7 +45,6 @@ class PreferenceHandler {
     return UserFirebaseModel.fromJson(jsonString);
   }
 
-  // Hapus data login dan user (logout)
   static Future<void> removeLogin() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(isLogin);

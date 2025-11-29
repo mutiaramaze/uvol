@@ -42,10 +42,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      // 👇 GANTI halaman awal ke Splash Screen
       home: const IntroSplash(),
 
-      // 👇 Tambahkan route agar bisa navigasi ke halaman lain dengan mudah
       routes: {
         '/home': (context) => const HomepageFirebase(),
         '/events': (context) => const EventsFirebase(),

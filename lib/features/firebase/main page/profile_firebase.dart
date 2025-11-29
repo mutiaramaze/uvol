@@ -2,16 +2,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/firebase/models/aboutme_firebase_model.dart';
+import 'package:uvol/database/firebase/models/questionning_firebase_model.dart';
 import 'package:uvol/database/firebase/models/user_firebase_model.dart';
 import 'package:uvol/database/firebase/service/about_firebase.dart';
+import 'package:uvol/database/firebase/service/events_firebase.dart';
 import 'package:uvol/database/firebase/service/user_firebase.dart';
-import 'package:uvol/database/model/aboutme_model.dart';
 import 'package:uvol/database/preferences/preference_handler_firebase.dart';
 import 'package:uvol/features/firebase/auth/register_user_firebase.dart';
 import 'package:uvol/features/sqf/details/detail_events.dart';
-import 'package:uvol/features/sqf/details/settings.dart';
 import 'package:uvol/widgets/app_images.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 
 class ProfilePageFirebase extends StatefulWidget {
@@ -36,7 +35,7 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
     final uid = await PreferenceHandlerFirebase.getUserID();
 
     if (uid == null || uid.isEmpty) {
-      print("❌ UID tidak ditemukan di SharedPreferences");
+      print("UID tidak ditemukan di SharedPreferences");
       return;
     }
 
@@ -54,10 +53,10 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
 
     final data = await AboutFirebaseService.getAboutMe(uid);
 
-    print("🔥 ABOUT LOADED: ${data?.toJson()}");
+    print("ABOUT LOADED: ${data?.toJson()}");
 
     setState(() {
-      about = data; // pakai model Firebase langsung
+      about = data; 
     });
   }
 
@@ -221,7 +220,6 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
       );
 
       try {
-        // UPDATE FIRESTORE
         await UserFirebaseService.updateUser(updatedUser);
 
         await AboutFirebaseService.saveAboutMe(
@@ -231,7 +229,6 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
           cv: cvC.text.trim(),
         );
 
-        // 🔥 SIMPAN KE SHAREDPREFERENCES
         await PreferenceHandlerFirebase.saveFirebaseUser(updatedUser);
         await PreferenceHandlerFirebase.saveAboutMe(
           AboutmeFirebaseModel(
@@ -253,6 +250,19 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
     }
   }
 
+  String fixGoogleDriveLink(String url) {
+    if (url.contains("drive.google.com")) {
+      final regex = RegExp(r"/d/([^/]+)/");
+      final match = regex.firstMatch(url);
+
+      if (match != null) {
+        final fileId = match.group(1);
+        return "https://drive.google.com/uc?export=view&id=$fileId";
+      }
+    }
+    return url;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -260,7 +270,6 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // HEADER PROFILE
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -317,13 +326,10 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
                               },
                             );
 
-                            // ❗ Jika user tekan cancel, stop
                             if (confirm != true) return;
 
-                            // 🔥 Hapus semua SharedPreferences (logout)
                             await PreferenceHandlerFirebase.logout();
 
-                            // Arahkan ke register/login
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -349,7 +355,6 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
                     ),
                     height(20),
 
-                    // PROFILE DATA
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -420,7 +425,6 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
 
             height(10),
 
-            // DATA PRIBADI BOX
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
@@ -536,9 +540,36 @@ class _ProfilePageFirebaseState extends State<ProfilePageFirebase> {
                 ),
               ),
             ),
-            ParticipatedWidget(),
-            ParticipatedWidget(),
-            ParticipatedWidget(),
+            if (user != null)
+              StreamBuilder<List<QuestionningModelFirebase>>(
+                stream: JoinEventService.streamCompletedEvents(user!.uid!),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+
+                  final events = snapshot.data!;
+                  if (events.isEmpty) return Text("Belum ada event selesai.");
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: events.length,
+                    itemBuilder: (_, i) {
+                      final e = events[i];
+
+                      return ParticipatedWidgetFirebase(
+                        image: fixGoogleDriveLink(e.image ?? ""),
+
+                        title: e.title ?? "-",
+                        date: e.date ?? "-",
+                        location: e.location ?? "-",
+                        onCertificate: () {
+                          print("Download certificate for ${e.title}");
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
           ],
         ),
       ),

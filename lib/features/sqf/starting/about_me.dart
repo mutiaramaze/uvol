@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/database/model/aboutme_model.dart';
-import 'package:uvol/database/preferences/preference_handler.dart';
 import 'package:uvol/features/sqf/details/detail_events.dart';
 import 'package:uvol/widgets/bottom_nav.dart';
-import 'package:uvol/widgets/build_text_field.dart';
-import 'package:uvol/widgets/move_button.dart';
 import 'package:file_picker/file_picker.dart';
 
 class AboutMe extends StatefulWidget {

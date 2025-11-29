@@ -19,10 +19,8 @@ class AboutmeFirebaseModel {
     );
   }
 
-  // 🔹 dipakai saat simpan ke SharedPreferences
   String toJson() => json.encode(toMap());
 
-  // 🔹 dipakai di PreferenceHandler.getAboutMe()
   factory AboutmeFirebaseModel.fromJson(String source) =>
       AboutmeFirebaseModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

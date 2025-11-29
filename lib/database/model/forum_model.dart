@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class ForumModel {
@@ -6,8 +5,9 @@ class ForumModel {
   String? name;
   String? posts;
   String? time;
+  String? userId;
 
-  ForumModel({this.id, this.name, this.posts, this.time});
+  ForumModel({this.id, this.name, this.posts, this.time, this.userId});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -15,6 +15,7 @@ class ForumModel {
       'name': name,
       'posts': posts,
       'time': time,
+      'userId': userId,
     };
   }
 
@@ -24,6 +25,7 @@ class ForumModel {
       name: map['name'] != null ? map['name'] as String : null,
       posts: map['posts'] != null ? map['posts'] as String : null,
       time: map['time'] != null ? map['time'] as String : null,
+      userId: map['userId'] != null ? map['userId'] as String : null,
     );
   }
 

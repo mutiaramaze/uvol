@@ -11,7 +11,6 @@ class RegisterOrganizer extends StatefulWidget {
 }
 
 class _RegisterOrganizerState extends State<RegisterOrganizer> {
-  // Controllers
   final orgNameController = TextEditingController();
   final picNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -72,7 +71,6 @@ class _RegisterOrganizerState extends State<RegisterOrganizer> {
 
                 const SizedBox(height: 25),
 
-                // FORM CARD
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -202,7 +200,6 @@ class _RegisterOrganizerState extends State<RegisterOrganizer> {
                   ),
                 ),
                 height(20),
-                // BUTTON REGISTER
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(

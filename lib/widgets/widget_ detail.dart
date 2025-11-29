@@ -24,7 +24,6 @@ Widget buildVolunteerRoleWithPoints({
         ],
       ),
 
-      /// LIST POIN
       Padding(
         padding: const EdgeInsets.only(left: 25, top: 5),
         child: Column(
@@ -55,7 +54,6 @@ Widget buildVolunteerRoleWithPoints({
 class DropDownDetailQuestion extends StatefulWidget {
   final String selectdivision;
 
-  /// Data dari parent
   final String? selectedValue;
   final Function(String?)? onSelect;
 
@@ -100,7 +98,7 @@ class _DropDownState extends State<DropDownDetailQuestion> {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
 
-          const SizedBox(height: 8), // FIXED
+          const SizedBox(height: 8), 
 
           DropdownButton<String>(
             dropdownColor: Colors.white,

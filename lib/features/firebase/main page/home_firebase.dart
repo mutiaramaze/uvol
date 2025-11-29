@@ -23,11 +23,9 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
   UserFirebaseModel? user;
   String? selectedCategory = "All";
 
-  // 🔥 SEARCH VARIABLE
   final TextEditingController searchC = TextEditingController();
   String searchText = "";
 
-  // FILTER RESULT
   List<EventsModel> filteredEvents = dataEvents;
 
   @override
@@ -39,43 +37,32 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
     selectedCategory = "All";
   }
 
-  // =========================================================
-  // GET USER
-  // =========================================================
   Future<void> _loadUser() async {
-    // 1. Load user dari SharedPreferences dulu (cepat)
     final savedUser = await PreferenceHandlerFirebase.getFirebaseUser();
 
     if (savedUser != null) {
       setState(() => user = savedUser);
     }
 
-    // 2. Ambil UID dari SharedPreferences
     final uid = await PreferenceHandlerFirebase.getUserID();
 
     if (uid == null || uid.isEmpty) {
-      print("❌ Homepage: UID tidak ditemukan");
+      print("Homepage: UID tidak ditemukan");
       return;
     }
 
-    // 3. Load user terbaru dari Firestore
     final data = await UserFirebaseService.getUser(uid);
 
     if (data != null) {
       setState(() => user = data);
 
-      // 4. Cache ulang
       await PreferenceHandlerFirebase.saveFirebaseUser(data);
     }
   }
 
-  // =========================================================
-  // 🔥 FINAL FILTERING (CATEGORY + SEARCH)
-  // =========================================================
   List<EventsModel> get finalFilteredEvents {
     List<EventsModel> list = filteredEvents;
 
-    // SEARCH
     if (searchText.isNotEmpty) {
       list = list.where((ev) {
         final title = ev.title?.toLowerCase() ?? "";
@@ -94,9 +81,6 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // =====================================================
-            // HEADER
-            // =====================================================
             Container(
               padding: EdgeInsets.all(30),
               decoration: BoxDecoration(
@@ -148,9 +132,6 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
               ),
             ),
 
-            // =====================================================
-            // BANNER
-            // =====================================================
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
@@ -226,9 +207,6 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
 
             height(10),
 
-            // =====================================================
-            // CATEGORY FILTER
-            // =====================================================
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SingleChildScrollView(
@@ -256,14 +234,11 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
                         ),
                         selected: isSelected,
 
-                        // warna chip
                         backgroundColor: Colors.white,
                         selectedColor: const Color(0xFF4962BF),
 
-                        // hilangkan check icon
                         showCheckmark: false,
 
-                        // bikin chip lebih rounded + border stylish
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                           side: BorderSide(
@@ -274,7 +249,6 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
                           ),
                         ),
 
-                        // efek bayangan kecil khusus chip yg dipilih
                         elevation: isSelected ? 3 : 0,
                         pressElevation: 1,
 
@@ -285,7 +259,7 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
 
                               if (category == "All") {
                                 filteredEvents =
-                                    dataEvents; // 🔥 tampilkan semua
+                                    dataEvents; 
                               } else {
                                 filteredEvents = dataEvents
                                     .where(
@@ -296,7 +270,7 @@ class _HomepageFirebaseState extends State<HomepageFirebase> {
                                     .toList();
                               }
                             } else {
-                              selectedCategory = "All"; // fallback tetap All
+                              selectedCategory = "All"; 
                               filteredEvents = dataEvents;
                             }
                           });

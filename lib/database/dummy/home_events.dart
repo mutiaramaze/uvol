@@ -16,7 +16,6 @@ final List<Map<String, String>> activities = [
   },
 ];
 
-//chip
 final List<String> categories = [
   "All",
   "Lingkungan",

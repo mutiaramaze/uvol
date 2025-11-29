@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:uvol/extensions/drive_image_extension.dart';
 
 Widget buildSafeImage(String? imageUrl) {
-  print(imageUrl);
   if (imageUrl == null || imageUrl.isEmpty) {
     return Container(
       height: 150,

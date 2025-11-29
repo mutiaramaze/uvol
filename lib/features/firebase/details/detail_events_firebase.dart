@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:uvol/database/firebase/models/detail_model_firebase.dart';
 import 'package:uvol/database/model/events.model.dart';
 import 'package:uvol/extensions/drive_image_extension.dart';
-import 'package:uvol/features/sqf/details/question_events.dart';
 import 'package:uvol/features/firebase/details/question_events_firebase.dart';
 import 'package:uvol/widgets/widget_%20detail.dart';
 
@@ -17,7 +16,6 @@ class TapEventsFirebase extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ================= HEADER IMAGE =================
             Stack(
               children: [
                 Container(
@@ -39,7 +37,6 @@ class TapEventsFirebase extends StatelessWidget {
               ],
             ),
 
-            // ================= CONTENT =================
             Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
@@ -52,7 +49,6 @@ class TapEventsFirebase extends StatelessWidget {
               ),
             ),
 
-            // ================= BUTTON =================
             Padding(
               padding: const EdgeInsets.all(10),
               child: Center(
@@ -60,7 +56,6 @@ class TapEventsFirebase extends StatelessWidget {
                   width: 300,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Convert DetailModelFirebase → EventsModel
                       final eventData = EventsModel(
                         title: event.title,
                         date: event.date,
@@ -108,9 +103,6 @@ class TapEventsFirebase extends StatelessWidget {
     );
   }
 
-  // ======================================================================
-  // SAFE IMAGE HANDLER
-  // ======================================================================
 
   Widget _buildImage(String? image) {
     if (image == null || image.isEmpty) {
@@ -120,7 +112,6 @@ class TapEventsFirebase extends StatelessWidget {
       );
     }
 
-    // 🔥 Convert link Google Drive KE DIRECT IMAGE URL
     final fixedUrl = image.driveImageUrl;
 
     if (fixedUrl.isEmpty) {
@@ -140,9 +131,6 @@ class TapEventsFirebase extends StatelessWidget {
     );
   }
 
-  // ======================================================================
-  // DETAIL CONTENT
-  // ======================================================================
   Widget _buildDetail() {
     final about = event.about ?? [];
     final requirements = event.requirements ?? [];
@@ -229,9 +217,6 @@ class TapEventsFirebase extends StatelessWidget {
     );
   }
 
-  // ======================================================================
-  // SECTION BUILDER
-  // ======================================================================
   Widget _buildSection(String title, List<dynamic> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

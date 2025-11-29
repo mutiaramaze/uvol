@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/database/dummy/event_question.dart';
+import 'package:uvol/database/firebase/models/questionning_firebase_model.dart';
 import 'package:uvol/database/firebase/service/events_firebase.dart';
-import 'package:uvol/database/firebase/models/questionnig_model_firebase.dart';
 import 'package:uvol/database/model/events.model.dart';
 import 'package:uvol/database/preferences/preference_handler.dart';
 import 'package:uvol/features/firebase/details/thanks.dart';
-import 'package:uvol/widgets/widget_%20detail.dart';
 
 class QuestionEventsFirebase extends StatefulWidget {
   final EventsModel event;
@@ -32,7 +31,6 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
   final TextEditingController q2C = TextEditingController();
   final TextEditingController q3C = TextEditingController();
 
-  // 🔥 Ambil posisi dari event yang dipilih
   List<String> get positionList {
     try {
       return widget.event.positions
@@ -44,7 +42,6 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
     }
   }
 
-  // 🔥 Ambil pertanyaan dari dummy eventQuestions
   List<String> get questionList {
     return eventQuestions[widget.event.title] ?? [];
   }
@@ -80,7 +77,6 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ===================== DROPWDOWN POSISI
               DropDownDetailFirebase(
                 selectdivision: "Divisi yang kamu inginkan",
                 selectedValue: division1,
@@ -99,7 +95,6 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
 
               const SizedBox(height: 24),
 
-              // ===================== DYNAMIC QUESTIONS =====================
               if (q1 != null) ...[
                 Text(
                   q1!,
@@ -179,7 +174,6 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
                 const SizedBox(height: 20),
               ],
 
-              // ===================== BUTTON
               Center(
                 child: SizedBox(
                   width: 300,
@@ -188,7 +182,7 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
                       backgroundColor: const Color(0xFF4962BF),
                       padding: const EdgeInsets.symmetric(
                         vertical: 14,
-                      ), // Tinggi tombol
+                      ), 
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -208,10 +202,9 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
                       }
 
                       final joinModel = QuestionningModelFirebase(
-                        id:
-                            widget.event.id ??
-                            widget.event.title ??
-                            DateTime.now().toString(),
+                        id: DateTime.now().millisecondsSinceEpoch.toString(),
+                        userId: uid,
+                        eventId: widget.event.id ?? "",
                         title: widget.event.title ?? "",
                         image: widget.event.image ?? "",
                         date: widget.event.date ?? "",
@@ -223,6 +216,8 @@ class _QuestioningEventState extends State<QuestionEventsFirebase> {
                         answer1: q1C.text,
                         answer2: q2C.text,
                         answer3: q3C.text,
+                        status: 'active', 
+                        createdAt: DateTime.now(),
                       );
 
                       await JoinEventService.joinEvent(

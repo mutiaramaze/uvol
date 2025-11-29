@@ -1,7 +1,7 @@
 import 'package:uvol/database/model/events.model.dart';
 
 final List<EventsModel> dataEvents = [
-  // --- Data Acara Seni & Budaya ---
+  //  Data Acara Seni & Budaya 
   EventsModel(
     title: "Jakarta Fashion Week 2026",
     date: "20-26 Oktober 2026",
@@ -26,7 +26,7 @@ final List<EventsModel> dataEvents = [
         "https://drive.google.com/file/d/1jfjxIkOetb-m1gz28t2mlHfywxE2m1ww/view?usp=sharing",
   ),
 
-  // --- Data Acara Olahraga & Rekreasi ---
+  //  Data Acara Olahraga & Rekreasi 
   EventsModel(
     title: "Borobudur Marathon 2026",
     date: "10 November 2026",
@@ -43,7 +43,7 @@ final List<EventsModel> dataEvents = [
         "https://drive.google.com/file/d/1Zqv59O6m1rxIeGYbuqdRyxl8lXqB7Mms/view?usp=sharing",
   ),
 
-  // --- Data Acara Musik & Hiburan ---
+  //  Data Acara Musik & Hiburan 
   EventsModel(
     title: "Konser Musik: Suara Alam",
     date: "5 Mei 2026",
@@ -61,7 +61,7 @@ final List<EventsModel> dataEvents = [
         "https://drive.google.com/file/d/1WegMEaZgqfv0gcTbQvth9hkYdNlsYKpr/view?usp=sharing",
   ),
 
-  // --- Data Acara Bisnis & Edukasi ---
+  //  Data Acara Bisnis & Edukasi 
   EventsModel(
     title: "Indonesia Digital Summit 2026",
     date: "8-9 Maret 2026",
@@ -78,7 +78,7 @@ final List<EventsModel> dataEvents = [
         "https://drive.google.com/file/d/1oQsi_98gC0xFvz7hk2trROsXCtTD1Lhl/view?usp=sharing",
   ),
 
-  // --- Data Acara Kuliner & Gaya Hidup ---
+  //  Data Acara Kuliner & Gaya Hidup 
   EventsModel(
     title: "Scent of Indonesia: The Aroma Expo",
     date: "12-14 Desember 2025",

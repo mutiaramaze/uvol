@@ -77,9 +77,7 @@ final List<Map<String, dynamic>> volunteerRoles = [
 ];
 
 final List<DetailModelFirebase> detailEvents = [
-  // ============================================================
   // 1. Jakarta Fashion Week 2026
-  // ============================================================
   DetailModelFirebase(
     title: "Jakarta Fashion Week 2026",
     date: "20-26 Oktober 2026",
@@ -117,9 +115,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 2. Ubud Writers & Readers Festival 2026
-  // ============================================================
   DetailModelFirebase(
     title: "Ubud Writers & Readers Festival 2026",
     date: "23-27 September 2026",
@@ -160,9 +156,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 3. Pameran Seni Kontemporer 'Nusantara'
-  // ============================================================
   DetailModelFirebase(
     title: "Pameran Seni Kontemporer 'Nusantara'",
     date: "1-30 Juni 2026",
@@ -199,9 +193,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 4. Borobudur Marathon 2026
-  // ============================================================
   DetailModelFirebase(
     title: "Borobudur Marathon 2026",
     date: "10 November 2026",
@@ -242,9 +234,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 5. Festival Layang-Layang Internasional
-  // ============================================================
   DetailModelFirebase(
     title: "Festival Layang-Layang Internasional",
     date: "14-15 Juli 2026",
@@ -273,9 +263,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 6. Konser Musik: Suara Alam
-  // ============================================================
   DetailModelFirebase(
     title: "Konser Musik: Suara Alam",
     date: "5 Mei 2026",
@@ -301,9 +289,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 7. Festival Komedi Jakarta (Cleaned Up Image)
-  // ============================================================
   DetailModelFirebase(
     title: "Festival Komedi Jakarta (Cleaned Up Image)",
     date: "28 November 2025",
@@ -329,9 +315,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 8. Indonesia Digital Summit 2026
-  // ============================================================
   DetailModelFirebase(
     title: "Indonesia Digital Summit 2026",
     date: "8-9 Maret 2026",
@@ -358,9 +342,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 9. Tech Startup Pitch Competition
-  // ============================================================
   DetailModelFirebase(
     title: "Tech Startup Pitch Competition",
     date: "17 April 2026",
@@ -387,9 +369,7 @@ final List<DetailModelFirebase> detailEvents = [
     ],
   ),
 
-  // ============================================================
   // 10. Scent of Indonesia: The Aroma Expo
-  // ============================================================
   DetailModelFirebase(
     title: "Scent of Indonesia: The Aroma Expo",
     date: "12-14 Desember 2025",

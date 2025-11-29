@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 
 class CreateEvent extends StatefulWidget {
@@ -14,7 +13,6 @@ class CreateEvent extends StatefulWidget {
 class _CreateEventState extends State<CreateEvent> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
   final nameController = TextEditingController();
   final locationController = TextEditingController();
   final descController = TextEditingController();
@@ -82,7 +80,6 @@ class _CreateEventState extends State<CreateEvent> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // UPLOAD POSTER
               const Text(
                 "Poster Event",
                 style: TextStyle(
@@ -128,7 +125,6 @@ class _CreateEventState extends State<CreateEvent> {
 
               const SizedBox(height: 25),
 
-              // FORM INPUT
               formLabel("Nama Event"),
               BuildTextField(
                 hintText: "Masukkan nama event",
@@ -192,7 +188,6 @@ class _CreateEventState extends State<CreateEvent> {
 
               const SizedBox(height: 30),
 
-              // BUTTON SUBMIT
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -223,9 +218,6 @@ class _CreateEventState extends State<CreateEvent> {
     );
   }
 
-  // ===============================
-  // SUBMIT FUNCTION
-  // ===============================
   void submitEvent() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -238,7 +230,7 @@ class _CreateEventState extends State<CreateEvent> {
 
     setState(() => loading = true);
 
-    await Future.delayed(const Duration(seconds: 2)); // simulasi API
+    await Future.delayed(const Duration(seconds: 2)); 
 
     setState(() => loading = false);
 

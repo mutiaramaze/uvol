@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uvol/database/firebase/service/firebase.dart';
 import 'package:uvol/database/firebase/service/user_firebase.dart';
-import 'package:uvol/database/firebase/models/user_firebase_model.dart';
 import 'package:uvol/database/preferences/preference_handler_firebase.dart';
 import 'package:uvol/features/firebase/auth/register_user_firebase.dart';
-import 'package:uvol/features/firebase/main%20page/home_firebase.dart';
 import 'package:uvol/widgets/app_images.dart';
 import 'package:uvol/widgets/bottom_nav.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 import 'package:uvol/widgets/move_button.dart';
 
@@ -146,7 +143,6 @@ class _LoginFirebaseState extends State<LoginFirebase> {
     if (!_formKey.currentState!.validate()) return;
 
     try {
-      // 1️⃣ Login ke Firebase Auth
       final authUser = await FirebaseService.loginUser(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
@@ -158,9 +154,8 @@ class _LoginFirebaseState extends State<LoginFirebase> {
       }
 
       final uid = authUser.uid!;
-      print("🔥 LOGIN UID: $uid");
+      print("LOGIN UID: $uid");
 
-      // 2️⃣ Ambil user lengkap dari Firestore
       final userData = await UserFirebaseService.getUser(uid);
 
       if (userData == null) {
@@ -168,7 +163,7 @@ class _LoginFirebaseState extends State<LoginFirebase> {
         return;
       }
 
-      print("🔥 USER FIRESTORE: ${userData.name}");
+      print("USER FIRESTORE: ${userData.name}");
 
       await PreferenceHandlerFirebase.saveLogin(true);
       await PreferenceHandlerFirebase.saveUserID(userData.uid!);
@@ -181,7 +176,7 @@ class _LoginFirebaseState extends State<LoginFirebase> {
         MaterialPageRoute(builder: (_) => const BottomNav()),
       );
     } catch (e) {
-      print("🔥 ERROR LOGIN: $e");
+      print("ERROR LOGIN: $e");
       Fluttertoast.showToast(msg: "Login gagal: $e");
     }
   }

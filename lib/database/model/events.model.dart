@@ -25,7 +25,6 @@ class EventsModel {
     this.positions,
   });
 
-  // 🔹 dipakai kalau ambil dari Firestore / API (Map)
   factory EventsModel.fromJson(Map<String, dynamic> json) {
     return EventsModel(
       title: json['title'],
@@ -46,12 +45,10 @@ class EventsModel {
     );
   }
 
-  // 🔹 alias: kalau ada kode lama yang pakai fromMap()
   factory EventsModel.fromMap(Map<String, dynamic> map) {
     return EventsModel.fromJson(map);
   }
 
-  // 🔹 untuk simpan ke Firestore / API
   Map<String, dynamic> toJson() {
     return {
       "title": title,
@@ -66,12 +63,10 @@ class EventsModel {
     };
   }
 
-  // 🔹 alias: supaya event.toMap() tetap jalan
   Map<String, dynamic> toMap() {
     return toJson();
   }
 
-  // (opsional) kalau kamu ingin simpan ke SharedPreferences sebagai String
   String encode() => json.encode(toJson());
 
   factory EventsModel.decode(String source) =>

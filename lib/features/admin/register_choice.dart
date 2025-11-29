@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uvol/features/admin/register_organizer_firebase.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
 import 'package:uvol/features/firebase/auth/register_user_firebase.dart';
 
 class RegisterChoicePage extends StatelessWidget {
@@ -32,7 +31,6 @@ class RegisterChoicePage extends StatelessWidget {
               ),
               const SizedBox(height: 40),
 
-              // Card Volunteer
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -79,7 +77,6 @@ class RegisterChoicePage extends StatelessWidget {
 
               const SizedBox(height: 25),
 
-              // Card Organizer
               GestureDetector(
                 onTap: () {
                   Navigator.push(

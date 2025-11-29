@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/database/preferences/preference_handler.dart';
 import 'package:uvol/features/sqf/starting/about_me.dart';
-import 'package:uvol/features/sqf/details/detail_events.dart';
-import 'package:uvol/features/sqf/main%20page/home.dart';
 import 'package:uvol/features/sqf/starting/register.dart';
 import 'package:uvol/widgets/app_images.dart';
-import 'package:uvol/widgets/bottom_nav.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 import 'package:uvol/widgets/move_button.dart';
 
@@ -28,7 +22,6 @@ class _LoginState extends State<Login> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // utility kecil untuk spacing
   SizedBox height(double h) => SizedBox(height: h);
 
   @override
@@ -41,7 +34,6 @@ class _LoginState extends State<Login> {
   }
 
   Widget buildLayer(BuildContext context) {
-    // supaya kalau keyboard muncul, bisa scroll dan nggak overflow
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return SafeArea(
@@ -60,7 +52,6 @@ class _LoginState extends State<Login> {
                 const Text("Login to access your account"),
                 height(24),
 
-                // KOTAK FORM + TOMBOL LOGIN + REGISTER
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -70,7 +61,6 @@ class _LoginState extends State<Login> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Label email
                       const Text(
                         "Email",
                         style: TextStyle(color: Color(0xFF4962BF)),
@@ -94,7 +84,6 @@ class _LoginState extends State<Login> {
 
                       height(20),
 
-                      // Label password
                       const Text(
                         "Password",
                         style: TextStyle(color: Color(0xFF4962BF)),
@@ -115,7 +104,6 @@ class _LoginState extends State<Login> {
 
                       height(25),
 
-                      // TOMBOL LOGIN (deket sama password)
                       Center(
                         child: MoveButton(
                           text: "Login",
@@ -132,7 +120,7 @@ class _LoginState extends State<Login> {
                                 await PreferenceHandler.saveLogin(true);
                                 await PreferenceHandler.saveUser(
                                   data,
-                                ); // simpan data user
+                                ); 
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -171,7 +159,6 @@ class _LoginState extends State<Login> {
 
                       height(10),
 
-                      // LINK REGISTER
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

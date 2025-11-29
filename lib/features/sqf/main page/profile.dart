@@ -4,10 +4,8 @@ import 'package:uvol/database/db_helper.dart';
 import 'package:uvol/database/model/aboutme_model.dart';
 import 'package:uvol/database/model/user_model.dart';
 import 'package:uvol/database/preferences/preference_handler.dart';
-import 'package:uvol/features/sqf/details/detail_events.dart';
 import 'package:uvol/features/sqf/details/settings.dart';
 import 'package:uvol/widgets/app_images.dart';
-import 'package:uvol/widgets/build_text_field.dart';
 import 'package:uvol/widgets/container_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -29,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadAbout() async {
-    final data = await DbHelper.getAbout(); // BUKAN insertAbout
+    final data = await DbHelper.getAbout(); 
 
     setState(() {
       about = data;
@@ -114,7 +112,6 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // HEADER PROFILE
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -126,7 +123,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.all(25),
                 child: Column(
                   children: [
-                    // BARIS ATAS: TITLE + SETTINGS
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -149,7 +145,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     height(20),
 
-                    // BARIS PROFILE: AVATAR + NAMA + EMAIL + TOMBOL EDIT
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -162,7 +157,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // TEKS NAMA + EMAIL
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +184,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                               ),
-                              // ICON EDIT
                               IconButton(
                                 onPressed: () {
                                   print("DEBUG PROFILE: Icon edit diklik");
@@ -210,7 +203,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     height(20),
 
-                    // KOTAK PARTISIPASI
                     Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
@@ -224,7 +216,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
 
-            // BODY
             Padding(
               padding: const EdgeInsets.all(25),
               child: Column(
@@ -249,7 +240,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const Divider(),
 
-            // --- CONTAINER CV & NOMOR TELEPON ---
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
@@ -279,7 +269,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     const SizedBox(height: 15),
 
-                    // UPLOAD CV
                     Text(
                       about?.cv != null && about!.cv!.isNotEmpty
                           ? about!.cv!.split('/').last
@@ -313,7 +302,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     const SizedBox(height: 20),
 
-                    // NOMOR TELEPON
                     const Text(
                       "Nomor Telepon",
                       style: TextStyle(

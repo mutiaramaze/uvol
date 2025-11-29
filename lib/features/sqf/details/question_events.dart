@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/features/sqf/main%20page/events.dart';
-import 'package:uvol/features/sqf/main%20page/home.dart';
 import 'package:uvol/features/firebase/details/thanks.dart';
 import 'package:uvol/widgets/widget_%20detail.dart';
 
@@ -12,7 +10,7 @@ class QuestioningEvent extends StatefulWidget {
 }
 
 class _QuestioningEventState extends State<QuestioningEvent> {
-  final _formKey = GlobalKey<FormState>(); // 🔹 Tambah key form
+  final _formKey = GlobalKey<FormState>(); 
   final TextEditingController answer1Controller = TextEditingController();
   final TextEditingController answer2Controller = TextEditingController();
 
