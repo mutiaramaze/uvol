@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:uvol/preferences/preference_handler.dart';
-import 'package:uvol/starting/register_choice.dart';
-import 'package:uvol/volunteer/view/starting/login.dart';
-import 'package:uvol/volunteer/view/starting/about_me.dart';
-import 'package:uvol/volunteer/login_firebase.dart';
-import 'package:uvol/volunteer/view/starting/register.dart';
-import 'package:uvol/starting/views/register_user_firebase.dart';
-import 'package:uvol/widget/app_images.dart';
-import 'package:uvol/widget/bottom_nav.dart';
+import 'package:uvol/database/preferences/preference_handler_firebase.dart';
+import 'package:uvol/features/firebase/auth/register_user_firebase.dart';
+import 'package:uvol/widgets/app_images.dart';
+import 'package:uvol/widgets/bottom_nav.dart';
 
 class IntroSplash extends StatefulWidget {
   const IntroSplash({super.key});
@@ -20,26 +15,30 @@ class _IntroSplashState extends State<IntroSplash> {
   @override
   void initState() {
     super.initState();
-    isLoginFunction();
+    _navigateUser();
   }
 
-  isLoginFunction() async {
-    Future.delayed(const Duration(seconds: 3)).then((value) async {
-      bool isLogin = await PreferenceHandler.getLogin();
-      print("isLogin: $isLogin");
+  Future<void> _navigateUser() async {
+    await Future.delayed(const Duration(seconds: 2));
 
-      if (isLogin) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BottomNav()),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const RegisterUserFirebase()),
-        );
-      }
-    });
+    final bool isLogin = await PreferenceHandlerFirebase.getLogin();
+    final String? uid = await PreferenceHandlerFirebase.getUserID();
+
+    print("CHECK LOGIN => isLogin:$isLogin | uid:$uid");
+
+    if (!mounted) return;
+
+    if (isLogin && uid != null && uid.isNotEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => BottomNav()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const RegisterUserFirebase()),
+      );
+    }
   }
 
   @override
