@@ -2,16 +2,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:uvol/constant/intro_splash.dart';
 import 'package:uvol/firebase_options.dart';
-// import 'package:uvol/starting/register_choice.dart';
-// import 'package:uvol/volunteer/view/starting/about_me.dart';
-// import 'package:uvol/volunteer/view/main%20page/events.dart';
-// import 'package:uvol/volunteer/view/main%20page/forum.dart';
-// import 'package:uvol/volunteer/view/main%20page/home.dart';
-// import 'package:uvol/volunteer/view/starting/login.dart';
-// import 'package:uvol/volunteer/view/make_post.dart';
-// import 'package:uvol/volunteer/view/profile.dart';
-// import 'package:uvol/volunteer/view/starting/register.dart';
-// import 'package:uvol/widget/bottom_nav.dart';
+import 'package:uvol/features/firebase/main%20page/events_firebase.dart';
+import 'package:uvol/features/firebase/main%20page/forum_firebase.dart';
+import 'package:uvol/features/firebase/main%20page/home_firebase.dart';
+import 'package:uvol/features/firebase/main%20page/profile_firebase.dart';
+import 'package:uvol/features/admin/register_choice.dart';
+import 'package:uvol/features/firebase/auth/login_firebase.dart';
+import 'package:uvol/features/firebase/auth/register_user_firebase.dart';
+import 'package:uvol/features/firebase/auth/about_me_firebase.dart';
+import 'package:uvol/features/firebase/details/make_post_firebase.dart';
+import 'package:uvol/features/sqf/starting/about_me.dart';
+import 'package:uvol/features/sqf/main%20page/events.dart';
+import 'package:uvol/features/sqf/main%20page/forum.dart';
+import 'package:uvol/features/sqf/main%20page/home.dart';
+import 'package:uvol/features/sqf/starting/login.dart';
+import 'package:uvol/features/sqf/details/make_post.dart';
+import 'package:uvol/features/sqf/main%20page/profile.dart';
+import 'package:uvol/features/sqf/starting/register.dart';
+import 'package:uvol/widgets/bottom_nav.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:uvol/widgets/bottom_nav.dart';
 
@@ -35,21 +43,19 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      // 👇 GANTI halaman awal ke Splash Screen
-      home: const BottomNav(),
+      home: const IntroSplash(),
 
-      // 👇 Tambahkan route agar bisa navigasi ke halaman lain dengan mudah
-      // routes: {
-      //   '/home': (context) => const Homepage(),
-      //   '/events': (context) => const Events(),
-      //   '/forum': (context) => const Forum(),
-      //   '/make_post': (context) => const MakePost(),
-      //   '/profile': (context) => const ProfilePage(),
-      //   '/login': (context) => const Login(),
-      //   '/register': (context) => const Register(),
-      //   '/about_me': (context) => AboutMe(),
-      //   '/bottom_nav': (context) => const BottomNav(),
-      // },
+      routes: {
+        '/home': (context) => const HomepageFirebase(),
+        '/events': (context) => const EventsFirebase(),
+        '/forum': (context) => const ForumFirebase(),
+        '/make_post': (context) => const MakePostFirebase(),
+        '/profile': (context) => const ProfilePageFirebase(),
+        '/login': (context) => const LoginFirebase(),
+        '/register': (context) => const RegisterUserFirebase(),
+        '/about_me': (context) => AboutMeFirebase(),
+        '/bottom_nav': (context) => const BottomNav(),
+      },
     );
   }
 }
